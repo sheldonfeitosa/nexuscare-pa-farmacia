@@ -1,0 +1,28 @@
+{
+  "name": "nexuscare-pa-farmacia",
+  "version": "1.0.0",
+  "description": "Sistema de controle de leitos e comunicação entre PA e Farmácia - NexusCare",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve . -l 3000",
+    "build": "echo 'No build step required for static HTML'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "healthcare",
+    "hospital",
+    "patient-management",
+    "bed-control",
+    "pharmacy",
+    "nexuscare"
+  ],
+  "author": "NexusCare Team",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
