@@ -81,3 +81,6 @@ function tocarSomAdmissao() {
 **Desenvolvido para INMCEB - Instituto de Medicina do Comportamento Eurípedes Barsanulfo**
 
 *Sistema de Controle de Leitos do Pronto Atendimento Psiquiátrico com Notificações Sonoras*
+
+   ## Deploy
+   Aplicação deployada no Vercel.
