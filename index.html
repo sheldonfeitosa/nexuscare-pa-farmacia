@@ -2328,6 +2328,11 @@
                 senha: 'senha_do_sistema'
             },
             ativo: true,
+            emailjs: {
+                publicKey: '',
+                serviceId: 'service_inmceb',
+                templateId: 'template_pa'
+            },
             relatoriosAutomaticos: {
                 ativo: true,
                 frequencia: 'diario', // diario, semanal, mensal
@@ -5673,16 +5678,26 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
         }
         
         function configurarListenersTempoReal() {
-            if (!db) return;
+            if (!db) {
+                console.log('❌ Firebase não inicializado, pulando listeners');
+                return;
+            }
+            
+            console.log('🔄 Configurando listeners de tempo real...');
             
             // Listener para dados dos leitos
             db.collection('leitos').onSnapshot(function(snapshot) {
+                console.log('📡 Mudança detectada na coleção leitos:', snapshot.docChanges().length, 'mudanças');
                 snapshot.docChanges().forEach(function(change) {
-                    if (change.type === 'modified') {
+                    console.log('🔄 Tipo de mudança:', change.type, 'Documento:', change.doc.id);
+                    if (change.type === 'modified' || change.type === 'added') {
                         const dados = change.doc.data();
+                        console.log('📊 Dados do leito:', change.doc.id, dados);
                         atualizarLeitoLocal(change.doc.id, dados);
                     }
                 });
+            }, function(error) {
+                console.error('❌ Erro no listener de leitos:', error);
             });
             
             // Listener para histórico de pacientes
@@ -5756,11 +5771,20 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             // Atualizar interface local quando dados mudarem no Firebase
             console.log('🔄 Atualizando leito via Firebase:', leitoId, dados);
             dadosLeitos[leitoId] = dados;
+            
+            // Atualizar o leito específico
             atualizarLeito(leitoId, dados);
             
             // Atualizar interface se estiver na aba correta
             if (document.getElementById('paPanel').classList.contains('active')) {
+                console.log('🔄 Atualizando interface dos leitos...');
                 renderizarLeitos();
+            }
+            
+            // Atualizar farmácia se estiver ativa
+            if (document.getElementById('farmaciaPanel').classList.contains('active')) {
+                console.log('🔄 Atualizando interface da farmácia...');
+                renderizarFarmacia();
             }
         }
         
