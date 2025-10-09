@@ -1729,6 +1729,8 @@
                                 <th>Saida PA</th>
                                 <th>Destino</th>
                                 <th>Status</th>
+                                <th>Usuário</th>
+                                <th>Setor</th>
                             </tr>
                         </thead>
                         <tbody id="rastreabilidadeBody">
@@ -3947,6 +3949,8 @@
                 observacoes: observacoes,
                 dataHoraAdmissao: dados.dataHoraAdmissao,
                 leito: leitoAtual,
+                usuarioAcao: usuarioAtual.nome || 'Sistema',
+                setorAcao: usuarioAtual.setor || 'Sistema',
                 dataHoraSaida: null,
                 destino: null,
                 status: 'EM ATENDIMENTO',
@@ -3992,11 +3996,47 @@
                     historicoPacientes[i].dataHoraSaida = new Date().toISOString();
                     historicoPacientes[i].destino = destino;
                     historicoPacientes[i].status = 'TRANSFERIDO';
+                    historicoPacientes[i].usuarioAcao = usuarioAtual.nome || 'Sistema';
+                    historicoPacientes[i].setorAcao = usuarioAtual.setor || 'Sistema';
                     break;
                 }
             }
             
-            // LIMPAR LEITO
+            // SALVAR NO FIREBASE
+            var dadosLeitoVago = {
+                status: 'VAGO',
+                pacienteIniciais: '',
+                registro: '',
+                origem: '',
+                dataHoraAdmissao: null,
+                dataHoraSaida: null,
+                observacoes: '',
+                dataNascimento: '',
+                idade: ''
+            };
+            
+            salvarNoFirebase('leitos', leitoAtual, dadosLeitoVago);
+            
+            // Adicionar ao histórico no Firebase
+            var historicoItem = {
+                leito: leitoAtual,
+                pacienteIniciais: dadosPaciente.pacienteIniciais,
+                registro: dadosPaciente.registro,
+                origem: dadosPaciente.origem,
+                destino: destino,
+                dataHoraAdmissao: dadosPaciente.dataHoraAdmissao,
+                dataHoraSaida: new Date().toISOString(),
+                status: 'TRANSFERIDO',
+                observacoes: observacoesTransferencia,
+                dataNascimento: dadosPaciente.dataNascimento || '',
+                idade: dadosPaciente.idade || '',
+                usuarioAcao: usuarioAtual.nome || 'Sistema',
+                setorAcao: usuarioAtual.setor || 'Sistema'
+            };
+            
+            salvarNoFirebase('historico', Date.now().toString(), historicoItem);
+            
+            // LIMPAR LEITO LOCAL
             delete dadosLeitos[leitoAtual];
             restaurarLeito(leitoAtual);
             
@@ -4093,11 +4133,47 @@
                         historicoPacientes[i].dataHoraSaida = new Date().toISOString();
                         historicoPacientes[i].destino = 'ALTA HOSPITALAR';
                         historicoPacientes[i].status = 'ALTA';
+                        historicoPacientes[i].usuarioAcao = usuarioAtual.nome || 'Sistema';
+                        historicoPacientes[i].setorAcao = usuarioAtual.setor || 'Sistema';
                         break;
                     }
                 }
                 
-                // LIMPAR LEITO
+                // SALVAR NO FIREBASE
+                var dadosLeitoVago = {
+                    status: 'VAGO',
+                    pacienteIniciais: '',
+                    registro: '',
+                    origem: '',
+                    dataHoraAdmissao: null,
+                    dataHoraSaida: null,
+                    observacoes: '',
+                    dataNascimento: '',
+                    idade: ''
+                };
+                
+                salvarNoFirebase('leitos', leitoId, dadosLeitoVago);
+                
+                // Adicionar ao histórico no Firebase
+                var historicoItem = {
+                    leito: leitoId,
+                    pacienteIniciais: dadosPaciente.pacienteIniciais,
+                    registro: dadosPaciente.registro,
+                    origem: dadosPaciente.origem,
+                    destino: 'ALTA HOSPITALAR',
+                    dataHoraAdmissao: dadosPaciente.dataHoraAdmissao,
+                    dataHoraSaida: new Date().toISOString(),
+                    status: 'ALTA',
+                    observacoes: dadosPaciente.observacoes || '',
+                    dataNascimento: dadosPaciente.dataNascimento || '',
+                    idade: dadosPaciente.idade || '',
+                    usuarioAcao: usuarioAtual.nome || 'Sistema',
+                    setorAcao: usuarioAtual.setor || 'Sistema'
+                };
+                
+                salvarNoFirebase('historico', Date.now().toString(), historicoItem);
+                
+                // LIMPAR LEITO LOCAL
                 delete dadosLeitos[leitoId];
                 restaurarLeito(leitoId);
                 
@@ -4326,6 +4402,8 @@
                 row.insertCell().textContent = historico.dataHoraSaida ? new Date(historico.dataHoraSaida).toLocaleString('pt-BR') : 'Ainda no PA';
                 row.insertCell().textContent = historico.destino || 'Ainda no PA';
                 row.insertCell().textContent = historico.status;
+                row.insertCell().innerHTML = '<span style="color: #007bff; font-weight: bold;">' + (historico.usuarioAcao || 'Sistema') + '</span>';
+                row.insertCell().textContent = historico.setorAcao || 'Sistema';
             }
         }
         
@@ -4364,6 +4442,8 @@
                 row.insertCell().textContent = historico.dataHoraSaida ? new Date(historico.dataHoraSaida).toLocaleString('pt-BR') : 'Ainda no PA';
                 row.insertCell().textContent = historico.destino || 'Ainda no PA';
                 row.insertCell().textContent = historico.status;
+                row.insertCell().innerHTML = '<span style="color: #007bff; font-weight: bold;">' + (historico.usuarioAcao || 'Sistema') + '</span>';
+                row.insertCell().textContent = historico.setorAcao || 'Sistema';
             }
         }
         
