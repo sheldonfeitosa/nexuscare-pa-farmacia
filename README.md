@@ -82,9 +82,8 @@ function tocarSomAdmissao() {
 
 *Sistema de Controle de Leitos do Pronto Atendimento Psiquiátrico com Notificações Sonoras*
 
-   ## Deploy
-   Aplicação deployada no Vercel.
-    ## Deploy Status
-   ✅ Aplicação deployada no Vercel com sucesso!
-   🚀 Sistema NexusCare funcionando perfeitamente!
+   
+   ## Deploy Status
+   🚀 Forçando deploy no Vercel...
+   ✅ Sistema NexusCare funcionando perfeitamente!
 
