@@ -4811,8 +4811,8 @@
         
         function enviarEmailReal(destinatario, assunto, corpo) {
             // Usar as credenciais configuradas pelo usuário
-            var serviceId = configEmail.emailjs.serviceId || 'service_inmceb';
-            var templateId = configEmail.emailjs.templateId || 'template_pa';
+            var serviceId = (configEmail && configEmail.emailjs && configEmail.emailjs.serviceId) ? configEmail.emailjs.serviceId : 'service_inmceb';
+            var templateId = (configEmail && configEmail.emailjs && configEmail.emailjs.templateId) ? configEmail.emailjs.templateId : 'template_pa';
             
             emailjs.send(serviceId, templateId, {
                 to_email: destinatario,
@@ -5754,9 +5754,13 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
         
         function atualizarLeitoLocal(leitoId, dados) {
             // Atualizar interface local quando dados mudarem no Firebase
-            if (dadosLeitos[leitoId]) {
-                dadosLeitos[leitoId] = dados;
-                atualizarLeito(leitoId, dados);
+            console.log('🔄 Atualizando leito via Firebase:', leitoId, dados);
+            dadosLeitos[leitoId] = dados;
+            atualizarLeito(leitoId, dados);
+            
+            // Atualizar interface se estiver na aba correta
+            if (document.getElementById('paPanel').classList.contains('active')) {
+                renderizarLeitos();
             }
         }
         
@@ -5776,13 +5780,15 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                 script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
                 script.onload = function() {
                     // Inicializar com a chave pública se estiver configurada
-                    if (configEmail.emailjs.publicKey) {
-                        emailjs.init(configEmail.emailjs.publicKey);
-                        console.log('✅ EmailJS inicializado com sucesso');
-                    }
+                    setTimeout(function() {
+                        if (configEmail && configEmail.emailjs && configEmail.emailjs.publicKey) {
+                            emailjs.init(configEmail.emailjs.publicKey);
+                            console.log('✅ EmailJS inicializado com sucesso');
+                        }
+                    }, 100);
                 };
                 document.head.appendChild(script);
-            } else if (configEmail.emailjs.publicKey) {
+            } else if (configEmail && configEmail.emailjs && configEmail.emailjs.publicKey) {
                 emailjs.init(configEmail.emailjs.publicKey);
                 console.log('✅ EmailJS inicializado com sucesso');
             }
