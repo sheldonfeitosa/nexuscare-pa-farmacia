@@ -3501,8 +3501,15 @@
                 permissoes: usuarioLogado ? usuarioLogado.permissoes : 'N/A'
             });
             
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('❌ Usuário não está logado');
+                alert('Você precisa estar logado para admitir pacientes.');
+                return;
+            }
+            
             // Verificar permissão
-            if (!usuarioLogado || !usuarioLogado.permissoes.admitir) {
+            if (!usuarioLogado.permissoes || !usuarioLogado.permissoes.admitir) {
                 console.log('❌ Sem permissão para admitir pacientes');
                 alert('Você não tem permissão para admitir pacientes.');
                 return;
@@ -3529,8 +3536,15 @@
                 permissoes: usuarioLogado ? usuarioLogado.permissoes : 'N/A'
             });
             
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('❌ Usuário não está logado');
+                alert('Você precisa estar logado para transferir pacientes.');
+                return;
+            }
+            
             // Verificar permissão
-            if (!usuarioLogado || !usuarioLogado.permissoes.transferir) {
+            if (!usuarioLogado.permissoes || !usuarioLogado.permissoes.transferir) {
                 console.log('❌ Sem permissão para transferir pacientes');
                 alert('Você não tem permissão para transferir pacientes.');
                 return;
@@ -4052,9 +4066,9 @@
             
             salvarNoFirebase('historico', Date.now().toString(), historicoItem);
             
-            // LIMPAR LEITO LOCAL
-            delete dadosLeitos[leitoAtual];
-            restaurarLeito(leitoAtual);
+            // ATUALIZAR LEITO LOCAL
+            dadosLeitos[leitoAtual] = dadosLeitoVago;
+            atualizarLeito(leitoAtual, dadosLeitoVago);
             
             // TOCAR SOM DE TRANSFERENCIA
             tocarSomTransferencia();
@@ -4141,8 +4155,15 @@
                 permissoes: usuarioLogado ? usuarioLogado.permissoes : 'N/A'
             });
             
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('❌ Usuário não está logado');
+                alert('Você precisa estar logado para dar alta de pacientes.');
+                return;
+            }
+            
             // Verificar permissão
-            if (!usuarioLogado || !usuarioLogado.permissoes.darAlta) {
+            if (!usuarioLogado.permissoes || !usuarioLogado.permissoes.darAlta) {
                 console.log('❌ Sem permissão para dar alta de pacientes');
                 alert('Você não tem permissão para dar alta de pacientes.');
                 return;
@@ -4198,9 +4219,9 @@
                 
                 salvarNoFirebase('historico', Date.now().toString(), historicoItem);
                 
-                // LIMPAR LEITO LOCAL
-                delete dadosLeitos[leitoId];
-                restaurarLeito(leitoId);
+                // ATUALIZAR LEITO LOCAL
+                dadosLeitos[leitoId] = dadosLeitoVago;
+                atualizarLeito(leitoId, dadosLeitoVago);
                 
                 // TOCAR SOM DE ALTA
                 tocarSomAlta();
