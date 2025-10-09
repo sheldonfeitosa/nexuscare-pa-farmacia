@@ -4317,8 +4317,14 @@
             
             // ATUALIZAR ESTATISTICAS
             document.getElementById('totalAtivos').textContent = pacientesAtivos.length;
-            document.getElementById('totalLeitos').textContent = Object.keys(dadosLeitos).length;
-            document.getElementById('leitosDisponiveis').textContent = 15 - Object.keys(dadosLeitos).length;
+            
+            // CONTAR LEITOS OCUPADOS (apenas com pacientes ativos)
+            var leitosOcupados = Object.values(dadosLeitos).filter(function(leito) {
+                return leito.status === 'EM ATENDIMENTO' && leito.pacienteIniciais && leito.pacienteIniciais.trim() !== '';
+            }).length;
+            
+            document.getElementById('totalLeitos').textContent = leitosOcupados;
+            document.getElementById('leitosDisponiveis').textContent = 15 - leitosOcupados;
             
             if (pacientesAtivos.length === 0) {
                 content.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #7f8c8d;"><i class="fas fa-user-injured" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i><p style="font-size: 1.1rem;">Nenhum paciente em atendimento no momento.</p></div>';
