@@ -4068,7 +4068,7 @@
             
             // ATUALIZAR LEITO LOCAL
             dadosLeitos[leitoAtual] = dadosLeitoVago;
-            atualizarLeito(leitoAtual, dadosLeitoVago);
+            limparLeito(leitoAtual);
             
             // TOCAR SOM DE TRANSFERENCIA
             tocarSomTransferencia();
@@ -4221,7 +4221,7 @@
                 
                 // ATUALIZAR LEITO LOCAL
                 dadosLeitos[leitoId] = dadosLeitoVago;
-                atualizarLeito(leitoId, dadosLeitoVago);
+                limparLeito(leitoId);
                 
                 // TOCAR SOM DE ALTA
                 tocarSomAlta();
@@ -4269,6 +4269,34 @@
                 // RESTAURAR BOTAO ORIGINAL
                 var btn = leitoCard.querySelector('.btn');
                 btn.innerHTML = '<button class="btn" onclick="abrirModal(\'' + leitoId + '\')">Admitir Paciente</button>';
+            }
+        }
+        
+        // FUNCAO PARA LIMPAR LEITO (para transferência e alta)
+        function limparLeito(leitoId) {
+            console.log('Limpando leito:', leitoId);
+            
+            var leitoCard = document.getElementById('leito-' + leitoId);
+            
+            if (leitoCard) {
+                // ATUALIZAR STATUS BADGE
+                var statusBadge = document.getElementById('status-' + leitoId);
+                statusBadge.textContent = 'VAGO';
+                statusBadge.className = 'status-badge';
+                
+                // LIMPAR INFORMACOES
+                var leitoInfo = document.getElementById('info-' + leitoId);
+                leitoInfo.innerHTML = 
+                    '<div class="info-row">' +
+                        '<span class="info-label">Status:</span>' +
+                        '<span class="info-value">Leito disponivel</span>' +
+                    '</div>';
+                
+                // RESTAURAR BOTAO ORIGINAL
+                var btn = leitoCard.querySelector('.btn');
+                btn.innerHTML = '<button class="btn" onclick="abrirModal(\'' + leitoId + '\')">Admitir Paciente</button>';
+                
+                console.log('Leito limpo com sucesso:', leitoId);
             }
         }
         
