@@ -4312,8 +4312,13 @@
             // FILTRAR APENAS PACIENTES ATIVOS (leitos ocupados)
             var pacientesAtivos = Object.values(dadosLeitos).filter(function(leito) {
                 console.log('🔍 Verificando leito:', leito);
-                var isAtivo = leito.status === 'EM ATENDIMENTO' && leito.pacienteIniciais && leito.pacienteIniciais.trim() !== '';
-                console.log('🔍 Leito ativo?', isAtivo, 'Status:', leito.status, 'Paciente:', leito.pacienteIniciais);
+                // Verificar se tem paciente (não está vago)
+                var temPaciente = leito.pacienteIniciais && leito.pacienteIniciais.trim() !== '';
+                // Verificar se não está explicitamente vago, alta ou transferido
+                var naoEstaVago = leito.status !== 'VAGO' && leito.status !== 'ALTA' && leito.status !== 'TRANSFERIDO';
+                // Se tem paciente e não está explicitamente vago, considerar ativo
+                var isAtivo = temPaciente && naoEstaVago;
+                console.log('🔍 Leito ativo?', isAtivo, 'Status:', leito.status, 'Paciente:', leito.pacienteIniciais, 'TemPaciente:', temPaciente, 'NaoEstaVago:', naoEstaVago);
                 return isAtivo;
             });
             
@@ -4324,7 +4329,9 @@
             
             // CONTAR LEITOS OCUPADOS (apenas com pacientes ativos)
             var leitosOcupados = Object.values(dadosLeitos).filter(function(leito) {
-                return leito.status === 'EM ATENDIMENTO' && leito.pacienteIniciais && leito.pacienteIniciais.trim() !== '';
+                var temPaciente = leito.pacienteIniciais && leito.pacienteIniciais.trim() !== '';
+                var naoEstaVago = leito.status !== 'VAGO' && leito.status !== 'ALTA' && leito.status !== 'TRANSFERIDO';
+                return temPaciente && naoEstaVago;
             }).length;
             
             document.getElementById('totalLeitos').textContent = leitosOcupados;
