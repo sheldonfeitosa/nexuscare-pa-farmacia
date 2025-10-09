@@ -3495,8 +3495,15 @@
         
         // FUNCAO PARA ABRIR MODAL DE ADMISSAO
         function abrirModal(leitoId) {
+            console.log('🔍 Debug abrirModal:', {
+                leitoId: leitoId,
+                usuarioLogado: usuarioLogado,
+                permissoes: usuarioLogado ? usuarioLogado.permissoes : 'N/A'
+            });
+            
             // Verificar permissão
             if (!usuarioLogado || !usuarioLogado.permissoes.admitir) {
+                console.log('❌ Sem permissão para admitir pacientes');
                 alert('Você não tem permissão para admitir pacientes.');
                 return;
             }
@@ -3516,8 +3523,15 @@
         
         // FUNCAO PARA ABRIR MODAL DE TRANSFERENCIA
         function abrirModalTransferir(leitoId) {
+            console.log('🔍 Debug abrirModalTransferir:', {
+                leitoId: leitoId,
+                usuarioLogado: usuarioLogado,
+                permissoes: usuarioLogado ? usuarioLogado.permissoes : 'N/A'
+            });
+            
             // Verificar permissão
             if (!usuarioLogado || !usuarioLogado.permissoes.transferir) {
+                console.log('❌ Sem permissão para transferir pacientes');
                 alert('Você não tem permissão para transferir pacientes.');
                 return;
             }
@@ -3974,9 +3988,11 @@
             // ENVIAR WHATSAPP DE ADMISSAO
             enviarWhatsAppAdmissao(dados);
             
-            alert('Paciente ' + pacienteIniciais + ' admitido no ' + leitoAtual + ' com sucesso!');
+            alert('✅ Paciente ' + pacienteIniciais + ' admitido no ' + leitoAtual + ' com sucesso!');
             
+            // FECHAR MODAL E ATUALIZAR INTERFACE
             fecharModal();
+            renderizarLeitos();
         }
         
         // FUNCAO PARA SALVAR TRANSFERENCIA
@@ -4058,9 +4074,11 @@
             // ENVIAR WHATSAPP DE TRANSFERENCIA
             enviarWhatsAppTransferencia(dadosEmail);
             
-            alert('Paciente ' + dadosPaciente.pacienteIniciais + ' transferido para ' + destino + ' com sucesso!');
+            alert('✅ Paciente ' + dadosPaciente.pacienteIniciais + ' transferido para ' + destino + ' com sucesso!');
             
+            // FECHAR MODAL E ATUALIZAR INTERFACE
             fecharModalTransferir();
+            renderizarLeitos();
         }
         
         // FUNCAO PARA ATUALIZAR O LEITO
@@ -4117,8 +4135,15 @@
         
         // FUNCAO PARA DAR ALTA
         function darAlta(leitoId) {
+            console.log('🔍 Debug darAlta:', {
+                leitoId: leitoId,
+                usuarioLogado: usuarioLogado,
+                permissoes: usuarioLogado ? usuarioLogado.permissoes : 'N/A'
+            });
+            
             // Verificar permissão
             if (!usuarioLogado || !usuarioLogado.permissoes.darAlta) {
+                console.log('❌ Sem permissão para dar alta de pacientes');
                 alert('Você não tem permissão para dar alta de pacientes.');
                 return;
             }
@@ -4195,7 +4220,10 @@
                 // ENVIAR WHATSAPP DE ALTA
                 enviarWhatsAppAlta(dadosEmail);
                 
-                alert('Alta registrada para o ' + leitoId + '!');
+                alert('✅ Alta registrada para o ' + leitoId + '!');
+                
+                // ATUALIZAR INTERFACE
+                renderizarLeitos();
             }
         }
         
