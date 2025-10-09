@@ -4310,10 +4310,17 @@
         function renderizarFarmacia() {
             var content = document.getElementById('farmaciaContent');
             
+            console.log('🔍 Debug renderizarFarmacia - dadosLeitos:', dadosLeitos);
+            
             // FILTRAR APENAS PACIENTES ATIVOS (leitos ocupados)
             var pacientesAtivos = Object.values(dadosLeitos).filter(function(leito) {
-                return leito.status === 'EM ATENDIMENTO' && leito.pacienteIniciais && leito.pacienteIniciais.trim() !== '';
+                console.log('🔍 Verificando leito:', leito);
+                var isAtivo = leito.status === 'EM ATENDIMENTO' && leito.pacienteIniciais && leito.pacienteIniciais.trim() !== '';
+                console.log('🔍 Leito ativo?', isAtivo, 'Status:', leito.status, 'Paciente:', leito.pacienteIniciais);
+                return isAtivo;
             });
+            
+            console.log('🔍 Pacientes ativos encontrados:', pacientesAtivos.length, pacientesAtivos);
             
             // ATUALIZAR ESTATISTICAS
             document.getElementById('totalAtivos').textContent = pacientesAtivos.length;
