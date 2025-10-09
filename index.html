@@ -4006,7 +4006,6 @@
             
             // FECHAR MODAL E ATUALIZAR INTERFACE
             fecharModal();
-            renderizarLeitos();
         }
         
         // FUNCAO PARA SALVAR TRANSFERENCIA
@@ -4092,7 +4091,6 @@
             
             // FECHAR MODAL E ATUALIZAR INTERFACE
             fecharModalTransferir();
-            renderizarLeitos();
         }
         
         // FUNCAO PARA ATUALIZAR O LEITO
@@ -4243,8 +4241,7 @@
                 
                 alert('✅ Alta registrada para o ' + leitoId + '!');
                 
-                // ATUALIZAR INTERFACE
-                renderizarLeitos();
+                // INTERFACE JÁ ATUALIZADA VIA limparLeito()
             }
         }
         
@@ -5957,8 +5954,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             
             // Atualizar interface se estiver na aba correta
             if (document.getElementById('paPanel').classList.contains('active')) {
-                console.log('🔄 Atualizando interface dos leitos...');
-                renderizarLeitos();
+                console.log('🔄 Interface dos leitos já está atualizada via atualizarLeito/limparLeito');
             }
             
             // Atualizar farmácia sempre (independente de estar ativa)
