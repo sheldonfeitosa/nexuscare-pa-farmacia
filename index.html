@@ -4309,7 +4309,11 @@
         // FUNCAO PARA RENDERIZAR FARMACIA
         function renderizarFarmacia() {
             var content = document.getElementById('farmaciaContent');
-            var pacientesAtivos = Object.values(dadosLeitos);
+            
+            // FILTRAR APENAS PACIENTES ATIVOS (leitos ocupados)
+            var pacientesAtivos = Object.values(dadosLeitos).filter(function(leito) {
+                return leito.status === 'EM ATENDIMENTO' && leito.pacienteIniciais && leito.pacienteIniciais.trim() !== '';
+            });
             
             // ATUALIZAR ESTATISTICAS
             document.getElementById('totalAtivos').textContent = pacientesAtivos.length;
