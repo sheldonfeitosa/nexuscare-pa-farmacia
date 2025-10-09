@@ -5944,11 +5944,9 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                 renderizarLeitos();
             }
             
-            // Atualizar farmácia se estiver ativa
-            if (document.getElementById('farmaciaPanel').classList.contains('active')) {
-                console.log('🔄 Atualizando interface da farmácia...');
-                renderizarFarmacia();
-            }
+            // Atualizar farmácia sempre (independente de estar ativa)
+            console.log('🔄 Atualizando interface da farmácia...');
+            renderizarFarmacia();
         }
         
         function adicionarHistoricoLocal(dados) {
