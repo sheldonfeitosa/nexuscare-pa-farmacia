@@ -12,6 +12,10 @@
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#667eea">
     <title>NexusCare - Conectando o cuidado, ponto a ponto</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -3924,11 +3928,12 @@
                 leito: leitoAtual
             };
             
-            // SALVAR DADOS DO LEITO
+            // SALVAR DADOS DO LEITO (Firebase + Local)
             dadosLeitos[leitoAtual] = dados;
+            salvarNoFirebase('leitos', leitoAtual, dados);
             
             // ADICIONAR AO HISTORICO
-            historicoPacientes.push({
+            var historicoItem = {
                 pacienteIniciais: pacienteIniciais,
                 registro: registro,
                 dataNascimento: dataNascimento,
@@ -3943,7 +3948,10 @@
                 tipo: 'admissao',
                 dataHora: dados.dataHoraAdmissao,
                 paciente: pacienteIniciais
-            });
+            };
+            
+            historicoPacientes.push(historicoItem);
+            salvarNoFirebase('historico', Date.now().toString(), historicoItem);
             
             // ATUALIZAR INTERFACE
             atualizarLeito(leitoAtual, dados);
@@ -4802,8 +4810,11 @@
         }
         
         function enviarEmailReal(destinatario, assunto, corpo) {
-            // Configuração para EmailJS (serviço gratuito)
-            emailjs.send('service_inmceb', 'template_pa', {
+            // Usar as credenciais configuradas pelo usuário
+            var serviceId = configEmail.emailjs.serviceId || 'service_inmceb';
+            var templateId = configEmail.emailjs.templateId || 'template_pa';
+            
+            emailjs.send(serviceId, templateId, {
                 to_email: destinatario,
                 subject: assunto,
                 message: corpo,
@@ -5627,12 +5638,156 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
         
         // CARREGAR CONFIGURACOES DE EMAIL
         document.addEventListener('DOMContentLoaded', function() {
+            inicializarFirebase();
             carregarConfigEmail();
+            inicializarEmailJS();
             inicializarSistemasAutomaticos();
             verificarSessao();
         });
         
+        // FUNCOES DO FIREBASE
+        let db;
+        let firebaseConfig = {
+            // CONFIGURAÇÕES DO FIREBASE - PROJETO: nexuscare-inmceb
+            apiKey: "AIzaSyBg9xjIVPuKZQyiENMcW0903FQBdvIDyRU",
+            authDomain: "nexuscare-inmceb.firebaseapp.com",
+            projectId: "nexuscare-inmceb",
+            storageBucket: "nexuscare-inmceb.appspot.com",
+            messagingSenderId: "600913039133",
+            appId: "1:600913039133:web:exemplo123456"
+        };
+        
+        function inicializarFirebase() {
+            try {
+                // Inicializar Firebase
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                console.log('✅ Firebase inicializado com sucesso');
+                
+                // Configurar listeners em tempo real
+                configurarListenersTempoReal();
+            } catch (error) {
+                console.log('❌ Erro ao inicializar Firebase:', error);
+                // Continuar sem Firebase se houver erro
+            }
+        }
+        
+        function configurarListenersTempoReal() {
+            if (!db) return;
+            
+            // Listener para dados dos leitos
+            db.collection('leitos').onSnapshot(function(snapshot) {
+                snapshot.docChanges().forEach(function(change) {
+                    if (change.type === 'modified') {
+                        const dados = change.doc.data();
+                        atualizarLeitoLocal(change.doc.id, dados);
+                    }
+                });
+            });
+            
+            // Listener para histórico de pacientes
+            db.collection('historico').onSnapshot(function(snapshot) {
+                snapshot.docChanges().forEach(function(change) {
+                    if (change.type === 'added') {
+                        const dados = change.doc.data();
+                        adicionarHistoricoLocal(dados);
+                    }
+                });
+            });
+        }
+        
+        function salvarNoFirebase(colecao, documento, dados) {
+            if (!db) {
+                // Fallback para localStorage se Firebase não estiver disponível
+                return salvarLocalStorage(colecao, documento, dados);
+            }
+            
+            return db.collection(colecao).doc(documento).set(dados)
+                .then(function() {
+                    console.log('✅ Dados salvos no Firebase:', colecao, documento);
+                })
+                .catch(function(error) {
+                    console.error('❌ Erro ao salvar no Firebase:', error);
+                    // Fallback para localStorage
+                    return salvarLocalStorage(colecao, documento, dados);
+                });
+        }
+        
+        function carregarDoFirebase(colecao, documento) {
+            if (!db) {
+                // Fallback para localStorage se Firebase não estiver disponível
+                return carregarLocalStorage(colecao, documento);
+            }
+            
+            return db.collection(colecao).doc(documento).get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        console.log('✅ Dados carregados do Firebase:', colecao, documento);
+                        return doc.data();
+                    } else {
+                        console.log('⚠️ Documento não encontrado no Firebase:', colecao, documento);
+                        return null;
+                    }
+                })
+                .catch(function(error) {
+                    console.error('❌ Erro ao carregar do Firebase:', error);
+                    // Fallback para localStorage
+                    return carregarLocalStorage(colecao, documento);
+                });
+        }
+        
+        function salvarLocalStorage(colecao, documento, dados) {
+            const chave = colecao + '_' + documento;
+            localStorage.setItem(chave, JSON.stringify(dados));
+            console.log('💾 Dados salvos no localStorage:', chave);
+        }
+        
+        function carregarLocalStorage(colecao, documento) {
+            const chave = colecao + '_' + documento;
+            const dados = localStorage.getItem(chave);
+            if (dados) {
+                console.log('💾 Dados carregados do localStorage:', chave);
+                return JSON.parse(dados);
+            }
+            return null;
+        }
+        
+        function atualizarLeitoLocal(leitoId, dados) {
+            // Atualizar interface local quando dados mudarem no Firebase
+            if (dadosLeitos[leitoId]) {
+                dadosLeitos[leitoId] = dados;
+                atualizarLeito(leitoId, dados);
+            }
+        }
+        
+        function adicionarHistoricoLocal(dados) {
+            // Adicionar ao histórico local quando novo registro for criado no Firebase
+            historicoPacientes.push(dados);
+            if (typeof renderizarRastreabilidade === 'function') {
+                renderizarRastreabilidade();
+            }
+        }
+        
         // FUNCOES DE CONFIGURACAO EMAILJS
+        function inicializarEmailJS() {
+            // Carregar EmailJS se não estiver carregado
+            if (typeof emailjs === 'undefined') {
+                var script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+                script.onload = function() {
+                    // Inicializar com a chave pública se estiver configurada
+                    if (configEmail.emailjs.publicKey) {
+                        emailjs.init(configEmail.emailjs.publicKey);
+                        console.log('✅ EmailJS inicializado com sucesso');
+                    }
+                };
+                document.head.appendChild(script);
+            } else if (configEmail.emailjs.publicKey) {
+                emailjs.init(configEmail.emailjs.publicKey);
+                console.log('✅ EmailJS inicializado com sucesso');
+            }
+        }
+        
         function alterarMetodoEnvio() {
             var metodo = document.querySelector('input[name="metodoEnvio"]:checked').value;
             var configEmailJS = document.getElementById('configEmailJS');
