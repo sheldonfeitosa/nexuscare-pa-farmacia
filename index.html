@@ -5929,8 +5929,14 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             console.log('🔄 Atualizando leito via Firebase:', leitoId, dados);
             dadosLeitos[leitoId] = dados;
             
-            // Atualizar o leito específico
-            atualizarLeito(leitoId, dados);
+            // Verificar se o leito está vago ou ocupado
+            if (dados.status === 'VAGO' || !dados.pacienteIniciais) {
+                console.log('🔄 Leito vago detectado, limpando interface...');
+                limparLeito(leitoId);
+            } else {
+                console.log('🔄 Leito ocupado detectado, atualizando interface...');
+                atualizarLeito(leitoId, dados);
+            }
             
             // Atualizar interface se estiver na aba correta
             if (document.getElementById('paPanel').classList.contains('active')) {
