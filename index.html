@@ -3963,8 +3963,8 @@
                 observacoes: observacoes,
                 dataHoraAdmissao: dados.dataHoraAdmissao,
                 leito: leitoAtual,
-                usuarioAcao: usuarioAtual.nome || 'Sistema',
-                setorAcao: usuarioAtual.setor || 'Sistema',
+                usuarioAcao: usuarioLogado.nome || 'Sistema',
+                setorAcao: usuarioLogado.setor || 'Sistema',
                 dataHoraSaida: null,
                 destino: null,
                 status: 'EM ATENDIMENTO',
@@ -4012,8 +4012,8 @@
                     historicoPacientes[i].dataHoraSaida = new Date().toISOString();
                     historicoPacientes[i].destino = destino;
                     historicoPacientes[i].status = 'TRANSFERIDO';
-                    historicoPacientes[i].usuarioAcao = usuarioAtual.nome || 'Sistema';
-                    historicoPacientes[i].setorAcao = usuarioAtual.setor || 'Sistema';
+                    historicoPacientes[i].usuarioAcao = usuarioLogado.nome || 'Sistema';
+                    historicoPacientes[i].setorAcao = usuarioLogado.setor || 'Sistema';
                     break;
                 }
             }
@@ -4046,8 +4046,8 @@
                 observacoes: observacoesTransferencia,
                 dataNascimento: dadosPaciente.dataNascimento || '',
                 idade: dadosPaciente.idade || '',
-                usuarioAcao: usuarioAtual.nome || 'Sistema',
-                setorAcao: usuarioAtual.setor || 'Sistema'
+                usuarioAcao: usuarioLogado.nome || 'Sistema',
+                setorAcao: usuarioLogado.setor || 'Sistema'
             };
             
             salvarNoFirebase('historico', Date.now().toString(), historicoItem);
@@ -4158,8 +4158,8 @@
                         historicoPacientes[i].dataHoraSaida = new Date().toISOString();
                         historicoPacientes[i].destino = 'ALTA HOSPITALAR';
                         historicoPacientes[i].status = 'ALTA';
-                        historicoPacientes[i].usuarioAcao = usuarioAtual.nome || 'Sistema';
-                        historicoPacientes[i].setorAcao = usuarioAtual.setor || 'Sistema';
+                        historicoPacientes[i].usuarioAcao = usuarioLogado.nome || 'Sistema';
+                        historicoPacientes[i].setorAcao = usuarioLogado.setor || 'Sistema';
                         break;
                     }
                 }
@@ -4192,8 +4192,8 @@
                     observacoes: dadosPaciente.observacoes || '',
                     dataNascimento: dadosPaciente.dataNascimento || '',
                     idade: dadosPaciente.idade || '',
-                    usuarioAcao: usuarioAtual.nome || 'Sistema',
-                    setorAcao: usuarioAtual.setor || 'Sistema'
+                    usuarioAcao: usuarioLogado.nome || 'Sistema',
+                    setorAcao: usuarioLogado.setor || 'Sistema'
                 };
                 
                 salvarNoFirebase('historico', Date.now().toString(), historicoItem);
