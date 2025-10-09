@@ -84,3 +84,7 @@ function tocarSomAdmissao() {
 
    ## Deploy
    Aplicação deployada no Vercel.
+    ## Deploy Status
+   ✅ Aplicação deployada no Vercel com sucesso!
+   🚀 Sistema NexusCare funcionando perfeitamente!
+
