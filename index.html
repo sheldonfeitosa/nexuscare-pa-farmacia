@@ -5253,6 +5253,9 @@
             event.target.dataset.processing = 'true';
             console.log('Salvando admissao para:', leitoAtual);
             
+            // FECHAR MODAL IMEDIATAMENTE APÓS CLICAR
+            fecharModal();
+            
             var pacienteIniciais = document.getElementById('pacienteIniciais').value.toUpperCase();
             var registro = document.getElementById('registro').value;
             var dataNascimento = document.getElementById('dataNascimento').value;
@@ -5324,9 +5327,6 @@
             // ENVIAR WHATSAPP DE ADMISSAO
             enviarWhatsAppAdmissao(dados);
             
-            // FECHAR MODAL IMEDIATAMENTE
-            fecharModal();
-            
             // MOSTRAR NOTIFICAÇÃO VISUAL (sem bloquear a interface)
             mostrarNotificacaoSucesso('✅ Paciente ' + pacienteIniciais + ' admitido no ' + leitoAtual + ' com sucesso!');
             
@@ -5348,6 +5348,9 @@
             
             event.target.dataset.processing = 'true';
             console.log('Salvando transferencia para:', leitoAtual);
+            
+            // FECHAR MODAL IMEDIATAMENTE APÓS CLICAR
+            fecharModalTransferir();
             
             var destino = document.getElementById('destino').value;
             var observacoesTransferencia = document.getElementById('observacoesTransferencia').value;
@@ -5422,9 +5425,6 @@
             
             // ENVIAR WHATSAPP DE TRANSFERENCIA
             enviarWhatsAppTransferencia(dadosEmail);
-            
-            // FECHAR MODAL IMEDIATAMENTE
-            fecharModalTransferir();
             
             // MOSTRAR NOTIFICAÇÃO VISUAL (sem bloquear a interface)
             mostrarNotificacaoSucesso('✅ Paciente ' + dadosPaciente.pacienteIniciais + ' transferido para ' + destino + ' com sucesso!');
