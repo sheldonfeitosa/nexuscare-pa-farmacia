@@ -7765,7 +7765,15 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             dadosLeitos[leitoId] = dados;
             
             // Verificar se o leito está vago ou ocupado
-            if (dados.status === 'VAGO' || !dados.pacienteIniciais) {
+            var isVago = dados.status === 'VAGO' || !dados.pacienteIniciais;
+            console.log('🔄 Verificação de status:', {
+                leitoId: leitoId,
+                status: dados.status,
+                pacienteIniciais: dados.pacienteIniciais,
+                isVago: isVago
+            });
+            
+            if (isVago) {
                 console.log('🔄 Leito vago detectado, limpando interface...');
                 limparLeito(leitoId);
             } else {
