@@ -858,16 +858,44 @@
         }
         
         .stat-change {
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 8px;
         }
         
         .stat-change.positive {
             color: #27ae60;
+            text-shadow: 0 1px 2px rgba(39, 174, 96, 0.3);
         }
         
         .stat-change.negative {
             color: #e74c3c;
+            text-shadow: 0 1px 2px rgba(231, 76, 60, 0.3);
+        }
+        
+        .stat-change.neutral {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        /* ANIMACAO PARA MUDANCA DE VALORES */
+        .stat-change.updated {
+            animation: valueUpdate 0.6s ease-out;
+        }
+
+        @keyframes valueUpdate {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
         
         .dashboard-charts {
@@ -1139,13 +1167,13 @@
         }
 
         .metric-label {
-            font-size: 0.85rem;
+            font-size: 1rem;
             color: #7f8c8d;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .metric-value {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #2c3e50;
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -1439,6 +1467,38 @@
 
         .metric-value.warning {
             color: #f39c12;
+        }
+
+        /* ESTILOS PARA PAGINAÇÃO */
+        .btn-paginacao {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-paginacao:hover:not(:disabled) {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-paginacao:active:not(:disabled) {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-paginacao:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            box-shadow: none;
         }
         
         /* Tabelas */
@@ -4194,9 +4254,26 @@
             document.getElementById('disponivelChange').textContent = percentualDisponivel + '%';
             document.getElementById('disponivelChange').className = 'stat-change ' + (percentualDisponivel > 50 ? 'positive' : 'negative');
             
-            document.getElementById('admissoesChange').textContent = '+' + admissoes;
-            document.getElementById('transferenciasChange').textContent = '+' + transferencias;
-            document.getElementById('altasChange').textContent = '+' + altas;
+            // Atualizar mudanças com classes apropriadas
+            var admissoesElement = document.getElementById('admissoesChange');
+            var transferenciasElement = document.getElementById('transferenciasChange');
+            var altasElement = document.getElementById('altasChange');
+            
+            admissoesElement.textContent = '+' + admissoes;
+            admissoesElement.className = 'stat-change ' + (admissoes > 0 ? 'positive' : 'neutral') + ' updated';
+            
+            transferenciasElement.textContent = '+' + transferencias;
+            transferenciasElement.className = 'stat-change ' + (transferencias > 0 ? 'positive' : 'neutral') + ' updated';
+            
+            altasElement.textContent = '+' + altas;
+            altasElement.className = 'stat-change ' + (altas > 0 ? 'positive' : 'neutral') + ' updated';
+            
+            // Remover classe de animação após a animação
+            setTimeout(function() {
+                admissoesElement.classList.remove('updated');
+                transferenciasElement.classList.remove('updated');
+                altasElement.classList.remove('updated');
+            }, 600);
         }
         
         function gerarGraficoOcupacao() {
@@ -5727,27 +5804,37 @@
                 if (tabela) {
                     containerPaginacao = document.createElement('div');
                     containerPaginacao.id = 'controlesPaginacaoRastreabilidade';
-                    containerPaginacao.style.cssText = 'text-align: center; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;';
+                    containerPaginacao.style.cssText = 'text-align: center; margin-top: 20px; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);';
                     tabela.parentNode.insertBefore(containerPaginacao, tabela.nextSibling);
                 }
             }
             
             if (containerPaginacao) {
-                var html = '<div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap;">';
+                var html = '<div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">';
                 
                 // Botão anterior
                 html += '<button onclick="paginaAnteriorRastreabilidade()" ' + 
                        (paginaAtualRastreabilidade <= 1 ? 'disabled' : '') + 
-                       ' class="btn btn-secondary" style="padding: 8px 15px;">« Anterior</button>';
+                       ' class="btn-paginacao" style="' + 
+                       (paginaAtualRastreabilidade <= 1 ? 'opacity: 0.5; cursor: not-allowed;' : '') + 
+                       '">« Anterior</button>';
                 
                 // Informações da página
-                html += '<span style="margin: 0 15px; font-weight: bold;">Página ' + paginaAtualRastreabilidade + ' de ' + totalPaginasRastreabilidade + '</span>';
-                html += '<span style="color: #6c757d; font-size: 14px;">(' + dadosRastreabilidadeOrdenados.length + ' registros total)</span>';
+                html += '<div style="text-align: center; line-height: 1.4;">';
+                html += '<div style="font-weight: bold; font-size: 16px; color: #2c3e50; margin-bottom: 5px;">';
+                html += 'Página ' + paginaAtualRastreabilidade + ' de ' + totalPaginasRastreabilidade;
+                html += '</div>';
+                html += '<div style="color: #6c757d; font-size: 14px;">';
+                html += '(' + dadosRastreabilidadeOrdenados.length + ' registros total)';
+                html += '</div>';
+                html += '</div>';
                 
                 // Botão próximo
                 html += '<button onclick="paginaProximaRastreabilidade()" ' + 
                        (paginaAtualRastreabilidade >= totalPaginasRastreabilidade ? 'disabled' : '') + 
-                       ' class="btn btn-secondary" style="padding: 8px 15px;">Próximo »</button>';
+                       ' class="btn-paginacao" style="' + 
+                       (paginaAtualRastreabilidade >= totalPaginasRastreabilidade ? 'opacity: 0.5; cursor: not-allowed;' : '') + 
+                       '">Próximo »</button>';
                 
                 html += '</div>';
                 containerPaginacao.innerHTML = html;
