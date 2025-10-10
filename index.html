@@ -5296,7 +5296,8 @@
                 origem: origem,
                 observacoes: observacoes,
                 dataHoraAdmissao: new Date().toISOString(),
-                leito: leitoAtual
+                leito: leitoAtual,
+                status: 'EM ATENDIMENTO'
             };
             
             // SALVAR DADOS DO LEITO (Firebase + Local)
@@ -5449,6 +5450,7 @@
         // FUNCAO PARA ATUALIZAR O LEITO
         function atualizarLeito(leitoId, dados) {
             console.log('Atualizando leito:', leitoId);
+            console.log('Dados do leito:', dados);
             
             var leitoCard = document.getElementById('leito-' + leitoId);
             
@@ -7758,6 +7760,8 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
         function atualizarLeitoLocal(leitoId, dados) {
             // Atualizar interface local quando dados mudarem no Firebase
             console.log('🔄 Atualizando leito via Firebase:', leitoId, dados);
+            console.log('🔄 Status do leito:', dados.status);
+            console.log('🔄 Paciente:', dados.pacienteIniciais);
             dadosLeitos[leitoId] = dados;
             
             // Verificar se o leito está vago ou ocupado
