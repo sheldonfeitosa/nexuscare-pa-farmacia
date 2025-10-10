@@ -225,6 +225,11 @@
             height: 100%;
             background-color: rgba(0,0,0,0.5);
         }
+
+        /* Modal de Transferência com z-index maior */
+        #modalTransferir {
+            z-index: 2000;
+        }
         .modal-content {
             background-color: white;
             margin: 1% auto;
@@ -4723,6 +4728,9 @@
                 return;
             }
             
+            // FECHAR QUALQUER MODAL ABERTO PRIMEIRO
+            fecharModalTransferir();
+            
             console.log('Abrindo modal para:', leitoId);
             leitoAtual = leitoId;
             document.getElementById('modalTitulo').textContent = 'Admitir Paciente - ' + leitoId;
@@ -4757,6 +4765,9 @@
                 alert('Você não tem permissão para transferir pacientes.');
                 return;
             }
+            
+            // FECHAR QUALQUER MODAL ABERTO PRIMEIRO
+            fecharModal();
             
             console.log('Abrindo modal de transferencia para:', leitoId);
             leitoAtual = leitoId;
