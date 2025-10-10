@@ -1448,6 +1448,29 @@
             }
         }
 
+        /* ANIMACOES PARA NOTIFICACOES */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
         /* EFEITO GLASSMORPHISM */
         .glass-effect {
             background: rgba(255, 255, 255, 0.25);
@@ -2905,6 +2928,13 @@
         var itensPorPagina = 10;
         var totalPaginasRastreabilidade = 1;
         var dadosRastreabilidadeOrdenados = [];
+        
+        // VARIAVEIS GLOBAIS PARA PAGINACAO DE RELATORIOS
+        var paginaAtualRelatorio = 1;
+        var itensPorPaginaRelatorio = 10;
+        var totalPaginasRelatorio = 1;
+        var dadosRelatorioOrdenados = [];
+        var tipoRelatorioAtual = '';
         
         // CONFIGURACOES DE EMAIL
         var configEmail = {
@@ -4748,7 +4778,62 @@
         // FUNCAO PARA FECHAR MODAL DE ADMISSAO
         function fecharModal() {
             document.getElementById('modalAdmitir').style.display = 'none';
-            document.getElementById('formAdmitir').reset();
+            var form = document.getElementById('formAdmitir');
+            if (form) {
+                form.reset();
+                form.dataset.processing = 'false';
+            }
+        }
+
+        // FUNCAO PARA MOSTRAR NOTIFICAÇÃO DE SUCESSO
+        function mostrarNotificacaoSucesso(mensagem) {
+            // Criar elemento de notificação
+            var notificacao = document.createElement('div');
+            notificacao.id = 'notificacaoSucesso';
+            notificacao.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #27ae60, #2ecc71);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+                z-index: 10000;
+                font-weight: 500;
+                font-size: 14px;
+                max-width: 300px;
+                animation: slideInRight 0.5s ease-out;
+                cursor: pointer;
+            `;
+            notificacao.textContent = mensagem;
+            
+            // Adicionar ao body
+            document.body.appendChild(notificacao);
+            
+            // Remover após 3 segundos
+            setTimeout(function() {
+                if (notificacao.parentNode) {
+                    notificacao.style.animation = 'slideOutRight 0.5s ease-in';
+                    setTimeout(function() {
+                        if (notificacao.parentNode) {
+                            notificacao.parentNode.removeChild(notificacao);
+                        }
+                    }, 500);
+                }
+            }, 3000);
+            
+            // Remover ao clicar
+            notificacao.addEventListener('click', function() {
+                if (notificacao.parentNode) {
+                    notificacao.style.animation = 'slideOutRight 0.5s ease-in';
+                    setTimeout(function() {
+                        if (notificacao.parentNode) {
+                            notificacao.parentNode.removeChild(notificacao);
+                        }
+                    }, 500);
+                }
+            });
         }
         
         // FUNCAO PARA FECHAR MODAL DE TRANSFERENCIA
@@ -5157,6 +5242,14 @@
         // FUNCAO PARA SALVAR ADMISSAO
         function salvarAdmissao(event) {
             event.preventDefault();
+            
+            // Prevenir duplicação de dados
+            if (event.target.dataset.processing === 'true') {
+                console.log('Admissão já está sendo processada, ignorando...');
+                return;
+            }
+            
+            event.target.dataset.processing = 'true';
             console.log('Salvando admissao para:', leitoAtual);
             
             var pacienteIniciais = document.getElementById('pacienteIniciais').value.toUpperCase();
@@ -5230,15 +5323,27 @@
             // ENVIAR WHATSAPP DE ADMISSAO
             enviarWhatsAppAdmissao(dados);
             
-            alert('✅ Paciente ' + pacienteIniciais + ' admitido no ' + leitoAtual + ' com sucesso!');
-            
-            // FECHAR MODAL E ATUALIZAR INTERFACE
+            // FECHAR MODAL IMEDIATAMENTE
             fecharModal();
+            
+            // Limpar flag de processamento
+            event.target.dataset.processing = 'false';
+            
+            // MOSTRAR NOTIFICAÇÃO VISUAL (sem bloquear a interface)
+            mostrarNotificacaoSucesso('✅ Paciente ' + pacienteIniciais + ' admitido no ' + leitoAtual + ' com sucesso!');
         }
         
         // FUNCAO PARA SALVAR TRANSFERENCIA
         function salvarTransferencia(event) {
             event.preventDefault();
+            
+            // Prevenir duplicação de dados
+            if (event.target.dataset.processing === 'true') {
+                console.log('Transferência já está sendo processada, ignorando...');
+                return;
+            }
+            
+            event.target.dataset.processing = 'true';
             console.log('Salvando transferencia para:', leitoAtual);
             
             var destino = document.getElementById('destino').value;
@@ -5315,10 +5420,14 @@
             // ENVIAR WHATSAPP DE TRANSFERENCIA
             enviarWhatsAppTransferencia(dadosEmail);
             
-            alert('✅ Paciente ' + dadosPaciente.pacienteIniciais + ' transferido para ' + destino + ' com sucesso!');
-            
-            // FECHAR MODAL E ATUALIZAR INTERFACE
+            // FECHAR MODAL IMEDIATAMENTE
             fecharModalTransferir();
+            
+            // Limpar flag de processamento
+            event.target.dataset.processing = 'false';
+            
+            // MOSTRAR NOTIFICAÇÃO VISUAL (sem bloquear a interface)
+            mostrarNotificacaoSucesso('✅ Paciente ' + dadosPaciente.pacienteIniciais + ' transferido para ' + destino + ' com sucesso!');
         }
         
         // FUNCAO PARA ATUALIZAR O LEITO
@@ -5467,7 +5576,8 @@
                 // ENVIAR WHATSAPP DE ALTA
                 enviarWhatsAppAlta(dadosEmail);
                 
-                alert('✅ Alta registrada para o ' + leitoId + '!');
+                // MOSTRAR NOTIFICAÇÃO VISUAL (sem bloquear a interface)
+                mostrarNotificacaoSucesso('✅ Alta registrada para o ' + leitoId + '!');
                 
                 // INTERFACE JÁ ATUALIZADA VIA limparLeito()
             }
@@ -5942,6 +6052,9 @@
             var dataFim = document.getElementById('dataFim').value;
             var tipoRelatorio = document.getElementById('tipoRelatorio').value;
             
+            // Armazenar tipo de relatório atual
+            tipoRelatorioAtual = tipoRelatorio;
+            
             var dadosFiltrados = historicoPacientes;
             
             if (dataInicio && dataFim) {
@@ -5956,23 +6069,75 @@
             
             var content = document.getElementById('relatorioContent');
             
+            // Resetar paginação
+            paginaAtualRelatorio = 1;
+            
             switch (tipoRelatorio) {
                 case 'tempo':
-                    content.innerHTML = gerarRelatorioTempo(dadosFiltrados);
+                    dadosRelatorioOrdenados = dadosFiltrados.filter(function(h) {
+                        return h.dataHoraSaida;
+                    });
+                    content.innerHTML = gerarRelatorioTempoComPaginacao(dadosRelatorioOrdenados);
                     break;
                 case 'geral':
-                    content.innerHTML = gerarRelatorioGeral(dadosFiltrados);
+                    dadosRelatorioOrdenados = ordenarPorMovimentacaoRecente([...dadosFiltrados]);
+                    content.innerHTML = gerarRelatorioGeralComPaginacao(dadosRelatorioOrdenados);
                     break;
                 case 'ocupacao':
+                    dadosRelatorioOrdenados = dadosFiltrados;
                     content.innerHTML = gerarRelatorioOcupacao(dadosFiltrados);
                     break;
                 case 'origem':
+                    dadosRelatorioOrdenados = dadosFiltrados;
                     content.innerHTML = gerarRelatorioOrigem(dadosFiltrados);
                     break;
             }
         }
         
-        // FUNCAO PARA GERAR RELATORIO DE TEMPO
+        // FUNCAO PARA GERAR RELATORIO DE TEMPO COM PAGINACAO
+        function gerarRelatorioTempoComPaginacao(dados) {
+            // Calcular total de páginas
+            totalPaginasRelatorio = Math.ceil(dados.length / itensPorPaginaRelatorio);
+            
+            // Pegar dados da página atual
+            var inicio = (paginaAtualRelatorio - 1) * itensPorPaginaRelatorio;
+            var fim = inicio + itensPorPaginaRelatorio;
+            var dadosPagina = dados.slice(inicio, fim);
+            
+            var html = '<div class="table-container">';
+            html += '<h3>Relatório de Tempo de Permanência - ' + itensPorPaginaRelatorio + ' Mais Recentes</h3>';
+            html += '<p>Mostrando os ' + itensPorPaginaRelatorio + ' pacientes com movimentação mais recente</p>';
+            html += '<table class="table">';
+            html += '<thead><tr><th>Paciente</th><th>Registro</th><th>Leito</th><th>Admissão</th><th>Saída</th><th>Tempo Total</th></tr></thead>';
+            html += '<tbody>';
+            
+            for (var i = 0; i < dadosPagina.length; i++) {
+                var h = dadosPagina[i];
+                var tempoPermanencia = calcularTempoPermanencia(h.dataHoraAdmissao, h.dataHoraSaida);
+                
+                html += '<tr>';
+                html += '<td>' + h.paciente + '</td>';
+                html += '<td>' + h.registro + '</td>';
+                html += '<td>' + h.leito + '</td>';
+                html += '<td>' + formatarDataHora(h.dataHoraAdmissao) + '</td>';
+                html += '<td>' + formatarDataHora(h.dataHoraSaida) + '</td>';
+                html += '<td style="color: #27ae60; font-weight: bold;">' + tempoPermanencia + '</td>';
+                html += '</tr>';
+            }
+            
+            html += '</tbody></table>';
+            html += '<div style="text-align: center; margin-top: 10px; color: #6c757d;">';
+            html += 'Total de registros: ' + dados.length + ' | Mostrando os ' + itensPorPaginaRelatorio + ' mais recentes';
+            html += '</div>';
+            html += '</div>';
+            
+            // Adicionar controles de paginação
+            html += gerarControlesPaginacaoRelatorio();
+            
+            return html;
+        }
+
+        // FUNCAO PARA GERAR RELATORIO DE TEMPO (ORIGINAL)
         function gerarRelatorioTempo(dados) {
             // Filtrar apenas registros com saída
             var dadosComSaida = dados.filter(function(h) {
@@ -6031,7 +6196,50 @@
             return html;
         }
         
-        // FUNCAO PARA GERAR RELATORIO GERAL
+        // FUNCAO PARA GERAR RELATORIO GERAL COM PAGINACAO
+        function gerarRelatorioGeralComPaginacao(dados) {
+            // Calcular total de páginas
+            totalPaginasRelatorio = Math.ceil(dados.length / itensPorPaginaRelatorio);
+            
+            // Pegar dados da página atual
+            var inicio = (paginaAtualRelatorio - 1) * itensPorPaginaRelatorio;
+            var fim = inicio + itensPorPaginaRelatorio;
+            var dadosPagina = dados.slice(inicio, fim);
+            
+            var html = '<div class="table-container">';
+            html += '<h3>Relatório Geral - ' + itensPorPaginaRelatorio + ' Mais Recentes</h3>';
+            html += '<p>Mostrando os ' + itensPorPaginaRelatorio + ' pacientes com movimentação mais recente</p>';
+            html += '<table class="table">';
+            html += '<thead><tr><th>Paciente</th><th>Registro</th><th>Leito</th><th>Origem</th><th>Admissão</th><th>Saída</th><th>Tipo</th></tr></thead>';
+            html += '<tbody>';
+            
+            for (var i = 0; i < dadosPagina.length; i++) {
+                var h = dadosPagina[i];
+                
+                html += '<tr>';
+                html += '<td>' + h.paciente + '</td>';
+                html += '<td>' + h.registro + '</td>';
+                html += '<td>' + h.leito + '</td>';
+                html += '<td>' + h.origem + '</td>';
+                html += '<td>' + formatarDataHora(h.dataHoraAdmissao) + '</td>';
+                html += '<td>' + (h.dataHoraSaida ? formatarDataHora(h.dataHoraSaida) : 'Em atendimento') + '</td>';
+                html += '<td><span class="badge badge-' + (h.tipo === 'admissao' ? 'success' : h.tipo === 'transferencia' ? 'warning' : 'info') + '">' + h.tipo.toUpperCase() + '</span></td>';
+                html += '</tr>';
+            }
+            
+            html += '</tbody></table>';
+            html += '<div style="text-align: center; margin-top: 10px; color: #6c757d;">';
+            html += 'Total de registros: ' + dados.length + ' | Mostrando os ' + itensPorPaginaRelatorio + ' mais recentes';
+            html += '</div>';
+            html += '</div>';
+            
+            // Adicionar controles de paginação
+            html += gerarControlesPaginacaoRelatorio();
+            
+            return html;
+        }
+
+        // FUNCAO PARA GERAR RELATORIO GERAL (ORIGINAL)
         function gerarRelatorioGeral(dados) {
             // Ordenar por movimentação mais recente
             var dadosOrdenados = ordenarPorMovimentacaoRecente([...dados]);
@@ -6109,6 +6317,69 @@
             return html;
         }
         
+        // FUNCAO PARA GERAR CONTROLES DE PAGINACAO DOS RELATORIOS
+        function gerarControlesPaginacaoRelatorio() {
+            var html = '<div style="text-align: center; margin-top: 20px; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">';
+            html += '<div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">';
+            
+            // Botão anterior
+            html += '<button onclick="paginaAnteriorRelatorio()" ' + 
+                   (paginaAtualRelatorio <= 1 ? 'disabled' : '') + 
+                   ' class="btn-paginacao" style="' + 
+                   (paginaAtualRelatorio <= 1 ? 'opacity: 0.5; cursor: not-allowed;' : '') + 
+                   '">« Anterior</button>';
+            
+            // Informações da página
+            html += '<div style="text-align: center; line-height: 1.4;">';
+            html += '<div style="font-weight: bold; font-size: 16px; color: #2c3e50; margin-bottom: 5px;">';
+            html += 'Página ' + paginaAtualRelatorio + ' de ' + totalPaginasRelatorio;
+            html += '</div>';
+            html += '<div style="color: #6c757d; font-size: 14px;">';
+            html += '(' + dadosRelatorioOrdenados.length + ' registros total)';
+            html += '</div>';
+            html += '</div>';
+            
+            // Botão próximo
+            html += '<button onclick="paginaProximaRelatorio()" ' + 
+                   (paginaAtualRelatorio >= totalPaginasRelatorio ? 'disabled' : '') + 
+                   ' class="btn-paginacao" style="' + 
+                   (paginaAtualRelatorio >= totalPaginasRelatorio ? 'opacity: 0.5; cursor: not-allowed;' : '') + 
+                   '">Próximo »</button>';
+            
+            html += '</div>';
+            html += '</div>';
+            
+            return html;
+        }
+
+        // FUNCOES DE NAVEGACAO DE PAGINA DOS RELATORIOS
+        function paginaAnteriorRelatorio() {
+            if (paginaAtualRelatorio > 1) {
+                paginaAtualRelatorio--;
+                atualizarRelatorioAtual();
+            }
+        }
+
+        function paginaProximaRelatorio() {
+            if (paginaAtualRelatorio < totalPaginasRelatorio) {
+                paginaAtualRelatorio++;
+                atualizarRelatorioAtual();
+            }
+        }
+
+        function atualizarRelatorioAtual() {
+            var content = document.getElementById('relatorioContent');
+            
+            switch (tipoRelatorioAtual) {
+                case 'tempo':
+                    content.innerHTML = gerarRelatorioTempoComPaginacao(dadosRelatorioOrdenados);
+                    break;
+                case 'geral':
+                    content.innerHTML = gerarRelatorioGeralComPaginacao(dadosRelatorioOrdenados);
+                    break;
+            }
+        }
+
         // FUNCAO PARA GERAR RELATORIO POR ORIGEM
         function gerarRelatorioOrigem(dados) {
             var origemCount = {};
