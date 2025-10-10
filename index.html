@@ -2022,6 +2022,11 @@
                     
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <button onclick="testarWhatsApp()" class="btn-secondary">📱 Testar WhatsApp</button>
+                        <button onclick="testarSincronizacaoAudio()" class="btn-secondary">🔊 Testar Sincronização de Áudio</button>
+                        <div id="statusSincronizacaoAudio" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #e8f5e8; display: none;">
+                            <strong>🔊 Status da Sincronização de Áudio:</strong>
+                            <div id="statusAudioTexto">Verificando...</div>
+                        </div>
                         <button onclick="mostrarGuiaWhatsApp()" class="btn-primary">📖 Guia APIs WhatsApp</button>
                     </div>
                 </div>
@@ -3580,8 +3585,47 @@
             document.getElementById('formTransferir').reset();
         }
         
+        // FUNCAO PARA ENVIAR EVENTO DE AUDIO VIA FIREBASE (Sincronização entre dispositivos)
+        function enviarEventoAudio(tipoAudio, dadosAdicionais = {}) {
+            try {
+                // Tocar som localmente primeiro
+                if (tipoAudio === 'admissao') tocarSomAdmissaoLocal();
+                else if (tipoAudio === 'transferencia') tocarSomTransferenciaLocal();
+                else if (tipoAudio === 'alta') tocarSomAltaLocal();
+
+                if (typeof db !== 'undefined') {
+                    const eventoAudio = {
+                        tipo: tipoAudio,
+                        timestamp: new Date(),
+                        dispositivo: navigator.userAgent,
+                        usuario: usuarioLogado ? usuarioLogado.nome : 'Sistema',
+                        dados: dadosAdicionais
+                    };
+                    
+                    // Salvar evento na coleção 'eventos_audio'
+                    db.collection('eventos_audio').add(eventoAudio)
+                        .then(() => {
+                            console.log(`Evento de áudio ${tipoAudio} enviado para todos os dispositivos`);
+                        })
+                        .catch((error) => {
+                            console.error('Erro ao enviar evento de áudio:', error);
+                        });
+                } else {
+                    console.log('Firebase não inicializado, som tocado apenas localmente');
+                }
+            } catch (error) {
+                console.error('Erro ao enviar evento de áudio:', error);
+            }
+        }
+
         // FUNCAO PARA TOCAR SOM DE ADMISSAO (Som com quarta justa descendente em 4/4, colcheias, 70 BPM - 7 segundos)
         function tocarSomAdmissao() {
+            // Enviar evento para todos os dispositivos
+            enviarEventoAudio('admissao', { leito: 'Sistema' });
+        }
+
+        // FUNCAO LOCAL PARA TOCAR SOM DE ADMISSAO (apenas no dispositivo atual)
+        function tocarSomAdmissaoLocal() {
             try {
                 // Verificar se o navegador suporta Web Audio API
                 if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
@@ -3693,6 +3737,12 @@
         
         // FUNCAO PARA TOCAR SOM DE TRANSFERENCIA (Som com quinta justa descendente em 4/4, colcheias, 70 BPM - 5 segundos)
         function tocarSomTransferencia() {
+            // Enviar evento para todos os dispositivos
+            enviarEventoAudio('transferencia', { leito: 'Sistema' });
+        }
+
+        // FUNCAO LOCAL PARA TOCAR SOM DE TRANSFERENCIA (apenas no dispositivo atual)
+        function tocarSomTransferenciaLocal() {
             try {
                 // Criar um som de notificação usando Web Audio API
                 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -3791,6 +3841,12 @@
         
         // FUNCAO PARA TOCAR SOM DE ALTA (Som com terça maior descendente em 4/4, colcheias, 70 BPM - 3 segundos)
         function tocarSomAlta() {
+            // Enviar evento para todos os dispositivos
+            enviarEventoAudio('alta', { leito: 'Sistema' });
+        }
+
+        // FUNCAO LOCAL PARA TOCAR SOM DE ALTA (apenas no dispositivo atual)
+        function tocarSomAltaLocal() {
             try {
                 // Criar um som de notificação usando Web Audio API
                 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -4766,6 +4822,39 @@
         function testarSom() {
             console.log('Testando som...');
             tocarSomAdmissao();
+        }
+
+        // FUNCAO PARA TESTAR SINCRONIZACAO DE AUDIO ENTRE DISPOSITIVOS
+        function testarSincronizacaoAudio() {
+            console.log('🔊 Testando sincronização de áudio entre dispositivos...');
+            
+            const statusDiv = document.getElementById('statusSincronizacaoAudio');
+            const statusTexto = document.getElementById('statusAudioTexto');
+            
+            statusDiv.style.display = 'block';
+            statusTexto.innerHTML = 'Verificando conexão com Firebase...';
+            
+            if (typeof db === 'undefined') {
+                statusTexto.innerHTML = '❌ Firebase não está inicializado. A sincronização não funcionará.';
+                statusDiv.style.background = '#ffe6e6';
+                return;
+            }
+
+            statusTexto.innerHTML = '✅ Firebase conectado. Enviando evento de teste...';
+            statusDiv.style.background = '#e8f5e8';
+
+            // Testar envio de evento de áudio
+            enviarEventoAudio('admissao', { 
+                teste: true, 
+                mensagem: 'Teste de sincronização de áudio' 
+            });
+            
+            statusTexto.innerHTML = '✅ Evento de áudio enviado! Verifique se outros dispositivos receberam o som.';
+            
+            // Ocultar status após 5 segundos
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
         }
         
         // FUNCOES DE EMAIL
@@ -5887,6 +5976,51 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                     }
                 });
             });
+
+            // Listener para eventos de áudio (sincronização entre dispositivos)
+            db.collection('eventos_audio').onSnapshot(function(snapshot) {
+                snapshot.docChanges().forEach(function(change) {
+                    if (change.type === 'added') {
+                        const evento = change.doc.data();
+                        console.log('🔊 Evento de áudio recebido:', evento.tipo, 'de', evento.usuario);
+                        
+                        // Verificar se o evento não é do próprio dispositivo
+                        if (evento.dispositivo !== navigator.userAgent) {
+                            // Reproduzir som baseado no tipo de evento
+                            if (evento.tipo === 'admissao') {
+                                tocarSomAdmissaoLocal();
+                            } else if (evento.tipo === 'transferencia') {
+                                tocarSomTransferenciaLocal();
+                            } else if (evento.tipo === 'alta') {
+                                tocarSomAltaLocal();
+                            }
+                        }
+                    }
+                });
+            }, function(error) {
+                console.error('❌ Erro no listener de eventos de áudio:', error);
+            });
+
+            // Limpar eventos de áudio antigos (mais de 1 hora)
+            setInterval(function() {
+                if (db) {
+                    const umaHoraAtras = new Date(Date.now() - 60 * 60 * 1000);
+                    db.collection('eventos_audio')
+                        .where('timestamp', '<', umaHoraAtras)
+                        .get()
+                        .then(function(querySnapshot) {
+                            querySnapshot.forEach(function(doc) {
+                                doc.ref.delete();
+                            });
+                            if (querySnapshot.size > 0) {
+                                console.log('🧹 Limpeza: removidos', querySnapshot.size, 'eventos de áudio antigos');
+                            }
+                        })
+                        .catch(function(error) {
+                            console.error('❌ Erro ao limpar eventos antigos:', error);
+                        });
+                }
+            }, 30 * 60 * 1000); // Executar a cada 30 minutos
         }
         
         function salvarNoFirebase(colecao, documento, dados) {
