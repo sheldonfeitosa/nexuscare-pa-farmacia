@@ -1067,6 +1067,379 @@
             color: #6c757d;
             font-size: 0.9rem;
         }
+
+        /* ESTATISTICAS AVANCADAS */
+        .dashboard-advanced-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .advanced-stat-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .advanced-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        }
+
+        .advanced-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .stat-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .stat-trend {
+            font-size: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .stat-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* GRAFICOS AVANCADOS */
+        .dashboard-charts {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container.large {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .chart-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chart-btn {
+            padding: 8px 16px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chart-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .chart-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* GRAFICOS SECUNDARIOS */
+        .dashboard-charts-secondary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-pie {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .chart-heatmap {
+            height: 200px;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            padding: 10px;
+        }
+
+        .heatmap-cell {
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        /* ANIMACOES E EFEITOS VISUAIS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200px 0;
+            }
+            100% {
+                background-position: calc(200px + 100%) 0;
+            }
+        }
+
+        .advanced-stat-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .advanced-stat-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .advanced-stat-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .advanced-stat-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .chart-container {
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .chart-container.large {
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .metric-value {
+            animation: bounceIn 0.5s ease-out;
+        }
+
+        .stat-trend {
+            animation: pulse 2s infinite;
+        }
+
+        .chart-bar {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .chart-bar:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+
+        .chart-bar:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        /* EFEITO SHIMMER PARA CARREGAMENTO */
+        .loading-shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200px 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        /* HOVER EFFECTS AVANCADOS */
+        .advanced-stat-card:hover .metric-value {
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+        }
+
+        .chart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .legend-item:hover {
+            transform: translateX(5px);
+            transition: transform 0.3s ease;
+        }
+
+        /* GRADIENTE ANIMADO */
+        .gradient-animated {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* EFEITO GLASSMORPHISM */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        /* PULSE EFFECT PARA METRICAS IMPORTANTES */
+        .metric-value.highlight {
+            animation: pulse 1s infinite;
+            color: #e74c3c;
+        }
+
+        .metric-value.success {
+            color: #27ae60;
+        }
+
+        .metric-value.warning {
+            color: #f39c12;
+        }
         
         /* Tabelas */
         .table-container {
@@ -1728,9 +2101,10 @@
                                 <th>Admissao PA</th>
                                 <th>Saida PA</th>
                                 <th>Destino</th>
-                                <th>Status</th>
-                                <th>Usuário</th>
-                                <th>Setor</th>
+                        <th>Status</th>
+                        <th>Usuário</th>
+                        <th>Setor</th>
+                        <th>Tempo de Permanência</th>
                             </tr>
                         </thead>
                         <tbody id="rastreabilidadeBody">
@@ -2182,22 +2556,168 @@
                     </div>
                 </div>
                 
-                <!-- GRAFICOS E VISUALIZACOES -->
+                <!-- ESTATISTICAS DESCRITIVAS AVANCADAS -->
+                <div class="dashboard-advanced-stats">
+                    <div class="advanced-stat-card">
+                        <div class="stat-header">
+                            <h3>📊 Estatísticas de Ocupação</h3>
+                            <div class="stat-trend" id="ocupacaoTrend">↗️</div>
+                        </div>
+                        <div class="stat-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Taxa de Ocupação Média</span>
+                                <span class="metric-value" id="taxaOcupacaoMedia">0%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Pico de Ocupação</span>
+                                <span class="metric-value" id="picoOcupacao">0%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Tempo Médio de Permanência</span>
+                                <span class="metric-value" id="tempoMedioPermanencia">0h 0min</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Rotatividade Diária</span>
+                                <span class="metric-value" id="rotatividadeDiaria">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="advanced-stat-card">
+                        <div class="stat-header">
+                            <h3>⚡ Performance Operacional</h3>
+                            <div class="stat-trend" id="performanceTrend">↗️</div>
+                        </div>
+                        <div class="stat-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Eficiência de Admissão</span>
+                                <span class="metric-value" id="eficienciaAdmissao">0%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Tempo Médio de Transferência</span>
+                                <span class="metric-value" id="tempoMedioTransferencia">0h 0min</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Taxa de Alta Direta</span>
+                                <span class="metric-value" id="taxaAltaDireta">0%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Satisfação do Sistema</span>
+                                <span class="metric-value" id="satisfacaoSistema">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="advanced-stat-card">
+                        <div class="stat-header">
+                            <h3>📈 Análise Temporal</h3>
+                            <div class="stat-trend" id="temporalTrend">↗️</div>
+                        </div>
+                        <div class="stat-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Hora de Maior Movimento</span>
+                                <span class="metric-value" id="horaMaiorMovimento">00:00</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Dia da Semana Mais Ativo</span>
+                                <span class="metric-value" id="diaMaisAtivo">Segunda</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Tendência de Crescimento</span>
+                                <span class="metric-value" id="tendenciaCrescimento">+0%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Previsão para Próxima Hora</span>
+                                <span class="metric-value" id="previsaoProximaHora">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRAFICOS E VISUALIZACOES AVANCADAS -->
                 <div class="dashboard-charts">
-                    <div class="chart-container">
-                        <h3>📊 Ocupação de Leitos</h3>
+                    <div class="chart-container large">
+                        <div class="chart-header">
+                            <h3>📊 Análise de Ocupação em Tempo Real</h3>
+                            <div class="chart-controls">
+                                <button class="chart-btn active" onclick="mudarVisualizacaoOcupacao('barras')">Barras</button>
+                                <button class="chart-btn" onclick="mudarVisualizacaoOcupacao('linha')">Linha</button>
+                                <button class="chart-btn" onclick="mudarVisualizacaoOcupacao('area')">Área</button>
+                            </div>
+                        </div>
                         <div class="chart" id="ocupacaoChart">
-                            <div class="chart-bars">
-                                <!-- Barras serão geradas dinamicamente -->
+                            <div class="chart-bars" id="ocupacaoVisualization">
+                                <!-- Visualização será gerada dinamicamente -->
+                            </div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #e74c3c;"></div>
+                                <span>Ocupado</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #27ae60;"></div>
+                                <span>Disponível</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container large">
+                        <div class="chart-header">
+                            <h3>📈 Série Temporal de Movimentações</h3>
+                            <div class="chart-controls">
+                                <button class="chart-btn active" onclick="mudarPeriodoMovimentacoes('hora')">Por Hora</button>
+                                <button class="chart-btn" onclick="mudarPeriodoMovimentacoes('dia')">Por Dia</button>
+                                <button class="chart-btn" onclick="mudarPeriodoMovimentacoes('semana')">Por Semana</button>
+                            </div>
+                        </div>
+                        <div class="chart" id="movimentacoesChart">
+                            <div class="chart-line" id="movimentacoesVisualization">
+                                <!-- Visualização será gerada dinamicamente -->
+                            </div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #3498db;"></div>
+                                <span>Admissões</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f39c12;"></div>
+                                <span>Transferências</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #27ae60;"></div>
+                                <span>Altas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRAFICOS ADICIONAIS -->
+                <div class="dashboard-charts-secondary">
+                    <div class="chart-container">
+                        <h3>🎯 Distribuição por Origem</h3>
+                        <div class="chart" id="distribuicaoOrigemChart">
+                            <div class="chart-pie" id="distribuicaoOrigemVisualization">
+                                <!-- Gráfico de pizza será gerado dinamicamente -->
                             </div>
                         </div>
                     </div>
                     
                     <div class="chart-container">
-                        <h3>📈 Movimentações por Hora</h3>
-                        <div class="chart" id="movimentacoesChart">
-                            <div class="chart-line">
-                                <!-- Linha será gerada dinamicamente -->
+                        <h3>⏱️ Tempo de Permanência por Leito</h3>
+                        <div class="chart" id="tempoPermanenciaChart">
+                            <div class="chart-bars" id="tempoPermanenciaVisualization">
+                                <!-- Gráfico de barras será gerado dinamicamente -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>📊 Heatmap de Atividade</h3>
+                        <div class="chart" id="heatmapChart">
+                            <div class="chart-heatmap" id="heatmapVisualization">
+                                <!-- Heatmap será gerado dinamicamente -->
                             </div>
                         </div>
                     </div>
@@ -2319,6 +2839,12 @@
         var leitoAtual = '';
         var dadosLeitos = {};
         var historicoPacientes = [];
+        
+        // VARIÁVEIS PARA PAGINAÇÃO E ORDENAÇÃO
+        var paginaAtualRastreabilidade = 1;
+        var itensPorPagina = 10;
+        var totalPaginasRastreabilidade = 1;
+        var dadosRastreabilidadeOrdenados = [];
         
         // CONFIGURACOES DE EMAIL
         var configEmail = {
@@ -3143,8 +3669,428 @@
                 leitos: [],
                 movimentacoes: [],
                 alertas: []
-            }
+            },
+            visualizacaoOcupacao: 'barras',
+            periodoMovimentacoes: 'hora'
         };
+
+        // FUNCOES DE ESTATISTICAS DESCRITIVAS
+        function calcularEstatisticasDescritivas() {
+            var agora = new Date();
+            var inicioPeriodo = new Date(agora.getTime() - (dashboardData.periodoAtual * 60 * 60 * 1000));
+            
+            // Filtrar dados do período
+            var eventosPeriodo = historicoPacientes.filter(function(evento) {
+                var dataEvento = new Date(evento.dataHoraAdmissao);
+                return dataEvento >= inicioPeriodo;
+            });
+
+            // Calcular estatísticas de ocupação
+            calcularEstatisticasOcupacao(eventosPeriodo);
+            
+            // Calcular estatísticas de performance
+            calcularEstatisticasPerformance(eventosPeriodo);
+            
+            // Calcular estatísticas temporais
+            calcularEstatisticasTemporais(eventosPeriodo);
+        }
+
+        function calcularEstatisticasOcupacao(eventos) {
+            var totalLeitos = 15;
+            var leitosOcupados = 0;
+            var temposPermanencia = [];
+            var ocupacaoPorHora = {};
+            
+            // Calcular ocupação atual
+            for (var leito in dadosLeitos) {
+                if (dadosLeitos[leito].paciente) {
+                    leitosOcupados++;
+                }
+            }
+            
+            // Calcular tempos de permanência
+            eventos.forEach(function(evento) {
+                if (evento.dataHoraSaida) {
+                    var inicio = new Date(evento.dataHoraAdmissao);
+                    var fim = new Date(evento.dataHoraSaida);
+                    var tempoMs = fim - inicio;
+                    temposPermanencia.push(tempoMs);
+                }
+            });
+            
+            // Calcular ocupação por hora
+            for (var i = 0; i < dashboardData.periodoAtual; i++) {
+                var hora = new Date(agora.getTime() - (i * 60 * 60 * 1000));
+                var horaKey = hora.getHours();
+                ocupacaoPorHora[horaKey] = (ocupacaoPorHora[horaKey] || 0) + 1;
+            }
+            
+            // Atualizar métricas
+            var taxaOcupacaoMedia = (leitosOcupados / totalLeitos) * 100;
+            var picoOcupacao = Math.max(...Object.values(ocupacaoPorHora)) || 0;
+            var tempoMedio = temposPermanencia.length > 0 ? 
+                temposPermanencia.reduce((a, b) => a + b, 0) / temposPermanencia.length : 0;
+            var rotatividadeDiaria = eventos.length;
+            
+            var taxaOcupacaoElement = document.getElementById('taxaOcupacaoMedia');
+            var picoOcupacaoElement = document.getElementById('picoOcupacao');
+            var tempoMedioElement = document.getElementById('tempoMedioPermanencia');
+            var rotatividadeElement = document.getElementById('rotatividadeDiaria');
+            
+            taxaOcupacaoElement.textContent = taxaOcupacaoMedia.toFixed(1) + '%';
+            picoOcupacaoElement.textContent = picoOcupacao + '%';
+            tempoMedioElement.textContent = formatarTempo(tempoMedio);
+            rotatividadeElement.textContent = rotatividadeDiaria;
+            
+            // Aplicar classes de destaque
+            aplicarClassesDestaque(taxaOcupacaoElement, taxaOcupacaoMedia, [50, 80]);
+            aplicarClassesDestaque(picoOcupacaoElement, picoOcupacao, [60, 90]);
+            aplicarClassesDestaque(rotatividadeElement, rotatividadeDiaria, [10, 20]);
+            
+            // Atualizar tendência
+            var tendencia = taxaOcupacaoMedia > 50 ? '↗️' : '↘️';
+            document.getElementById('ocupacaoTrend').textContent = tendencia;
+        }
+
+        function calcularEstatisticasPerformance(eventos) {
+            var admissoes = eventos.filter(e => e.tipo === 'admissao').length;
+            var transferencias = eventos.filter(e => e.tipo === 'transferencia').length;
+            var altas = eventos.filter(e => e.tipo === 'alta').length;
+            
+            var eficienciaAdmissao = admissoes > 0 ? ((admissoes / (admissoes + transferencias + altas)) * 100) : 0;
+            var tempoMedioTransferencia = calcularTempoMedioTransferencia(eventos);
+            var taxaAltaDireta = altas > 0 ? ((altas / admissoes) * 100) : 0;
+            var satisfacaoSistema = calcularSatisfacaoSistema(eventos);
+            
+            document.getElementById('eficienciaAdmissao').textContent = eficienciaAdmissao.toFixed(1) + '%';
+            document.getElementById('tempoMedioTransferencia').textContent = formatarTempo(tempoMedioTransferencia);
+            document.getElementById('taxaAltaDireta').textContent = taxaAltaDireta.toFixed(1) + '%';
+            document.getElementById('satisfacaoSistema').textContent = satisfacaoSistema.toFixed(1) + '%';
+            
+            // Atualizar tendência
+            var tendencia = eficienciaAdmissao > 70 ? '↗️' : '↘️';
+            document.getElementById('performanceTrend').textContent = tendencia;
+        }
+
+        function calcularEstatisticasTemporais(eventos) {
+            var movimentacoesPorHora = {};
+            var movimentacoesPorDia = {};
+            
+            eventos.forEach(function(evento) {
+                var data = new Date(evento.dataHoraAdmissao);
+                var hora = data.getHours();
+                var dia = data.getDay();
+                
+                movimentacoesPorHora[hora] = (movimentacoesPorHora[hora] || 0) + 1;
+                movimentacoesPorDia[dia] = (movimentacoesPorDia[dia] || 0) + 1;
+            });
+            
+            var horaMaiorMovimento = Object.keys(movimentacoesPorHora).reduce((a, b) => 
+                movimentacoesPorHora[a] > movimentacoesPorHora[b] ? a : b, '00');
+            var diaMaisAtivo = Object.keys(movimentacoesPorDia).reduce((a, b) => 
+                movimentacoesPorDia[a] > movimentacoesPorDia[b] ? a : b, '0');
+            
+            var diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+            var tendenciaCrescimento = calcularTendenciaCrescimento(eventos);
+            var previsaoProximaHora = calcularPrevisaoProximaHora(eventos);
+            
+            document.getElementById('horaMaiorMovimento').textContent = horaMaiorMovimento + ':00';
+            document.getElementById('diaMaisAtivo').textContent = diasSemana[diaMaisAtivo];
+            document.getElementById('tendenciaCrescimento').textContent = '+' + tendenciaCrescimento.toFixed(1) + '%';
+            document.getElementById('previsaoProximaHora').textContent = previsaoProximaHora;
+            
+            // Atualizar tendência
+            var tendencia = tendenciaCrescimento > 0 ? '↗️' : '↘️';
+            document.getElementById('temporalTrend').textContent = tendencia;
+        }
+
+        function formatarTempo(milissegundos) {
+            var horas = Math.floor(milissegundos / (1000 * 60 * 60));
+            var minutos = Math.floor((milissegundos % (1000 * 60 * 60)) / (1000 * 60));
+            return horas + 'h ' + minutos + 'min';
+        }
+
+        function calcularTempoMedioTransferencia(eventos) {
+            var transferencias = eventos.filter(e => e.tipo === 'transferencia');
+            if (transferencias.length === 0) return 0;
+            
+            var tempos = transferencias.map(function(t) {
+                var inicio = new Date(t.dataHoraAdmissao);
+                var fim = new Date(t.dataHoraSaida);
+                return fim - inicio;
+            });
+            
+            return tempos.reduce((a, b) => a + b, 0) / tempos.length;
+        }
+
+        function calcularSatisfacaoSistema(eventos) {
+            // Simulação de satisfação baseada em eficiência
+            var totalEventos = eventos.length;
+            var eventosComSucesso = eventos.filter(e => e.status !== 'ERRO').length;
+            return totalEventos > 0 ? (eventosComSucesso / totalEventos) * 100 : 100;
+        }
+
+        function calcularTendenciaCrescimento(eventos) {
+            if (eventos.length < 2) return 0;
+            
+            var primeiraMetade = eventos.slice(0, Math.floor(eventos.length / 2));
+            var segundaMetade = eventos.slice(Math.floor(eventos.length / 2));
+            
+            var mediaPrimeira = primeiraMetade.length;
+            var mediaSegunda = segundaMetade.length;
+            
+            return mediaPrimeira > 0 ? ((mediaSegunda - mediaPrimeira) / mediaPrimeira) * 100 : 0;
+        }
+
+        function calcularPrevisaoProximaHora(eventos) {
+            var ultimaHora = eventos.filter(function(e) {
+                var data = new Date(e.dataHoraAdmissao);
+                var agora = new Date();
+                return (agora - data) < (60 * 60 * 1000);
+            }).length;
+            
+            return Math.max(0, ultimaHora + Math.floor(Math.random() * 3));
+        }
+
+        // FUNCAO PARA APLICAR CLASSES DE DESTAQUE BASEADAS NOS VALORES
+        function aplicarClassesDestaque(elemento, valor, thresholds) {
+            // Remover classes anteriores
+            elemento.classList.remove('highlight', 'success', 'warning');
+            
+            if (valor >= thresholds[1]) {
+                elemento.classList.add('highlight');
+            } else if (valor >= thresholds[0]) {
+                elemento.classList.add('warning');
+            } else {
+                elemento.classList.add('success');
+            }
+        }
+
+        // FUNCAO PARA ATUALIZAR DASHBOARD EM TEMPO REAL
+        function iniciarAtualizacaoTempoReal() {
+            setInterval(function() {
+                if (document.getElementById('dashboardPanel').style.display !== 'none') {
+                    carregarDashboard();
+                }
+            }, 30000); // Atualizar a cada 30 segundos
+        }
+
+        // FUNCAO PARA ADICIONAR EFEITOS DE CARREGAMENTO
+        function mostrarEfeitoCarregamento() {
+            var elementos = document.querySelectorAll('.metric-value, .chart-bar, .legend-item');
+            elementos.forEach(function(elemento, index) {
+                elemento.classList.add('loading-shimmer');
+                setTimeout(function() {
+                    elemento.classList.remove('loading-shimmer');
+                }, 1000 + (index * 100));
+            });
+        }
+
+        // FUNCOES DE VISUALIZACAO AVANCADA
+        function mudarVisualizacaoOcupacao(tipo) {
+            dashboardData.visualizacaoOcupacao = tipo;
+            
+            // Atualizar botões ativos
+            document.querySelectorAll('#ocupacaoChart .chart-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            gerarGraficoOcupacao();
+        }
+
+        function mudarPeriodoMovimentacoes(periodo) {
+            dashboardData.periodoMovimentacoes = periodo;
+            
+            // Atualizar botões ativos
+            document.querySelectorAll('#movimentacoesChart .chart-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            gerarGraficoMovimentacoes();
+        }
+
+        function gerarGraficoDistribuicaoOrigem() {
+            var container = document.getElementById('distribuicaoOrigemVisualization');
+            container.innerHTML = '';
+            
+            var origens = {};
+            historicoPacientes.forEach(function(evento) {
+                origens[evento.origem] = (origens[evento.origem] || 0) + 1;
+            });
+            
+            var total = Object.values(origens).reduce((a, b) => a + b, 0);
+            if (total === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #6c757d; padding: 20px;">Nenhum dado disponível</div>';
+                return;
+            }
+            
+            var cores = ['#3498db', '#e74c3c', '#f39c12', '#27ae60', '#9b59b6', '#1abc9c', '#34495e'];
+            var anguloAtual = 0;
+            var raio = 80;
+            var centroX = 100;
+            var centroY = 100;
+            
+            var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '200');
+            svg.setAttribute('height', '200');
+            svg.setAttribute('viewBox', '0 0 200 200');
+            
+            var indiceCor = 0;
+            for (var origem in origens) {
+                var percentual = (origens[origem] / total) * 100;
+                var angulo = (percentual / 100) * 360;
+                
+                var x1 = centroX + raio * Math.cos(anguloAtual * Math.PI / 180);
+                var y1 = centroY + raio * Math.sin(anguloAtual * Math.PI / 180);
+                var x2 = centroX + raio * Math.cos((anguloAtual + angulo) * Math.PI / 180);
+                var y2 = centroY + raio * Math.sin((anguloAtual + angulo) * Math.PI / 180);
+                
+                var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                var largeArc = angulo > 180 ? 1 : 0;
+                var d = `M ${centroX} ${centroY} L ${x1} ${y1} A ${raio} ${raio} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+                path.setAttribute('d', d);
+                path.setAttribute('fill', cores[indiceCor % cores.length]);
+                path.setAttribute('stroke', 'white');
+                path.setAttribute('stroke-width', '2');
+                
+                svg.appendChild(path);
+                
+                // Adicionar label
+                var labelX = centroX + (raio + 20) * Math.cos((anguloAtual + angulo/2) * Math.PI / 180);
+                var labelY = centroY + (raio + 20) * Math.sin((anguloAtual + angulo/2) * Math.PI / 180);
+                
+                var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', labelX);
+                text.setAttribute('y', labelY);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('font-size', '10');
+                text.setAttribute('fill', '#2c3e50');
+                text.textContent = percentual.toFixed(1) + '%';
+                svg.appendChild(text);
+                
+                anguloAtual += angulo;
+                indiceCor++;
+            }
+            
+            container.appendChild(svg);
+        }
+
+        function gerarGraficoTempoPermanencia() {
+            var container = document.getElementById('tempoPermanenciaVisualization');
+            container.innerHTML = '';
+            
+            var temposPorLeito = {};
+            var leitos = ['PA-01', 'PA-02', 'PA-03', 'PA-04', 'PA-05', 'PA-06', 'PA-07', 'PA-08'];
+            
+            leitos.forEach(function(leito) {
+                temposPorLeito[leito] = 0;
+            });
+            
+            historicoPacientes.forEach(function(evento) {
+                if (evento.dataHoraSaida && temposPorLeito[evento.leito] !== undefined) {
+                    var inicio = new Date(evento.dataHoraAdmissao);
+                    var fim = new Date(evento.dataHoraSaida);
+                    var tempoMs = fim - inicio;
+                    temposPorLeito[evento.leito] += tempoMs;
+                }
+            });
+            
+            var maxTempo = Math.max(...Object.values(temposPorLeito));
+            if (maxTempo === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #6c757d; padding: 20px;">Nenhum dado disponível</div>';
+                return;
+            }
+            
+            leitos.forEach(function(leito, index) {
+                var barra = document.createElement('div');
+                barra.className = 'chart-bar';
+                barra.style.cssText = `
+                    height: ${(temposPorLeito[leito] / maxTempo) * 150}px;
+                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    margin: 5px;
+                    border-radius: 4px;
+                    display: flex;
+                    align-items: flex-end;
+                    justify-content: center;
+                    color: white;
+                    font-size: 12px;
+                    font-weight: bold;
+                    position: relative;
+                `;
+                
+                var label = document.createElement('div');
+                label.textContent = leito;
+                label.style.cssText = 'position: absolute; bottom: -20px; font-size: 10px; color: #6c757d;';
+                barra.appendChild(label);
+                
+                var valor = document.createElement('div');
+                valor.textContent = formatarTempo(temposPorLeito[leito]);
+                valor.style.cssText = 'position: absolute; top: 5px; font-size: 10px;';
+                barra.appendChild(valor);
+                
+                container.appendChild(barra);
+            });
+        }
+
+        function gerarHeatmapAtividade() {
+            var container = document.getElementById('heatmapVisualization');
+            container.innerHTML = '';
+            
+            var diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            var horas = Array.from({length: 24}, (_, i) => i);
+            
+            var atividade = {};
+            for (var i = 0; i < 7; i++) {
+                for (var j = 0; j < 24; j++) {
+                    atividade[`${i}-${j}`] = 0;
+                }
+            }
+            
+            historicoPacientes.forEach(function(evento) {
+                var data = new Date(evento.dataHoraAdmissao);
+                var dia = data.getDay();
+                var hora = data.getHours();
+                atividade[`${dia}-${hora}`]++;
+            });
+            
+            var maxAtividade = Math.max(...Object.values(atividade));
+            
+            for (var i = 0; i < 7; i++) {
+                for (var j = 0; j < 24; j++) {
+                    var cell = document.createElement('div');
+                    cell.className = 'heatmap-cell';
+                    var intensidade = maxAtividade > 0 ? atividade[`${i}-${j}`] / maxAtividade : 0;
+                    
+                    cell.style.cssText = `
+                        background: rgba(102, 126, 234, ${intensidade});
+                        border-radius: 4px;
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                        position: relative;
+                    `;
+                    
+                    cell.title = `${diasSemana[i]} ${j}:00 - ${atividade[`${i}-${j}`]} eventos`;
+                    
+                    if (i === 0) {
+                        var labelHora = document.createElement('div');
+                        labelHora.textContent = j;
+                        labelHora.style.cssText = 'position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 8px; color: #6c757d;';
+                        cell.appendChild(labelHora);
+                    }
+                    
+                    if (j === 0) {
+                        var labelDia = document.createElement('div');
+                        labelDia.textContent = diasSemana[i];
+                        labelDia.style.cssText = 'position: absolute; left: -25px; top: 50%; transform: translateY(-50%); font-size: 8px; color: #6c757d;';
+                        cell.appendChild(labelDia);
+                    }
+                    
+                    container.appendChild(cell);
+                }
+            }
+        }
         
         function mostrarDashboard() {
             switchPanel('dashboardPanel');
@@ -3152,11 +4098,19 @@
         }
         
         function carregarDashboard() {
-            atualizarEstatisticas();
-            gerarGraficoOcupacao();
-            gerarGraficoMovimentacoes();
-            carregarTimeline();
-            carregarAlertas();
+            mostrarEfeitoCarregamento();
+            
+            setTimeout(function() {
+                atualizarEstatisticas();
+                calcularEstatisticasDescritivas();
+                gerarGraficoOcupacao();
+                gerarGraficoMovimentacoes();
+                gerarGraficoDistribuicaoOrigem();
+                gerarGraficoTempoPermanencia();
+                gerarHeatmapAtividade();
+                carregarTimeline();
+                carregarAlertas();
+            }, 500);
         }
         
         function filtrarPorTempo(horas) {
@@ -3246,35 +4200,176 @@
         }
         
         function gerarGraficoOcupacao() {
-            var chartBars = document.querySelector('#ocupacaoChart .chart-bars');
-            chartBars.innerHTML = '';
+            var container = document.getElementById('ocupacaoVisualization');
+            container.innerHTML = '';
             
             // Contar leitos ocupados primeiro
             var leitosOcupados = 0;
-            for (var i = 1; i <= 15; i++) {
-                var leitoId = 'PA-' + (i < 10 ? '0' + i : i);
-                var status = document.getElementById('status-' + leitoId);
-                if (status && status.textContent === 'EM ATENDIMENTO') {
-                    leitosOcupados++;
-                }
-            }
+            var dadosLeitos = [];
             
-            // Gerar barras para cada leito
             for (var i = 1; i <= 15; i++) {
                 var leitoId = 'PA-' + (i < 10 ? '0' + i : i);
                 var status = document.getElementById('status-' + leitoId);
                 var isOcupado = status && status.textContent === 'EM ATENDIMENTO';
-                var altura = isOcupado ? 80 : 20;
+                if (isOcupado) leitosOcupados++;
                 
-                var bar = document.createElement('div');
-                bar.className = 'chart-bar';
-                bar.style.height = altura + '%';
-                bar.style.background = isOcupado ? 
-                    'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)' : 
-                    'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
-                bar.title = leitoId + ': ' + (status ? status.textContent : 'VAGO');
-                chartBars.appendChild(bar);
+                dadosLeitos.push({
+                    leito: leitoId,
+                    ocupado: isOcupado,
+                    altura: isOcupado ? 80 : 20
+                });
             }
+            
+            if (dashboardData.visualizacaoOcupacao === 'barras') {
+                gerarGraficoOcupacaoBarras(dadosLeitos);
+            } else if (dashboardData.visualizacaoOcupacao === 'linha') {
+                gerarGraficoOcupacaoLinha(dadosLeitos);
+            } else if (dashboardData.visualizacaoOcupacao === 'area') {
+                gerarGraficoOcupacaoArea(dadosLeitos);
+            }
+        }
+
+        function gerarGraficoOcupacaoBarras(dadosLeitos) {
+            var container = document.getElementById('ocupacaoVisualization');
+            
+            dadosLeitos.forEach(function(dado, index) {
+                var barra = document.createElement('div');
+                barra.className = 'chart-bar';
+                barra.style.cssText = `
+                    height: ${dado.altura}px;
+                    background: ${dado.ocupado ? 'linear-gradient(135deg, #e74c3c, #c0392b)' : 'linear-gradient(135deg, #27ae60, #2ecc71)'};
+                    margin: 2px;
+                    border-radius: 4px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 10px;
+                    font-weight: bold;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                `;
+                
+                barra.textContent = dado.leito;
+                barra.title = `${dado.leito}: ${dado.ocupado ? 'Ocupado' : 'Disponível'}`;
+                
+                barra.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+                });
+                
+                barra.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.boxShadow = 'none';
+                });
+                
+                container.appendChild(barra);
+            });
+        }
+
+        function gerarGraficoOcupacaoLinha(dadosLeitos) {
+            var container = document.getElementById('ocupacaoVisualization');
+            var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', '200');
+            svg.setAttribute('viewBox', '0 0 400 200');
+            
+            var pontos = dadosLeitos.map(function(dado, index) {
+                return {
+                    x: (index * 25) + 20,
+                    y: 180 - (dado.ocupado ? 160 : 40),
+                    ocupado: dado.ocupado
+                };
+            });
+            
+            // Linha de ocupação
+            var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            var d = 'M ' + pontos[0].x + ' ' + pontos[0].y;
+            for (var i = 1; i < pontos.length; i++) {
+                d += ' L ' + pontos[i].x + ' ' + pontos[i].y;
+            }
+            path.setAttribute('d', d);
+            path.setAttribute('stroke', '#667eea');
+            path.setAttribute('stroke-width', '3');
+            path.setAttribute('fill', 'none');
+            svg.appendChild(path);
+            
+            // Pontos
+            pontos.forEach(function(ponto, index) {
+                var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', ponto.x);
+                circle.setAttribute('cy', ponto.y);
+                circle.setAttribute('r', '6');
+                circle.setAttribute('fill', ponto.ocupado ? '#e74c3c' : '#27ae60');
+                circle.setAttribute('stroke', 'white');
+                circle.setAttribute('stroke-width', '2');
+                svg.appendChild(circle);
+                
+                // Label do leito
+                var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', ponto.x);
+                text.setAttribute('y', 195);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('font-size', '8');
+                text.setAttribute('fill', '#6c757d');
+                text.textContent = dadosLeitos[index].leito;
+                svg.appendChild(text);
+            });
+            
+            container.appendChild(svg);
+        }
+
+        function gerarGraficoOcupacaoArea(dadosLeitos) {
+            var container = document.getElementById('ocupacaoVisualization');
+            var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', '200');
+            svg.setAttribute('viewBox', '0 0 400 200');
+            
+            var pontos = dadosLeitos.map(function(dado, index) {
+                return {
+                    x: (index * 25) + 20,
+                    y: 180 - (dado.ocupado ? 160 : 40)
+                };
+            });
+            
+            // Área de ocupação
+            var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            var d = 'M ' + pontos[0].x + ' 180 L ' + pontos[0].x + ' ' + pontos[0].y;
+            for (var i = 1; i < pontos.length; i++) {
+                d += ' L ' + pontos[i].x + ' ' + pontos[i].y;
+            }
+            d += ' L ' + pontos[pontos.length - 1].x + ' 180 Z';
+            path.setAttribute('d', d);
+            path.setAttribute('fill', 'url(#areaGradient)');
+            path.setAttribute('opacity', '0.6');
+            svg.appendChild(path);
+            
+            // Gradiente
+            var defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            var gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+            gradient.setAttribute('id', 'areaGradient');
+            gradient.setAttribute('x1', '0%');
+            gradient.setAttribute('y1', '0%');
+            gradient.setAttribute('x2', '0%');
+            gradient.setAttribute('y2', '100%');
+            
+            var stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stop1.setAttribute('offset', '0%');
+            stop1.setAttribute('stop-color', '#667eea');
+            stop1.setAttribute('stop-opacity', '0.8');
+            
+            var stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stop2.setAttribute('offset', '100%');
+            stop2.setAttribute('stop-color', '#764ba2');
+            stop2.setAttribute('stop-opacity', '0.3');
+            
+            gradient.appendChild(stop1);
+            gradient.appendChild(stop2);
+            defs.appendChild(gradient);
+            svg.appendChild(defs);
+            
+            container.appendChild(svg);
         }
         
         function gerarGraficoMovimentacoes() {
@@ -4534,6 +5629,46 @@
             renderizarFarmacia();
         }
         
+        // FUNCAO PARA CALCULAR TEMPO DE PERMANENCIA EM DIAS, HORAS E MINUTOS
+        function calcularTempoPermanencia(dataAdmissao, dataSaida) {
+            try {
+                var inicio = new Date(dataAdmissao);
+                var fim = dataSaida ? new Date(dataSaida) : new Date();
+                
+                // Verificar se a data de admissão é válida (não é 31/12/1969)
+                if (inicio.getFullYear() === 1969) {
+                    return 'Data inválida';
+                }
+                
+                var diferenca = fim - inicio;
+                var dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+                var horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+                
+                if (dias > 0) {
+                    return dias + 'd ' + horas + 'h ' + minutos + 'min';
+                } else if (horas > 0) {
+                    return horas + 'h ' + minutos + 'min';
+                } else {
+                    return minutos + 'min';
+                }
+            } catch (error) {
+                return 'Erro no cálculo';
+            }
+        }
+
+        // FUNCAO PARA ORDENAR DADOS POR MOVIMENTAÇÃO MAIS RECENTE
+        function ordenarPorMovimentacaoRecente(dados) {
+            return dados.sort(function(a, b) {
+                // Usar data de saída se disponível, senão usar data de admissão
+                var dataA = a.dataHoraSaida ? new Date(a.dataHoraSaida) : new Date(a.dataHoraAdmissao);
+                var dataB = b.dataHoraSaida ? new Date(b.dataHoraSaida) : new Date(b.dataHoraAdmissao);
+                
+                // Ordenar por data mais recente primeiro (descendente)
+                return dataB - dataA;
+            });
+        }
+
         // FUNCAO PARA MOSTRAR RASTREABILIDADE
         function mostrarRastreabilidade() {
             switchPanel('rastreabilidadePanel');
@@ -4542,11 +5677,27 @@
         
         // FUNCAO PARA RENDERIZAR RASTREABILIDADE
         function renderizarRastreabilidade() {
+            // Ordenar dados por movimentação mais recente
+            dadosRastreabilidadeOrdenados = ordenarPorMovimentacaoRecente([...historicoPacientes]);
+            
+            // Calcular total de páginas
+            totalPaginasRastreabilidade = Math.ceil(dadosRastreabilidadeOrdenados.length / itensPorPagina);
+            
+            // Garantir que a página atual não exceda o total
+            if (paginaAtualRastreabilidade > totalPaginasRastreabilidade) {
+                paginaAtualRastreabilidade = totalPaginasRastreabilidade || 1;
+            }
+            
+            // Calcular itens para a página atual
+            var inicio = (paginaAtualRastreabilidade - 1) * itensPorPagina;
+            var fim = inicio + itensPorPagina;
+            var dadosPagina = dadosRastreabilidadeOrdenados.slice(inicio, fim);
+            
             var tbody = document.getElementById('rastreabilidadeBody');
             tbody.innerHTML = '';
-            
-            for (var i = 0; i < historicoPacientes.length; i++) {
-                var historico = historicoPacientes[i];
+
+            for (var i = 0; i < dadosPagina.length; i++) {
+                var historico = dadosPagina[i];
                 var row = tbody.insertRow();
                 row.insertCell().innerHTML = '<strong>' + historico.pacienteIniciais + '</strong>';
                 row.insertCell().textContent = historico.registro;
@@ -4558,6 +5709,63 @@
                 row.insertCell().textContent = historico.status;
                 row.insertCell().innerHTML = '<span style="color: #007bff; font-weight: bold;">' + (historico.usuarioAcao || 'Sistema') + '</span>';
                 row.insertCell().textContent = historico.setorAcao || 'Sistema';
+                // Adicionar coluna de tempo de permanência
+                row.insertCell().innerHTML = '<span style="color: #28a745; font-weight: bold;">' + 
+                    calcularTempoPermanencia(historico.dataHoraAdmissao, historico.dataHoraSaida) + '</span>';
+            }
+            
+            // Atualizar controles de paginação
+            atualizarControlesPaginacaoRastreabilidade();
+        }
+
+        // FUNCAO PARA ATUALIZAR CONTROLES DE PAGINAÇÃO
+        function atualizarControlesPaginacaoRastreabilidade() {
+            var containerPaginacao = document.getElementById('controlesPaginacaoRastreabilidade');
+            if (!containerPaginacao) {
+                // Criar container de paginação se não existir
+                var tabela = document.querySelector('#rastreabilidadePanel table');
+                if (tabela) {
+                    containerPaginacao = document.createElement('div');
+                    containerPaginacao.id = 'controlesPaginacaoRastreabilidade';
+                    containerPaginacao.style.cssText = 'text-align: center; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;';
+                    tabela.parentNode.insertBefore(containerPaginacao, tabela.nextSibling);
+                }
+            }
+            
+            if (containerPaginacao) {
+                var html = '<div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap;">';
+                
+                // Botão anterior
+                html += '<button onclick="paginaAnteriorRastreabilidade()" ' + 
+                       (paginaAtualRastreabilidade <= 1 ? 'disabled' : '') + 
+                       ' class="btn btn-secondary" style="padding: 8px 15px;">« Anterior</button>';
+                
+                // Informações da página
+                html += '<span style="margin: 0 15px; font-weight: bold;">Página ' + paginaAtualRastreabilidade + ' de ' + totalPaginasRastreabilidade + '</span>';
+                html += '<span style="color: #6c757d; font-size: 14px;">(' + dadosRastreabilidadeOrdenados.length + ' registros total)</span>';
+                
+                // Botão próximo
+                html += '<button onclick="paginaProximaRastreabilidade()" ' + 
+                       (paginaAtualRastreabilidade >= totalPaginasRastreabilidade ? 'disabled' : '') + 
+                       ' class="btn btn-secondary" style="padding: 8px 15px;">Próximo »</button>';
+                
+                html += '</div>';
+                containerPaginacao.innerHTML = html;
+            }
+        }
+
+        // FUNCOES DE NAVEGAÇÃO DE PÁGINA
+        function paginaAnteriorRastreabilidade() {
+            if (paginaAtualRastreabilidade > 1) {
+                paginaAtualRastreabilidade--;
+                renderizarRastreabilidade();
+            }
+        }
+
+        function paginaProximaRastreabilidade() {
+            if (paginaAtualRastreabilidade < totalPaginasRastreabilidade) {
+                paginaAtualRastreabilidade++;
+                renderizarRastreabilidade();
             }
         }
         
@@ -4567,26 +5775,45 @@
             var filtroOrigem = document.getElementById('filterOrigem').value.toLowerCase();
             var filtroData = document.getElementById('filterData').value;
             
-            var tbody = document.getElementById('rastreabilidadeBody');
-            tbody.innerHTML = '';
-            
-            for (var i = 0; i < historicoPacientes.length; i++) {
-                var historico = historicoPacientes[i];
-                
-                // APLICAR FILTROS
+            // Filtrar dados
+            var dadosFiltrados = historicoPacientes.filter(function(historico) {
+                var incluir = true;
+
                 if (filtroPaciente && !historico.pacienteIniciais.toLowerCase().includes(filtroPaciente)) {
-                    continue;
+                    incluir = false;
                 }
                 if (filtroOrigem && !historico.origem.toLowerCase().includes(filtroOrigem)) {
-                    continue;
+                    incluir = false;
                 }
                 if (filtroData) {
                     var dataAdmissao = new Date(historico.dataHoraAdmissao).toISOString().split('T')[0];
                     if (dataAdmissao !== filtroData) {
-                        continue;
+                        incluir = false;
                     }
                 }
-                
+
+                return incluir;
+            });
+            
+            // Ordenar dados filtrados por movimentação mais recente
+            dadosRastreabilidadeOrdenados = ordenarPorMovimentacaoRecente(dadosFiltrados);
+            
+            // Resetar para primeira página
+            paginaAtualRastreabilidade = 1;
+            
+            // Calcular total de páginas
+            totalPaginasRastreabilidade = Math.ceil(dadosRastreabilidadeOrdenados.length / itensPorPagina);
+            
+            // Calcular itens para a página atual
+            var inicio = (paginaAtualRastreabilidade - 1) * itensPorPagina;
+            var fim = inicio + itensPorPagina;
+            var dadosPagina = dadosRastreabilidadeOrdenados.slice(inicio, fim);
+            
+            var tbody = document.getElementById('rastreabilidadeBody');
+            tbody.innerHTML = '';
+
+            for (var i = 0; i < dadosPagina.length; i++) {
+                var historico = dadosPagina[i];
                 var row = tbody.insertRow();
                 row.insertCell().innerHTML = '<strong>' + historico.pacienteIniciais + '</strong>';
                 row.insertCell().textContent = historico.registro;
@@ -4598,7 +5825,13 @@
                 row.insertCell().textContent = historico.status;
                 row.insertCell().innerHTML = '<span style="color: #007bff; font-weight: bold;">' + (historico.usuarioAcao || 'Sistema') + '</span>';
                 row.insertCell().textContent = historico.setorAcao || 'Sistema';
+                // Adicionar coluna de tempo de permanência
+                row.insertCell().innerHTML = '<span style="color: #28a745; font-weight: bold;">' + 
+                    calcularTempoPermanencia(historico.dataHoraAdmissao, historico.dataHoraSaida) + '</span>';
             }
+            
+            // Atualizar controles de paginação
+            atualizarControlesPaginacaoRastreabilidade();
         }
         
         // FUNCAO PARA LIMPAR FILTROS RASTREABILIDADE
@@ -4606,6 +5839,8 @@
             document.getElementById('filterPaciente').value = '';
             document.getElementById('filterOrigem').value = '';
             document.getElementById('filterData').value = '';
+            // Resetar paginação
+            paginaAtualRastreabilidade = 1;
             renderizarRastreabilidade();
         }
         
@@ -4652,50 +5887,116 @@
         
         // FUNCAO PARA GERAR RELATORIO DE TEMPO
         function gerarRelatorioTempo(dados) {
-            var html = '<h3>Relatorio de Tempo de Permanencia</h3><table><thead><tr><th>Paciente</th><th>Registro</th><th>Leito</th><th>Admissao</th><th>Saida</th><th>Tempo Total</th></tr></thead><tbody>';
+            // Filtrar apenas registros com saída
+            var dadosComSaida = dados.filter(function(h) {
+                return h.dataHoraSaida;
+            });
             
-            for (var i = 0; i < dados.length; i++) {
-                var h = dados[i];
-                if (h.dataHoraSaida) {
-                    var inicio = new Date(h.dataHoraAdmissao);
-                    var fim = new Date(h.dataHoraSaida);
-                    var diffMs = fim - inicio;
-                    var diffHoras = Math.floor(diffMs / (1000 * 60 * 60));
-                    var diffMinutos = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-                    
-                    html += '<tr>';
-                    html += '<td><strong>' + h.pacienteIniciais + '</strong></td>';
-                    html += '<td>' + h.registro + '</td>';
-                    html += '<td>' + h.leito + '</td>';
-                    html += '<td>' + inicio.toLocaleString('pt-BR') + '</td>';
-                    html += '<td>' + fim.toLocaleString('pt-BR') + '</td>';
-                    html += '<td>' + diffHoras + 'h ' + diffMinutos + 'min</td>';
-                    html += '</tr>';
-                }
+            // Ordenar por movimentação mais recente
+            var dadosOrdenados = ordenarPorMovimentacaoRecente(dadosComSaida);
+            
+            // Pegar apenas os 10 mais recentes
+            var dadosLimitados = dadosOrdenados.slice(0, 10);
+            
+            var html = '<h3>Relatório de Tempo de Permanência - 10 Mais Recentes</h3>';
+            html += '<div style="margin-bottom: 15px; color: #6c757d; font-size: 14px;">';
+            html += 'Mostrando os 10 pacientes com movimentação mais recente';
+            html += '</div>';
+            html += '<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">';
+            html += '<thead><tr style="background: #f8f9fa;">';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Paciente</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Registro</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Leito</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Admissão</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Saída</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Tempo Total</th>';
+            html += '</tr></thead><tbody>';
+            
+            for (var i = 0; i < dadosLimitados.length; i++) {
+                var h = dadosLimitados[i];
+                var inicio = new Date(h.dataHoraAdmissao);
+                var fim = new Date(h.dataHoraSaida);
+                var tempoTotal = calcularTempoPermanencia(h.dataHoraAdmissao, h.dataHoraSaida);
+                
+                html += '<tr style="border-bottom: 1px solid #dee2e6;">';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;"><strong>' + h.pacienteIniciais + '</strong></td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + h.registro + '</td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + h.leito + '</td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + inicio.toLocaleString('pt-BR') + '</td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + fim.toLocaleString('pt-BR') + '</td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6; color: #28a745; font-weight: bold;">' + tempoTotal + '</td>';
+                html += '</tr>';
+            }
+            
+            if (dadosLimitados.length === 0) {
+                html += '<tr><td colspan="6" style="padding: 20px; text-align: center; color: #6c757d;">Nenhum registro encontrado</td></tr>';
             }
             
             html += '</tbody></table>';
+            
+            // Adicionar informações sobre total de registros
+            if (dadosComSaida.length > 10) {
+                html += '<div style="text-align: center; color: #6c757d; font-size: 14px; margin-top: 15px;">';
+                html += 'Total de registros: ' + dadosComSaida.length + ' | Mostrando os 10 mais recentes';
+                html += '</div>';
+            }
+            
             return html;
         }
         
         // FUNCAO PARA GERAR RELATORIO GERAL
         function gerarRelatorioGeral(dados) {
-            var html = '<h3>Relatorio Geral</h3><table><thead><tr><th>Paciente</th><th>Registro</th><th>Origem</th><th>Leito</th><th>Admissao</th><th>Saida</th><th>Status</th></tr></thead><tbody>';
+            // Ordenar por movimentação mais recente
+            var dadosOrdenados = ordenarPorMovimentacaoRecente([...dados]);
             
-            for (var i = 0; i < dados.length; i++) {
-                var h = dados[i];
-                html += '<tr>';
-                html += '<td><strong>' + h.pacienteIniciais + '</strong></td>';
-                html += '<td>' + h.registro + '</td>';
-                html += '<td>' + h.origem + '</td>';
-                html += '<td>' + h.leito + '</td>';
-                html += '<td>' + new Date(h.dataHoraAdmissao).toLocaleString('pt-BR') + '</td>';
-                html += '<td>' + (h.dataHoraSaida ? new Date(h.dataHoraSaida).toLocaleString('pt-BR') : 'Ainda no PA') + '</td>';
-                html += '<td>' + h.status + '</td>';
+            // Pegar apenas os 10 mais recentes
+            var dadosLimitados = dadosOrdenados.slice(0, 10);
+            
+            var html = '<h3>Relatório Geral - 10 Mais Recentes</h3>';
+            html += '<div style="margin-bottom: 15px; color: #6c757d; font-size: 14px;">';
+            html += 'Mostrando os 10 pacientes com movimentação mais recente';
+            html += '</div>';
+            html += '<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">';
+            html += '<thead><tr style="background: #f8f9fa;">';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Paciente</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Registro</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Origem</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Leito</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Admissão</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Saída</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Status</th>';
+            html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Tempo de Permanência</th>';
+            html += '</tr></thead><tbody>';
+            
+            for (var i = 0; i < dadosLimitados.length; i++) {
+                var h = dadosLimitados[i];
+                var tempoTotal = calcularTempoPermanencia(h.dataHoraAdmissao, h.dataHoraSaida);
+                
+                html += '<tr style="border-bottom: 1px solid #dee2e6;">';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;"><strong>' + h.pacienteIniciais + '</strong></td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + h.registro + '</td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + h.origem + '</td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + h.leito + '</td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + new Date(h.dataHoraAdmissao).toLocaleString('pt-BR') + '</td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + (h.dataHoraSaida ? new Date(h.dataHoraSaida).toLocaleString('pt-BR') : 'Ainda no PA') + '</td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + h.status + '</td>';
+                html += '<td style="padding: 12px; border: 1px solid #dee2e6; color: #28a745; font-weight: bold;">' + tempoTotal + '</td>';
                 html += '</tr>';
             }
             
+            if (dadosLimitados.length === 0) {
+                html += '<tr><td colspan="8" style="padding: 20px; text-align: center; color: #6c757d;">Nenhum registro encontrado</td></tr>';
+            }
+            
             html += '</tbody></table>';
+            
+            // Adicionar informações sobre total de registros
+            if (dados.length > 10) {
+                html += '<div style="text-align: center; color: #6c757d; font-size: 14px; margin-top: 15px;">';
+                html += 'Total de registros: ' + dados.length + ' | Mostrando os 10 mais recentes';
+                html += '</div>';
+            }
+            
             return html;
         }
         
@@ -5915,6 +7216,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             inicializarEmailJS();
             inicializarSistemasAutomaticos();
             verificarSessao();
+            iniciarAtualizacaoTempoReal();
         });
         
         // FUNCOES DO FIREBASE
