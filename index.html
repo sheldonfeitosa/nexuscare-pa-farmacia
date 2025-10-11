@@ -2512,6 +2512,7 @@
                         <button onclick="testarModalTransferencia()" class="btn-secondary" style="margin-left: 10px;">🔄 Testar Modal Transferência</button>
                         <button onclick="debugDadosLeitos()" class="btn-secondary" style="margin-left: 10px;">🔍 Debug Dados Leitos</button>
                         <button onclick="inicializarLeitosVazios()" class="btn-secondary" style="margin-left: 10px;">🏥 Inicializar Leitos</button>
+                        <button onclick="forcarSincronizacaoInterface()" class="btn-secondary" style="margin-left: 10px;">🔄 Sincronizar Interface</button>
                         <button onclick="fecharTodosModais()" class="btn-secondary" style="margin-left: 10px;">❌ Fechar Todos Modais</button>
                         <div id="statusSincronizacaoAudio" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #e8f5e8; display: none;">
                             <strong>🔊 Status da Sincronização de Áudio:</strong>
@@ -3189,8 +3190,8 @@
                 // Aplicar permissões
                 aplicarPermissoes();
                 
-                // Mostrar painel inicial baseado no setor
-                mostrarPainelInicial();
+                // Ir diretamente para a tela de Controle de Leitos
+                mostrarPA();
                 
                 console.log('✅ Login realizado:', usuarioLogado);
             } else {
@@ -3317,8 +3318,10 @@
                 document.getElementById('mainContent').style.display = 'block';
                 atualizarHeaderUsuario();
                 aplicarPermissoes();
-                mostrarPainelInicial();
-                console.log('🔄 Sessão restaurada:', usuarioLogado);
+                
+                // Ir diretamente para a tela de Controle de Leitos
+                mostrarPA();
+                console.log('🔄 Sessão restaurada e direcionado para Controle de Leitos:', usuarioLogado);
             }
         }
         
@@ -7294,6 +7297,38 @@
             }
         }
         
+        // FUNCAO PARA FORCAR SINCRONIZACAO DA INTERFACE
+        function forcarSincronizacaoInterface() {
+            console.log('🔄 Forçando sincronização da interface...');
+            
+            // Atualizar cada leito individualmente
+            for (var i = 1; i <= 15; i++) {
+                var leitoId = 'PA-' + (i < 10 ? '0' + i : i);
+                var dados = dadosLeitos[leitoId];
+                
+                if (dados) {
+                    // Verificar se realmente está vago
+                    var estaVago = (dados.status === 'VAGO' || dados.status === 'vago') || 
+                                 (!dados.pacienteIniciais || dados.pacienteIniciais === '') ||
+                                 (dados.status !== 'EM ATENDIMENTO' && dados.status !== 'em atendimento');
+                    
+                    if (estaVago) {
+                        limparLeito(leitoId);
+                        console.log(`✅ Interface limpa para leito vago: ${leitoId}`);
+                    } else {
+                        atualizarLeito(leitoId, dados);
+                        console.log(`✅ Interface atualizada para leito ocupado: ${leitoId}`);
+                    }
+                } else {
+                    // Se não há dados, limpar interface
+                    limparLeito(leitoId);
+                    console.log(`✅ Interface limpa para leito sem dados: ${leitoId}`);
+                }
+            }
+            
+            console.log('✅ Sincronização forçada concluída!');
+        }
+        
         // FUNCAO PARA SINCRONIZAR DADOS DO HISTORICO COM DADOSLEITOS
         function sincronizarDadosLeitos() {
             console.log('🔄 Sincronizando dados do histórico com dadosLeitos...');
@@ -8117,13 +8152,18 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             console.log('🔄 Paciente:', dados.pacienteIniciais);
             dadosLeitos[leitoId] = dados;
             
-            // Verificar se o leito está vago ou ocupado
-            var isVago = dados.status === 'VAGO' || !dados.pacienteIniciais;
+            // Verificar se o leito está vago ou ocupado (lógica mais robusta)
+            var isVago = (dados.status === 'VAGO' || dados.status === 'vago') || 
+                        (!dados.pacienteIniciais || dados.pacienteIniciais === '') ||
+                        (dados.status !== 'EM ATENDIMENTO' && dados.status !== 'em atendimento');
+            
             console.log('🔄 Verificação de status:', {
                 leitoId: leitoId,
                 status: dados.status,
                 pacienteIniciais: dados.pacienteIniciais,
-                isVago: isVago
+                isVago: isVago,
+                temPaciente: dados.pacienteIniciais && dados.pacienteIniciais !== '',
+                statusEmAtendimento: dados.status === 'EM ATENDIMENTO' || dados.status === 'em atendimento'
             });
             
             if (isVago) {
