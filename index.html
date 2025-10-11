@@ -2485,6 +2485,7 @@
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <button onclick="testarWhatsApp()" class="btn-secondary">📱 Testar WhatsApp</button>
                         <button onclick="testarSincronizacaoAudio()" class="btn-secondary">🔊 Testar Sincronização de Áudio</button>
+                        <button onclick="testarSistema()" class="btn-secondary" style="margin-left: 10px;">🧪 Testar Sistema Completo</button>
                         <div id="statusSincronizacaoAudio" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #e8f5e8; display: none;">
                             <strong>🔊 Status da Sincronização de Áudio:</strong>
                             <div id="statusAudioTexto">Verificando...</div>
@@ -4896,6 +4897,8 @@
         // FUNCAO LOCAL PARA TOCAR SOM DE ADMISSAO (apenas no dispositivo atual)
         function tocarSomAdmissaoLocal() {
             try {
+                console.log('🔊 Tentando reproduzir som de admissão...');
+                
                 // Verificar se o navegador suporta Web Audio API
                 if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
                     var audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -4988,19 +4991,37 @@
                     oscillator1.stop(audioContext.currentTime + totalDuration);
                     oscillator2.stop(audioContext.currentTime + totalDuration);
                     
-                    console.log('Som de admissão (quarta justa descendente Lá-Mi em 4/4, colcheias, 70 BPM) reproduzido por 7 segundos');
+                    console.log('✅ Som de admissão (quarta justa descendente Lá-Mi em 4/4, colcheias, 70 BPM) reproduzido por 7 segundos');
                 } else {
                     // Fallback: usar beep do sistema
-                    console.log('Web Audio API não suportada, usando fallback');
+                    console.log('⚠️ Web Audio API não suportada, usando fallback');
                     // Tentar usar Audio() como fallback
                     var audio = new Audio();
                     audio.src = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT';
-                    audio.play().catch(function(e) {
-                        console.log('Fallback de áudio também falhou:', e);
+                    audio.play().then(function() {
+                        console.log('✅ Som de admissão reproduzido via fallback');
+                    }).catch(function(e) {
+                        console.log('❌ Fallback de áudio também falhou:', e);
+                        // Último recurso: usar beep do sistema
+                        try {
+                            var beep = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+                            beep.play();
+                            console.log('✅ Som de admissão reproduzido via último recurso');
+                        } catch (e2) {
+                            console.log('❌ Falha total na reprodução de áudio:', e2);
+                        }
                     });
                 }
             } catch (e) {
-                console.log('Erro ao reproduzir som de admissão:', e);
+                console.log('❌ Erro ao reproduzir som de admissão:', e);
+                // Tentar fallback simples
+                try {
+                    var simpleBeep = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+                    simpleBeep.play();
+                    console.log('✅ Som de admissão reproduzido via fallback de erro');
+                } catch (e2) {
+                    console.log('❌ Falha total na reprodução de áudio:', e2);
+                }
             }
         }
         
@@ -5264,9 +5285,6 @@
             event.target.dataset.processing = 'true';
             console.log('Salvando admissao para:', leitoAtual);
             
-            // FECHAR MODAL IMEDIATAMENTE APÓS CLICAR
-            fecharModal();
-            
             var pacienteIniciais = document.getElementById('pacienteIniciais').value.toUpperCase();
             var registro = document.getElementById('registro').value;
             var dataNascimento = document.getElementById('dataNascimento').value;
@@ -5276,12 +5294,21 @@
             // Validar campos obrigatórios
             if (!pacienteIniciais || !registro || !dataNascimento || !origem) {
                 alert('Por favor, preencha todos os campos obrigatórios (marcados com *).');
+                event.target.dataset.processing = 'false';
+                return;
+            }
+            
+            // Validar se o leito está realmente vago
+            if (dadosLeitos[leitoAtual] && dadosLeitos[leitoAtual].status !== 'VAGO') {
+                alert('Este leito não está disponível para admissão.');
+                event.target.dataset.processing = 'false';
                 return;
             }
             
             // Validar comprimento das observações
             if (observacoes.length > 500) {
                 alert('As observações não podem exceder 500 caracteres.');
+                event.target.dataset.processing = 'false';
                 return;
             }
             
@@ -5300,9 +5327,18 @@
                 status: 'EM ATENDIMENTO'
             };
             
+            // FECHAR MODAL APÓS VALIDAÇÕES
+            fecharModal();
+            
             // SALVAR DADOS DO LEITO (Firebase + Local)
             dadosLeitos[leitoAtual] = dados;
-            salvarNoFirebase('leitos', leitoAtual, dados);
+            salvarNoFirebase('leitos', leitoAtual, dados)
+                .then(function() {
+                    console.log('✅ Admissão salva com sucesso no Firebase');
+                })
+                .catch(function(error) {
+                    console.error('❌ Erro ao salvar admissão no Firebase:', error);
+                });
             
             // ADICIONAR AO HISTORICO
             var historicoItem = {
@@ -5361,14 +5397,28 @@
             event.target.dataset.processing = 'true';
             console.log('Salvando transferencia para:', leitoAtual);
             
-            // FECHAR MODAL IMEDIATAMENTE APÓS CLICAR
-            fecharModalTransferir();
-            
             var destino = document.getElementById('destino').value;
             var observacoesTransferencia = document.getElementById('observacoesTransferencia').value;
             
+            // Validar campos obrigatórios
+            if (!destino) {
+                alert('Por favor, selecione o destino da transferência.');
+                event.target.dataset.processing = 'false';
+                return;
+            }
+            
             // OBTER DADOS DO PACIENTE
             var dadosPaciente = dadosLeitos[leitoAtual];
+            
+            // Validar se há paciente no leito
+            if (!dadosPaciente || dadosPaciente.status !== 'EM ATENDIMENTO') {
+                alert('Não há paciente para transferir neste leito.');
+                event.target.dataset.processing = 'false';
+                return;
+            }
+            
+            // FECHAR MODAL APÓS VALIDAÇÕES
+            fecharModalTransferir();
             
             // ATUALIZAR HISTORICO
             for (var i = 0; i < historicoPacientes.length; i++) {
@@ -6066,12 +6116,22 @@
         
         // FUNCAO PARA GERAR RELATORIO
         function gerarRelatorio() {
+            console.log('📊 Gerando relatório...');
+            
             var dataInicio = document.getElementById('dataInicio').value;
             var dataFim = document.getElementById('dataFim').value;
             var tipoRelatorio = document.getElementById('tipoRelatorio').value;
             
             // Armazenar tipo de relatório atual
             tipoRelatorioAtual = tipoRelatorio;
+            
+            // Verificar se há dados no histórico
+            if (!historicoPacientes || historicoPacientes.length === 0) {
+                console.log('⚠️ Nenhum dado encontrado no histórico');
+                var content = document.getElementById('relatorioContent');
+                content.innerHTML = '<div style="text-align: center; padding: 40px; color: #6c757d;"><h3>📊 Nenhum Dado Disponível</h3><p>Não há registros de pacientes para gerar o relatório.</p><p>Admita alguns pacientes para ver os dados aqui.</p></div>';
+                return;
+            }
             
             var dadosFiltrados = historicoPacientes;
             
@@ -6083,8 +6143,16 @@
                         dadosFiltrados.push(historicoPacientes[i]);
                     }
                 }
+                
+                if (dadosFiltrados.length === 0) {
+                    console.log('⚠️ Nenhum dado encontrado no período selecionado');
+                    var content = document.getElementById('relatorioContent');
+                    content.innerHTML = '<div style="text-align: center; padding: 40px; color: #6c757d;"><h3>📊 Nenhum Dado no Período</h3><p>Não há registros de pacientes no período selecionado.</p><p>Tente selecionar um período diferente ou verifique se há dados disponíveis.</p></div>';
+                    return;
+                }
             }
             
+            console.log('✅ Dados filtrados:', dadosFiltrados.length, 'registros');
             var content = document.getElementById('relatorioContent');
             
             // Resetar paginação
@@ -7027,6 +7095,39 @@
                 document.getElementById('emailjsTemplateId').value = configEmail.emailjs.templateId || '';
                 document.getElementById('emailjsPublicKey').value = configEmail.emailjs.publicKey || '';
             }
+        }
+        
+        // FUNCAO DE TESTE DO SISTEMA
+        function testarSistema() {
+            console.log('🧪 Testando sistema...');
+            
+            // Testar permissões
+            if (!usuarioLogado) {
+                console.log('❌ Usuário não está logado');
+                alert('Você precisa estar logado para testar o sistema.');
+                return;
+            }
+            
+            console.log('✅ Usuário logado:', usuarioLogado.nome);
+            console.log('✅ Permissões:', usuarioLogado.permissoes);
+            
+            // Testar Firebase
+            if (typeof db !== 'undefined') {
+                console.log('✅ Firebase conectado');
+            } else {
+                console.log('⚠️ Firebase não conectado - usando localStorage');
+            }
+            
+            // Testar áudio
+            console.log('🔊 Testando áudio...');
+            tocarSomAdmissao();
+            
+            // Testar dados
+            console.log('📊 Dados atuais:');
+            console.log('- Leitos:', Object.keys(dadosLeitos).length);
+            console.log('- Histórico:', historicoPacientes.length);
+            
+            alert('✅ Teste do sistema concluído! Verifique o console para detalhes.');
         }
         
         // FUNCOES DE RELATORIOS AUTOMATICOS
