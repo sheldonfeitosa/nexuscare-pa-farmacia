@@ -4778,8 +4778,11 @@
                 return;
             }
             
-            // FECHAR QUALQUER MODAL ABERTO PRIMEIRO
-            fecharModal();
+            // FECHAR QUALQUER MODAL ABERTO PRIMEIRO (exceto o de transferência)
+            var modalAdmitir = document.getElementById('modalAdmitir');
+            if (modalAdmitir && modalAdmitir.style.display === 'block') {
+                fecharModal();
+            }
             
             console.log('Abrindo modal de transferencia para:', leitoId);
             leitoAtual = leitoId;
@@ -4819,24 +4822,26 @@
             
             document.getElementById('modalTituloTransferir').textContent = 'Transferir Paciente - ' + leitoId;
             
-            // Usar classe CSS para mostrar o modal
-            var modal = document.getElementById('modalTransferir');
-            if (modal) {
-                modal.classList.add('show');
-                modal.style.display = 'block';
-                modal.style.zIndex = '2000';
-                
-                // Forçar reflow para garantir que o modal seja exibido
-                modal.offsetHeight;
-                
-                console.log('✅ Modal de transferência aberto com sucesso');
-                console.log('Modal display:', modal.style.display);
-                console.log('Modal z-index:', modal.style.zIndex);
-                console.log('Modal classes:', modal.className);
-            } else {
-                console.log('❌ Modal de transferência não encontrado no DOM');
-                alert('Erro: Modal de transferência não encontrado.');
-            }
+            // Usar delay para evitar conflitos com outros modais
+            setTimeout(function() {
+                var modal = document.getElementById('modalTransferir');
+                if (modal) {
+                    modal.classList.add('show');
+                    modal.style.display = 'block';
+                    modal.style.zIndex = '2000';
+                    
+                    // Forçar reflow para garantir que o modal seja exibido
+                    modal.offsetHeight;
+                    
+                    console.log('✅ Modal de transferência aberto com sucesso');
+                    console.log('Modal display:', modal.style.display);
+                    console.log('Modal z-index:', modal.style.zIndex);
+                    console.log('Modal classes:', modal.className);
+                } else {
+                    console.log('❌ Modal de transferência não encontrado no DOM');
+                    alert('Erro: Modal de transferência não encontrado.');
+                }
+            }, 100); // Delay de 100ms
         }
         
         // FUNCAO PARA FECHAR MODAL DE ADMISSAO
@@ -7853,12 +7858,12 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
         let firebaseConfig = {
             // CONFIGURAÇÕES DO FIREBASE - PROJETO: nexuscare-inmceb
             // IMPORTANTE: Substitua pelas suas próprias chaves do Firebase
-            apiKey: "SUA_API_KEY_AQUI",
-            authDomain: "seu-projeto.firebaseapp.com",
-            projectId: "seu-projeto-id",
-            storageBucket: "seu-projeto.appspot.com",
-            messagingSenderId: "SEU_SENDER_ID",
-            appId: "SEU_APP_ID"
+            apiKey: "AIzaSyBg9xjIVPuKZQyiENMcW0903FQBdvIDyRU",
+            authDomain: "nexuscare-inmceb.firebaseapp.com",
+            projectId: "nexuscare-inmceb",
+            storageBucket: "nexuscare-inmceb.appspot.com",
+            messagingSenderId: "600913039133",
+            appId: "1:600913039133:web:exemplo123456"
         };
         
         function inicializarFirebase() {
@@ -7957,16 +7962,27 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
         
         function salvarNoFirebase(colecao, documento, dados) {
             if (!db) {
-                // Fallback para localStorage se Firebase não estiver disponível
+                console.log('⚠️ Firebase não disponível, usando localStorage');
                 return salvarLocalStorage(colecao, documento, dados);
             }
             
-            return db.collection(colecao).doc(documento).set(dados)
+            // Limpar dados antes de enviar para evitar erros 400
+            var dadosLimpos = JSON.parse(JSON.stringify(dados));
+            
+            // Remover campos undefined ou null que podem causar erro 400
+            Object.keys(dadosLimpos).forEach(key => {
+                if (dadosLimpos[key] === undefined || dadosLimpos[key] === null) {
+                    delete dadosLimpos[key];
+                }
+            });
+            
+            return db.collection(colecao).doc(documento).set(dadosLimpos)
                 .then(function() {
                     console.log('✅ Dados salvos no Firebase:', colecao, documento);
                 })
                 .catch(function(error) {
                     console.error('❌ Erro ao salvar no Firebase:', error);
+                    console.log('🔄 Tentando salvar no localStorage como fallback...');
                     // Fallback para localStorage
                     return salvarLocalStorage(colecao, documento, dados);
                 });
