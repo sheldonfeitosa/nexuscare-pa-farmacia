@@ -2240,6 +2240,26 @@
             <!-- PAINEL PA -->
             <div id="paPanel" class="panel active">
                 <h2><i class="fas fa-bed"></i> NexusCare - Controle de Leitos</h2>
+                
+                <!-- PAINEL DE ESTATISTICAS -->
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3>📊 Estatísticas do Sistema</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4 style="margin: 0; color: #1976d2;">👥 Pacientes Ativos</h4>
+                            <p style="font-size: 24px; font-weight: bold; margin: 5px 0; color: #1976d2;" id="totalPacientesAtivos">0</p>
+                        </div>
+                        <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4 style="margin: 0; color: #2e7d32;">🏥 Leitos Ocupados</h4>
+                            <p style="font-size: 24px; font-weight: bold; margin: 5px 0; color: #2e7d32;" id="totalLeitosOcupados">0</p>
+                        </div>
+                        <div style="background: #fff3e0; padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4 style="margin: 0; color: #f57c00;">🛏️ Leitos Disponíveis</h4>
+                            <p style="font-size: 24px; font-weight: bold; margin: 5px 0; color: #f57c00;" id="totalLeitosDisponiveis">15</p>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="leitos-grid" id="leitosGrid">
                     <!-- LEITOS CRIADOS DIRETAMENTE NO HTML -->
                     <div class="leito-card" id="leito-PA-01">
@@ -2817,6 +2837,8 @@
                         <button onclick="forcarModal72h()" class="btn-secondary" style="margin-left: 10px;">🚨 Forçar Modal 72h</button>
                         <button onclick="testarMedicacaoPrioridades()" class="btn-secondary" style="margin-left: 10px;">💊 Testar Medicação</button>
                         <button onclick="testarContadorTempo()" class="btn-secondary" style="margin-left: 10px;">⏰ Testar Contador</button>
+                        <button onclick="testarSincronizacao()" class="btn-secondary" style="margin-left: 10px;">🔄 Testar Sincronização</button>
+                        <button onclick="testarEstatisticas()" class="btn-secondary" style="margin-left: 10px;">📊 Testar Estatísticas</button>
                         <button onclick="testarCenarios72h()" class="btn-secondary" style="margin-left: 10px;">📊 Cenários 72h</button>
                         <button onclick="limparTestes72h()" class="btn-secondary" style="margin-left: 10px;">🧹 Limpar Testes</button>
                         <button onclick="forcarSincronizacaoInterface()" class="btn-secondary" style="margin-left: 10px;">🔄 Sincronizar Interface</button>
@@ -6402,6 +6424,18 @@
                 btn.innerHTML = 
                     '<button class="btn btn-warning" onclick="abrirModalTransferir(\'' + leitoId + '\')">Transferir</button>' +
                     '<button class="btn btn-danger" onclick="darAlta(\'' + leitoId + '\')">Dar Alta</button>';
+                
+                // Sincronizar farmácia
+                setTimeout(function() {
+                    if (typeof renderizarFarmacia === 'function') {
+                        renderizarFarmacia();
+                    }
+                }, 100);
+                
+                // Atualizar estatísticas
+                setTimeout(function() {
+                    atualizarEstatisticas();
+                }, 150);
             }
         }
         
@@ -6553,6 +6587,18 @@
                 // RESTAURAR BOTAO ORIGINAL
                 var btn = leitoCard.querySelector('.btn');
                 btn.innerHTML = '<button class="btn" onclick="abrirModal(\'' + leitoId + '\')">Admitir Paciente</button>';
+                
+                // Sincronizar farmácia
+                setTimeout(function() {
+                    if (typeof renderizarFarmacia === 'function') {
+                        renderizarFarmacia();
+                    }
+                }, 100);
+                
+                // Atualizar estatísticas
+                setTimeout(function() {
+                    atualizarEstatisticas();
+                }, 150);
                 
                 console.log('Leito limpo com sucesso:', leitoId);
             }
@@ -8838,10 +8884,13 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                 // Forçar sincronização da interface após sincronizar dados
                 setTimeout(function() {
                     forcarSincronizacaoInterface();
-                    // Iniciar verificação de alertas de tempo
-                    iniciarVerificacaoAlertasTempo();
-                }, 1000);
-            }, 2000); // Aguardar 2 segundos para garantir que os dados foram carregados
+            // Iniciar verificação de alertas de tempo
+            iniciarVerificacaoAlertasTempo();
+            
+            // Atualizar estatísticas iniciais
+            atualizarEstatisticas();
+        }, 1000);
+    }, 2000); // Aguardar 2 segundos para garantir que os dados foram carregados
         });
         
         // FUNCAO PARA TESTAR ALERTA DE 72H
@@ -9453,6 +9502,195 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             console.log('✅ Teste de contador de tempo iniciado');
         }
         
+        // FUNCAO PARA ATUALIZAR ESTATISTICAS DO SISTEMA
+        function atualizarEstatisticas() {
+            console.log('📊 Atualizando estatísticas do sistema...');
+            
+            var totalLeitos = 15;
+            var leitosOcupados = 0;
+            var pacientesAtivos = 0;
+            
+            // Contar leitos ocupados e pacientes ativos
+            for (var i = 1; i <= totalLeitos; i++) {
+                var leitoId = 'PA-' + (i < 10 ? '0' + i : i);
+                var dados = dadosLeitos[leitoId];
+                
+                if (dados) {
+                    // Verificar se o leito está ocupado
+                    var estaOcupado = dados.pacienteIniciais && dados.pacienteIniciais.trim() !== '' &&
+                                    dados.status === 'EM ATENDIMENTO';
+                    
+                    if (estaOcupado) {
+                        leitosOcupados++;
+                        pacientesAtivos++;
+                    }
+                }
+            }
+            
+            var leitosDisponiveis = totalLeitos - leitosOcupados;
+            
+            console.log('📊 Estatísticas calculadas:', {
+                totalLeitos: totalLeitos,
+                leitosOcupados: leitosOcupados,
+                pacientesAtivos: pacientesAtivos,
+                leitosDisponiveis: leitosDisponiveis
+            });
+            
+            // Atualizar elementos da interface
+            var totalPacientesElement = document.getElementById('totalPacientesAtivos');
+            var totalOcupadosElement = document.getElementById('totalLeitosOcupados');
+            var totalDisponiveisElement = document.getElementById('totalLeitosDisponiveis');
+            
+            if (totalPacientesElement) {
+                totalPacientesElement.textContent = pacientesAtivos;
+            }
+            if (totalOcupadosElement) {
+                totalOcupadosElement.textContent = leitosOcupados;
+            }
+            if (totalDisponiveisElement) {
+                totalDisponiveisElement.textContent = leitosDisponiveis;
+            }
+            
+            // Atualizar cores baseadas no status
+            if (totalOcupadosElement) {
+                if (leitosOcupados === 0) {
+                    totalOcupadosElement.style.color = '#4caf50'; // Verde
+                } else if (leitosOcupados < 10) {
+                    totalOcupadosElement.style.color = '#ff9800'; // Laranja
+                } else {
+                    totalOcupadosElement.style.color = '#f44336'; // Vermelho
+                }
+            }
+            
+            if (totalDisponiveisElement) {
+                if (leitosDisponiveis > 10) {
+                    totalDisponiveisElement.style.color = '#4caf50'; // Verde
+                } else if (leitosDisponiveis > 5) {
+                    totalDisponiveisElement.style.color = '#ff9800'; // Laranja
+                } else {
+                    totalDisponiveisElement.style.color = '#f44336'; // Vermelho
+                }
+            }
+            
+            console.log('✅ Estatísticas atualizadas com sucesso');
+        }
+        
+        // FUNCAO PARA TESTAR SINCRONIZACAO ENTRE PAINEIS
+        function testarSincronizacao() {
+            console.log('🔄 Testando sincronização entre painéis...');
+            
+            // Criar paciente de teste
+            var leitoTeste = 'PA-01';
+            var dataAdmissao = new Date();
+            dataAdmissao.setHours(dataAdmissao.getHours() - 2); // 2 horas atrás
+            
+            var dadosTeste = {
+                pacienteIniciais: 'TESTE SINCRONIZAÇÃO',
+                registro: '12345',
+                dataNascimento: '01/01/1980',
+                idade: 44,
+                origem: 'UPA CENTRO',
+                dataHoraAdmissao: dataAdmissao.toISOString(),
+                status: 'EM ATENDIMENTO',
+                observacoes: 'Teste de sincronização entre painéis',
+                leito: leitoTeste
+            };
+            
+            console.log('🔄 Criando paciente de teste:', dadosTeste);
+            
+            // Atualizar dados do leito
+            dadosLeitos[leitoTeste] = dadosTeste;
+            
+            // Atualizar interface do controle de leitos
+            atualizarLeito(leitoTeste, dadosTeste);
+            
+            // Verificar se farmácia foi atualizada
+            setTimeout(function() {
+                var farmaciaContent = document.getElementById('farmaciaContent');
+                if (farmaciaContent) {
+                    var temPaciente = farmaciaContent.innerHTML.includes('TESTE SINCRONIZAÇÃO');
+                    if (temPaciente) {
+                        console.log('✅ Sincronização funcionando - paciente aparece na farmácia');
+                        alert('✅ SINCRONIZAÇÃO FUNCIONANDO!\n\n' +
+                              'Paciente "TESTE SINCRONIZAÇÃO" aparece em:\n' +
+                              '• Controle de Leitos ✅\n' +
+                              '• Farmácia ✅\n\n' +
+                              'Os painéis estão sincronizados!');
+                    } else {
+                        console.log('❌ Sincronização não funcionando - paciente não aparece na farmácia');
+                        alert('❌ SINCRONIZAÇÃO NÃO FUNCIONANDO!\n\n' +
+                              'Paciente "TESTE SINCRONIZAÇÃO" aparece em:\n' +
+                              '• Controle de Leitos ✅\n' +
+                              '• Farmácia ❌\n\n' +
+                              'Clique em "🔄 Sincronizar Interface" para forçar atualização.');
+                    }
+                } else {
+                    console.log('⚠️ Painel da farmácia não encontrado');
+                    alert('⚠️ PAINEL DA FARMÁCIA NÃO ENCONTRADO\n\n' +
+                          'Verifique se o painel da farmácia está carregado.');
+                }
+            }, 1000);
+            
+            console.log('✅ Teste de sincronização iniciado');
+        }
+        
+        // FUNCAO PARA TESTAR ESTATISTICAS
+        function testarEstatisticas() {
+            console.log('📊 Testando estatísticas do sistema...');
+            
+            // Criar vários pacientes de teste
+            var leitosTeste = ['PA-01', 'PA-02', 'PA-03', 'PA-04', 'PA-05'];
+            var dataAdmissao = new Date();
+            dataAdmissao.setHours(dataAdmissao.getHours() - 2);
+            
+            leitosTeste.forEach(function(leitoId, index) {
+                var dadosTeste = {
+                    pacienteIniciais: 'PACIENTE ' + (index + 1),
+                    registro: Math.floor(Math.random() * 90000) + 10000,
+                    dataNascimento: '01/01/1980',
+                    idade: 44,
+                    origem: 'UPA CENTRO',
+                    dataHoraAdmissao: dataAdmissao.toISOString(),
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Teste de estatísticas - Paciente ' + (index + 1),
+                    leito: leitoId
+                };
+                
+                console.log('📊 Criando paciente de teste:', leitoId, dadosTeste);
+                
+                // Atualizar dados do leito
+                dadosLeitos[leitoId] = dadosTeste;
+                
+                // Atualizar interface
+                atualizarLeito(leitoId, dadosTeste);
+            });
+            
+            // Forçar atualização das estatísticas
+            setTimeout(function() {
+                atualizarEstatisticas();
+                
+                // Verificar se as estatísticas foram atualizadas
+                var totalPacientes = document.getElementById('totalPacientesAtivos').textContent;
+                var totalOcupados = document.getElementById('totalLeitosOcupados').textContent;
+                var totalDisponiveis = document.getElementById('totalLeitosDisponiveis').textContent;
+                
+                console.log('📊 Estatísticas após teste:', {
+                    pacientesAtivos: totalPacientes,
+                    leitosOcupados: totalOcupados,
+                    leitosDisponiveis: totalDisponiveis
+                });
+                
+                alert('📊 TESTE DE ESTATÍSTICAS INICIADO\n\n' +
+                      'Pacientes criados: 5\n' +
+                      'Pacientes Ativos: ' + totalPacientes + '\n' +
+                      'Leitos Ocupados: ' + totalOcupados + '\n' +
+                      'Leitos Disponíveis: ' + totalDisponiveis + '\n\n' +
+                      'Verifique se os números estão corretos!');
+            }, 1000);
+            
+            console.log('✅ Teste de estatísticas iniciado');
+        }
+        
         // FUNCOES PARA SISTEMA DE MEDICACAO
         
         // FUNCAO PARA ABRIR MODAL DE LIBERAR MEDICACAO
@@ -9887,6 +10125,18 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                 setTimeout(function() {
                     atualizarContadorTempo(leitoId, dados.dataHoraAdmissao);
                 }, 200);
+                
+                // Sincronizar farmácia
+                setTimeout(function() {
+                    if (typeof renderizarFarmacia === 'function') {
+                        renderizarFarmacia();
+                    }
+                }, 300);
+                
+                // Atualizar estatísticas
+                setTimeout(function() {
+                    atualizarEstatisticas();
+                }, 400);
                 // Forçar atualização visual
                 setTimeout(function() {
                     var leitoCard = document.getElementById('leito-' + leitoId);
@@ -9907,7 +10157,14 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             
             // Atualizar farmácia sempre (independente de estar ativa)
             console.log('🔄 Atualizando interface da farmácia...');
-            renderizarFarmacia();
+            if (typeof renderizarFarmacia === 'function') {
+                renderizarFarmacia();
+            }
+            
+            // Atualizar estatísticas
+            setTimeout(function() {
+                atualizarEstatisticas();
+            }, 500);
         }
         
         function adicionarHistoricoLocal(dados) {
