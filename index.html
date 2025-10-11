@@ -231,12 +231,26 @@
             z-index: 2000 !important;
         }
         
+        /* Modal de Admissão com z-index menor */
+        #modalAdmitir {
+            z-index: 1000 !important;
+        }
+        
         /* Garantir que o modal de transferência seja visível */
         #modalTransferir.modal {
             display: none !important;
         }
         
         #modalTransferir.modal.show {
+            display: block !important;
+        }
+        
+        /* Garantir que o modal de admissão seja visível quando necessário */
+        #modalAdmitir.modal {
+            display: none !important;
+        }
+        
+        #modalAdmitir.modal.show {
             display: block !important;
         }
         .modal-content {
@@ -2497,6 +2511,7 @@
                         <button onclick="testarSistema()" class="btn-secondary" style="margin-left: 10px;">🧪 Testar Sistema Completo</button>
                         <button onclick="testarModalTransferencia()" class="btn-secondary" style="margin-left: 10px;">🔄 Testar Modal Transferência</button>
                         <button onclick="debugDadosLeitos()" class="btn-secondary" style="margin-left: 10px;">🔍 Debug Dados Leitos</button>
+                        <button onclick="fecharTodosModais()" class="btn-secondary" style="margin-left: 10px;">❌ Fechar Todos Modais</button>
                         <div id="statusSincronizacaoAudio" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #e8f5e8; display: none;">
                             <strong>🔊 Status da Sincronização de Áudio:</strong>
                             <div id="statusAudioTexto">Verificando...</div>
@@ -4741,7 +4756,7 @@
             }
             
             // FECHAR QUALQUER MODAL ABERTO PRIMEIRO
-            fecharModalTransferir();
+            fecharTodosModais();
             
             console.log('Abrindo modal para:', leitoId);
             leitoAtual = leitoId;
@@ -4753,7 +4768,11 @@
             // Inicializar contador de observações
             atualizarContadorObservacoes();
             
-            document.getElementById('modalAdmitir').style.display = 'block';
+            // Usar sistema de classes CSS para mostrar o modal
+            var modal = document.getElementById('modalAdmitir');
+            modal.classList.add('show');
+            modal.style.display = 'block';
+            modal.style.zIndex = '1000';
         }
         
         // FUNCAO PARA ABRIR MODAL DE TRANSFERENCIA
@@ -4778,11 +4797,8 @@
                 return;
             }
             
-            // FECHAR QUALQUER MODAL ABERTO PRIMEIRO (exceto o de transferência)
-            var modalAdmitir = document.getElementById('modalAdmitir');
-            if (modalAdmitir && modalAdmitir.style.display === 'block') {
-                fecharModal();
-            }
+            // FECHAR QUALQUER MODAL ABERTO PRIMEIRO
+            fecharTodosModais();
             
             console.log('Abrindo modal de transferencia para:', leitoId);
             leitoAtual = leitoId;
@@ -4846,12 +4862,15 @@
         
         // FUNCAO PARA FECHAR MODAL DE ADMISSAO
         function fecharModal() {
-            document.getElementById('modalAdmitir').style.display = 'none';
+            var modal = document.getElementById('modalAdmitir');
+            modal.classList.remove('show');
+            modal.style.display = 'none';
             var form = document.getElementById('formAdmitir');
             if (form) {
                 form.reset();
                 form.dataset.processing = 'false';
             }
+            console.log('✅ Modal de admissão fechado');
         }
 
         // FUNCAO PARA MOSTRAR NOTIFICAÇÃO DE SUCESSO
@@ -7223,6 +7242,25 @@
             var leitoTeste = leitosComPacientes[0];
             console.log('🔍 Testando com leito:', leitoTeste);
             abrirModalTransferir(leitoTeste);
+        }
+        
+        // FUNCAO PARA FECHAR TODOS OS MODAIS
+        function fecharTodosModais() {
+            // Fechar modal de admissão
+            var modalAdmitir = document.getElementById('modalAdmitir');
+            if (modalAdmitir) {
+                modalAdmitir.classList.remove('show');
+                modalAdmitir.style.display = 'none';
+            }
+            
+            // Fechar modal de transferência
+            var modalTransferir = document.getElementById('modalTransferir');
+            if (modalTransferir) {
+                modalTransferir.classList.remove('show');
+                modalTransferir.style.display = 'none';
+            }
+            
+            console.log('✅ Todos os modais fechados');
         }
         
         // FUNCAO PARA SINCRONIZAR DADOS DO HISTORICO COM DADOSLEITOS
