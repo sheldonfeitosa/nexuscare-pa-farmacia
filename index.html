@@ -2496,6 +2496,7 @@
                         <button onclick="testarSincronizacaoAudio()" class="btn-secondary">🔊 Testar Sincronização de Áudio</button>
                         <button onclick="testarSistema()" class="btn-secondary" style="margin-left: 10px;">🧪 Testar Sistema Completo</button>
                         <button onclick="testarModalTransferencia()" class="btn-secondary" style="margin-left: 10px;">🔄 Testar Modal Transferência</button>
+                        <button onclick="debugDadosLeitos()" class="btn-secondary" style="margin-left: 10px;">🔍 Debug Dados Leitos</button>
                         <div id="statusSincronizacaoAudio" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #e8f5e8; display: none;">
                             <strong>🔊 Status da Sincronização de Áudio:</strong>
                             <div id="statusAudioTexto">Verificando...</div>
@@ -4787,9 +4788,18 @@
             var dadosPaciente = dadosLeitos[leitoId];
             
             // VALIDAR SE HÁ DADOS DO PACIENTE
-            if (!dadosPaciente || dadosPaciente.status !== 'EM ATENDIMENTO') {
-                console.log('❌ Nenhum paciente encontrado no leito:', leitoId);
-                alert('Não há paciente para transferir neste leito.');
+            console.log('🔍 Dados do paciente encontrados:', dadosPaciente);
+            console.log('🔍 Status do leito:', dadosPaciente ? dadosPaciente.status : 'undefined');
+            
+            if (!dadosPaciente) {
+                console.log('❌ Nenhum objeto de dados encontrado para o leito:', leitoId);
+                alert('Erro: Dados do leito não encontrados.');
+                return;
+            }
+            
+            if (dadosPaciente.status !== 'EM ATENDIMENTO') {
+                console.log('❌ Leito não está em atendimento. Status atual:', dadosPaciente.status);
+                alert('Este leito não está em atendimento. Status: ' + (dadosPaciente.status || 'indefinido'));
                 return;
             }
             
@@ -7210,6 +7220,63 @@
             abrirModalTransferir(leitoTeste);
         }
         
+        // FUNCAO PARA SINCRONIZAR DADOS DO HISTORICO COM DADOSLEITOS
+        function sincronizarDadosLeitos() {
+            console.log('🔄 Sincronizando dados do histórico com dadosLeitos...');
+            
+            // Verificar se há dados no histórico que deveriam estar nos leitos
+            var pacientesAtivos = historicoPacientes.filter(function(h) {
+                return h.status === 'EM ATENDIMENTO' && h.dataHoraSaida === null;
+            });
+            
+            console.log('Pacientes ativos encontrados no histórico:', pacientesAtivos.length);
+            
+            // Sincronizar dados do histórico com dadosLeitos
+            pacientesAtivos.forEach(function(paciente) {
+                if (paciente.leito) {
+                    dadosLeitos[paciente.leito] = {
+                        pacienteIniciais: paciente.pacienteIniciais || paciente.paciente,
+                        registro: paciente.registro,
+                        dataNascimento: paciente.dataNascimento,
+                        idade: paciente.idade,
+                        origem: paciente.origem,
+                        observacoes: paciente.observacoes,
+                        dataHoraAdmissao: paciente.dataHoraAdmissao,
+                        leito: paciente.leito,
+                        status: 'EM ATENDIMENTO'
+                    };
+                    console.log(`✅ Sincronizado leito ${paciente.leito}:`, dadosLeitos[paciente.leito]);
+                }
+            });
+            
+            console.log('✅ Sincronização concluída! Leitos sincronizados:', Object.keys(dadosLeitos).length);
+        }
+        
+        // FUNCAO DE DEBUG PARA VERIFICAR DADOS DOS LEITOS
+        function debugDadosLeitos() {
+            console.log('🔍 DEBUG: Estado atual dos dados dos leitos:');
+            console.log('Total de leitos:', Object.keys(dadosLeitos).length);
+            
+            for (var leito in dadosLeitos) {
+                var dados = dadosLeitos[leito];
+                console.log(`Leito ${leito}:`, {
+                    status: dados.status,
+                    paciente: dados.pacienteIniciais,
+                    registro: dados.registro,
+                    temPaciente: dados.pacienteIniciais && dados.pacienteIniciais !== '',
+                    estaEmAtendimento: dados.status === 'EM ATENDIMENTO'
+                });
+            }
+            
+            // Verificar leitos específicos que aparecem ocupados na interface
+            console.log('🔍 Verificando leitos PA-01 e PA-05:');
+            console.log('PA-01:', dadosLeitos['PA-01']);
+            console.log('PA-05:', dadosLeitos['PA-05']);
+            
+            // Executar sincronização
+            sincronizarDadosLeitos();
+        }
+        
         // FUNCOES DE RELATORIOS AUTOMATICOS
         function enviarRelatorioAutomatico() {
             if (!configEmail.ativo || !configEmail.relatoriosAutomaticos.ativo) return;
@@ -7774,18 +7841,24 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             inicializarSistemasAutomaticos();
             verificarSessao();
             iniciarAtualizacaoTempoReal();
+            
+            // Sincronizar dados do histórico com dadosLeitos ao carregar
+            setTimeout(function() {
+                sincronizarDadosLeitos();
+            }, 2000); // Aguardar 2 segundos para garantir que os dados foram carregados
         });
         
         // FUNCOES DO FIREBASE
         let db;
         let firebaseConfig = {
             // CONFIGURAÇÕES DO FIREBASE - PROJETO: nexuscare-inmceb
-            apiKey: "AIzaSyBg9xjIVPuKZQyiENMcW0903FQBdvIDyRU",
-            authDomain: "nexuscare-inmceb.firebaseapp.com",
-            projectId: "nexuscare-inmceb",
-            storageBucket: "nexuscare-inmceb.appspot.com",
-            messagingSenderId: "600913039133",
-            appId: "1:600913039133:web:exemplo123456"
+            // IMPORTANTE: Substitua pelas suas próprias chaves do Firebase
+            apiKey: "SUA_API_KEY_AQUI",
+            authDomain: "seu-projeto.firebaseapp.com",
+            projectId: "seu-projeto-id",
+            storageBucket: "seu-projeto.appspot.com",
+            messagingSenderId: "SEU_SENDER_ID",
+            appId: "SEU_APP_ID"
         };
         
         function inicializarFirebase() {
