@@ -2617,6 +2617,8 @@
                         <button onclick="inicializarLeitosVazios()" class="btn-secondary" style="margin-left: 10px;">🏥 Inicializar Leitos</button>
                         <button onclick="testarAlerta72h()" class="btn-secondary" style="margin-left: 10px;">⚠️ Testar Alerta 72h</button>
                         <button onclick="testar72hRealista()" class="btn-secondary" style="margin-left: 10px;">🕐 Teste 72h Realista</button>
+                        <button onclick="testeSimples72h()" class="btn-secondary" style="margin-left: 10px;">⚡ Teste Simples 72h</button>
+                        <button onclick="forcarModal72h()" class="btn-secondary" style="margin-left: 10px;">🚨 Forçar Modal 72h</button>
                         <button onclick="testarCenarios72h()" class="btn-secondary" style="margin-left: 10px;">📊 Cenários 72h</button>
                         <button onclick="limparTestes72h()" class="btn-secondary" style="margin-left: 10px;">🧹 Limpar Testes</button>
                         <button onclick="forcarSincronizacaoInterface()" class="btn-secondary" style="margin-left: 10px;">🔄 Sincronizar Interface</button>
@@ -8650,56 +8652,228 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
         function testar72hRealista() {
             console.log('🕐 Iniciando teste realista de 72h...');
             
-            // Simular um paciente realista com 72h exatas
-            var leitoTeste = 'PA-02';
-            var dataAdmissao = new Date();
-            dataAdmissao.setHours(dataAdmissao.getHours() - 72); // Exatamente 72 horas atrás
+            try {
+                // Simular um paciente realista com 72h exatas
+                var leitoTeste = 'PA-02';
+                var dataAdmissao = new Date();
+                dataAdmissao.setHours(dataAdmissao.getHours() - 72); // Exatamente 72 horas atrás
+                
+                var dadosTeste = {
+                    pacienteIniciais: 'MARIA SILVA',
+                    registro: '12345',
+                    dataNascimento: '15/03/1975',
+                    idade: 49,
+                    origem: 'UPA CENTRO',
+                    dataHoraAdmissao: dataAdmissao.toISOString(),
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Paciente com dor abdominal, aguardando cirurgia',
+                    leito: leitoTeste
+                };
+                
+                console.log('📋 Dados do teste:', dadosTeste);
+                console.log('⏰ Data de admissão:', new Date(dataAdmissao).toLocaleString('pt-BR'));
+                console.log('⏰ Agora:', new Date().toLocaleString('pt-BR'));
+                
+                // Verificar se a função calcularTempoPermanenciaHoras existe
+                if (typeof calcularTempoPermanenciaHoras === 'function') {
+                    console.log('⏰ Diferença em horas:', calcularTempoPermanenciaHoras(dataAdmissao.toISOString()));
+                } else {
+                    console.log('⚠️ Função calcularTempoPermanenciaHoras não encontrada');
+                }
+                
+                // Atualizar dados do leito
+                dadosLeitos[leitoTeste] = dadosTeste;
+                console.log('✅ Dados do leito atualizados:', dadosLeitos[leitoTeste]);
+                
+                // Atualizar interface
+                if (typeof atualizarLeito === 'function') {
+                    atualizarLeito(leitoTeste, dadosTeste);
+                    console.log('✅ Interface atualizada');
+                } else {
+                    console.log('⚠️ Função atualizarLeito não encontrada');
+                }
+                
+                // Forçar atualização do contador de tempo
+                setTimeout(function() {
+                    if (typeof atualizarContadorTempo === 'function') {
+                        atualizarContadorTempo(leitoTeste, dadosTeste.dataHoraAdmissao);
+                        console.log('✅ Contador de tempo atualizado');
+                    } else {
+                        console.log('⚠️ Função atualizarContadorTempo não encontrada');
+                    }
+                }, 500);
+                
+                // Verificar alerta após 1 segundo
+                setTimeout(function() {
+                    console.log('🔍 Verificando alerta para leito:', leitoTeste);
+                    if (typeof verificarAlerta72Horas === 'function') {
+                        verificarAlerta72Horas(leitoTeste, dadosTeste, 72);
+                        console.log('✅ Alerta 72h verificado');
+                    } else {
+                        console.log('⚠️ Função verificarAlerta72Horas não encontrada');
+                    }
+                }, 1000);
+                
+                // Mostrar informações do teste
+                var infoTeste = '🧪 TESTE 72H INICIADO\n\n' +
+                               'Paciente: ' + dadosTeste.pacienteIniciais + '\n' +
+                               'Leito: ' + leitoTeste + '\n' +
+                               'Admissão: ' + new Date(dataAdmissao).toLocaleString('pt-BR') + '\n' +
+                               'Tempo atual: ' + (typeof calcularTempoPermanencia === 'function' ? calcularTempoPermanencia(dataAdmissao.toISOString()) : '72h') + '\n\n' +
+                               'O modal de justificativa deve aparecer em breve!\n\n' +
+                               'Verifique o console para mais detalhes.';
+                
+                alert(infoTeste);
+                
+                console.log('✅ Teste realista de 72h iniciado para leito:', leitoTeste);
+                
+            } catch (error) {
+                console.error('❌ Erro no teste 72h:', error);
+                alert('❌ Erro no teste: ' + error.message + '\n\nVerifique o console para mais detalhes.');
+            }
+        }
+        
+        // FUNCAO PARA TESTE SIMPLES DE 72H
+        function testeSimples72h() {
+            console.log('⚡ Iniciando teste simples de 72h...');
             
-            var dadosTeste = {
-                pacienteIniciais: 'MARIA SILVA',
-                registro: '12345',
-                dataNascimento: '15/03/1975',
-                idade: 49,
-                origem: 'UPA CENTRO',
-                dataHoraAdmissao: dataAdmissao.toISOString(),
-                status: 'EM ATENDIMENTO',
-                observacoes: 'Paciente com dor abdominal, aguardando cirurgia',
-                leito: leitoTeste
-            };
+            try {
+                // Teste direto do modal de justificativa
+                var leitoTeste = 'PA-01';
+                var dadosTeste = {
+                    pacienteIniciais: 'TESTE SIMPLES',
+                    registro: '99999',
+                    dataNascimento: '01/01/1990',
+                    idade: 34,
+                    origem: 'TESTE',
+                    dataHoraAdmissao: new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString(),
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Teste simples de 72h',
+                    leito: leitoTeste
+                };
+                
+                console.log('📋 Dados do teste simples:', dadosTeste);
+                
+                // Atualizar dados
+                dadosLeitos[leitoTeste] = dadosTeste;
+                
+                // Atualizar interface
+                atualizarLeito(leitoTeste, dadosTeste);
+                
+                // Forçar alerta imediatamente
+                setTimeout(function() {
+                    console.log('🚨 Forçando alerta 72h...');
+                    
+                    // Abrir modal diretamente
+                    if (typeof abrirModalJustificativa === 'function') {
+                        abrirModalJustificativa(leitoTeste, dadosTeste, 72);
+                        console.log('✅ Modal de justificativa aberto');
+                    } else {
+                        console.log('⚠️ Função abrirModalJustificativa não encontrada');
+                        
+                        // Tentar abrir modal manualmente
+                        var modal = document.getElementById('modalJustificativaTempo');
+                        if (modal) {
+                            // Preencher informações
+                            document.getElementById('justificativaPaciente').textContent = dadosTeste.pacienteIniciais;
+                            document.getElementById('justificativaLeito').textContent = leitoTeste;
+                            document.getElementById('justificativaTempo').textContent = '72h 0min';
+                            
+                            // Mostrar modal
+                            modal.style.display = 'block';
+                            modal.classList.add('show');
+                            
+                            console.log('✅ Modal aberto manualmente');
+                        } else {
+                            console.log('❌ Modal não encontrado');
+                        }
+                    }
+                }, 1000);
+                
+                alert('⚡ TESTE SIMPLES 72H\n\n' +
+                      'Paciente: ' + dadosTeste.pacienteIniciais + '\n' +
+                      'Leito: ' + leitoTeste + '\n' +
+                      'Tempo: 72h\n\n' +
+                      'Modal deve aparecer em 1 segundo!\n\n' +
+                      'Verifique o console para detalhes.');
+                
+            } catch (error) {
+                console.error('❌ Erro no teste simples:', error);
+                alert('❌ Erro no teste simples: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA FORCAR MODAL DE 72H
+        function forcarModal72h() {
+            console.log('🚨 Forçando abertura do modal de 72h...');
             
-            console.log('📋 Dados do teste:', dadosTeste);
-            console.log('⏰ Data de admissão:', new Date(dataAdmissao).toLocaleString('pt-BR'));
-            console.log('⏰ Agora:', new Date().toLocaleString('pt-BR'));
-            console.log('⏰ Diferença em horas:', calcularTempoPermanenciaHoras(dataAdmissao.toISOString()));
-            
-            // Atualizar dados do leito
-            dadosLeitos[leitoTeste] = dadosTeste;
-            
-            // Atualizar interface
-            atualizarLeito(leitoTeste, dadosTeste);
-            
-            // Forçar atualização do contador de tempo
-            setTimeout(function() {
-                atualizarContadorTempo(leitoTeste, dadosTeste.dataHoraAdmissao);
-            }, 500);
-            
-            // Verificar alerta após 1 segundo
-            setTimeout(function() {
-                console.log('🔍 Verificando alerta para leito:', leitoTeste);
-                verificarAlerta72Horas(leitoTeste, dadosTeste, 72);
-            }, 1000);
-            
-            // Mostrar informações do teste
-            var infoTeste = '🧪 TESTE 72H INICIADO\n\n' +
-                           'Paciente: ' + dadosTeste.pacienteIniciais + '\n' +
-                           'Leito: ' + leitoTeste + '\n' +
-                           'Admissão: ' + new Date(dataAdmissao).toLocaleString('pt-BR') + '\n' +
-                           'Tempo atual: ' + calcularTempoPermanencia(dataAdmissao.toISOString()) + '\n\n' +
-                           'O modal de justificativa deve aparecer em breve!';
-            
-            alert(infoTeste);
-            
-            console.log('✅ Teste realista de 72h iniciado para leito:', leitoTeste);
+            try {
+                // Verificar se o modal existe
+                var modal = document.getElementById('modalJustificativaTempo');
+                if (!modal) {
+                    alert('❌ Modal de justificativa não encontrado!');
+                    return;
+                }
+                
+                console.log('✅ Modal encontrado:', modal);
+                
+                // Preencher informações
+                var pacienteElement = document.getElementById('justificativaPaciente');
+                var leitoElement = document.getElementById('justificativaLeito');
+                var tempoElement = document.getElementById('justificativaTempo');
+                
+                if (pacienteElement) {
+                    pacienteElement.textContent = 'TESTE FORÇADO';
+                    console.log('✅ Paciente preenchido');
+                } else {
+                    console.log('❌ Elemento justificativaPaciente não encontrado');
+                }
+                
+                if (leitoElement) {
+                    leitoElement.textContent = 'PA-01';
+                    console.log('✅ Leito preenchido');
+                } else {
+                    console.log('❌ Elemento justificativaLeito não encontrado');
+                }
+                
+                if (tempoElement) {
+                    tempoElement.textContent = '72h 0min';
+                    console.log('✅ Tempo preenchido');
+                } else {
+                    console.log('❌ Elemento justificativaTempo não encontrado');
+                }
+                
+                // Limpar formulário
+                var form = document.getElementById('formJustificativaTempo');
+                if (form) {
+                    form.reset();
+                    console.log('✅ Formulário limpo');
+                } else {
+                    console.log('❌ Formulário não encontrado');
+                }
+                
+                // Mostrar modal
+                modal.style.display = 'block';
+                modal.classList.add('show');
+                
+                // Forçar reflow
+                modal.offsetHeight;
+                
+                console.log('✅ Modal exibido');
+                console.log('Modal display:', modal.style.display);
+                console.log('Modal classes:', modal.className);
+                
+                alert('🚨 MODAL FORÇADO!\n\n' +
+                      'Se o modal não apareceu, verifique:\n' +
+                      '1. Console do navegador (F12)\n' +
+                      '2. Se há erros JavaScript\n' +
+                      '3. Se o modal está sendo bloqueado\n\n' +
+                      'Modal deve estar visível agora!');
+                
+            } catch (error) {
+                console.error('❌ Erro ao forçar modal:', error);
+                alert('❌ Erro ao forçar modal: ' + error.message);
+            }
         }
         
         // FUNCAO PARA TESTAR DIFERENTES CENARIOS DE 72H
