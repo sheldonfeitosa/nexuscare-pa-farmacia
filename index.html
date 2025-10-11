@@ -356,6 +356,107 @@
             border: 1px solid #f5c6cb;
             animation: pulse 2s infinite;
         }
+        
+        /* FUNDO DESTACADO PARA MEDICACAO LIBERADA */
+        .medicacao-status-row {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            border: 2px solid #27ae60;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 5px 0;
+            box-shadow: 0 2px 4px rgba(39, 174, 96, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .medicacao-status-row::before {
+            content: "💊";
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            font-size: 16px;
+            opacity: 0.7;
+        }
+        
+        .medicacao-status-row .info-label {
+            font-weight: bold;
+            color: #155724;
+            font-size: 0.9rem;
+        }
+        
+        .medicacao-status-row .info-value {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        /* ESTILOS POR PRIORIDADE DE MEDICACAO */
+        .medicacao-status-row.normal {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            border-color: #27ae60;
+            animation: medicacaoPulse 4s ease-in-out infinite;
+        }
+        
+        .medicacao-status-row.alta {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-color: #f39c12;
+            animation: medicacaoPulse 3s ease-in-out infinite;
+        }
+        
+        .medicacao-status-row.urgente {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            border-color: #e74c3c;
+            animation: medicacaoPulse 1.5s ease-in-out infinite;
+        }
+        
+        .medicacao-status-row.baixa {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-color: #2196f3;
+            animation: medicacaoPulse 5s ease-in-out infinite;
+        }
+        
+        /* ANIMACAO DE DESTAQUE */
+        @keyframes medicacaoPulse {
+            0% { 
+                box-shadow: 0 2px 4px rgba(39, 174, 96, 0.2);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 4px 8px rgba(39, 174, 96, 0.4);
+                transform: scale(1.02);
+            }
+            100% { 
+                box-shadow: 0 2px 4px rgba(39, 174, 96, 0.2);
+                transform: scale(1);
+            }
+        }
+        
+        /* ANIMACAO ESPECIAL PARA URGENTE */
+        @keyframes medicacaoUrgente {
+            0% { 
+                box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+                transform: scale(1);
+            }
+            25% { 
+                box-shadow: 0 6px 12px rgba(231, 76, 60, 0.6);
+                transform: scale(1.05);
+            }
+            50% { 
+                box-shadow: 0 4px 8px rgba(231, 76, 60, 0.4);
+                transform: scale(1.02);
+            }
+            75% { 
+                box-shadow: 0 6px 12px rgba(231, 76, 60, 0.6);
+                transform: scale(1.05);
+            }
+            100% { 
+                box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+                transform: scale(1);
+            }
+        }
+        
+        .medicacao-status-row.urgente {
+            animation: medicacaoUrgente 1.5s ease-in-out infinite;
+        }
         .modal-content {
             background-color: white;
             margin: 1% auto;
@@ -2619,6 +2720,7 @@
                         <button onclick="testar72hRealista()" class="btn-secondary" style="margin-left: 10px;">🕐 Teste 72h Realista</button>
                         <button onclick="testeSimples72h()" class="btn-secondary" style="margin-left: 10px;">⚡ Teste Simples 72h</button>
                         <button onclick="forcarModal72h()" class="btn-secondary" style="margin-left: 10px;">🚨 Forçar Modal 72h</button>
+                        <button onclick="testarMedicacaoPrioridades()" class="btn-secondary" style="margin-left: 10px;">💊 Testar Medicação</button>
                         <button onclick="testarCenarios72h()" class="btn-secondary" style="margin-left: 10px;">📊 Cenários 72h</button>
                         <button onclick="limparTestes72h()" class="btn-secondary" style="margin-left: 10px;">🧹 Limpar Testes</button>
                         <button onclick="forcarSincronizacaoInterface()" class="btn-secondary" style="margin-left: 10px;">🔄 Sincronizar Interface</button>
@@ -6164,7 +6266,7 @@
                 var medicacaoHtml = '';
                 if (dados.medicacaoLiberada) {
                     var prioridade = dados.medicacaoLiberada.prioridade || 'normal';
-                    medicacaoHtml = '<div class="info-row medicacao-status-row">' +
+                    medicacaoHtml = '<div class="info-row medicacao-status-row ' + prioridade + '">' +
                         '<span class="info-label">Medicação:</span>' +
                         '<span class="info-value medicacao-status ' + prioridade + '">' +
                             'LIBERADA - ' + prioridade.toUpperCase() +
@@ -8876,6 +8978,126 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             }
         }
         
+        // FUNCAO PARA TESTAR PRIORIDADES DE MEDICACAO
+        function testarMedicacaoPrioridades() {
+            console.log('💊 Testando prioridades de medicação...');
+            
+            var opcoes = 'Escolha a prioridade para testar:\n\n' +
+                        '1. 🔵 Baixa (azul)\n' +
+                        '2. 🟢 Normal (verde)\n' +
+                        '3. 🟡 Alta (amarelo)\n' +
+                        '4. 🔴 Urgente (vermelho)\n' +
+                        '5. 📊 Todas as prioridades\n' +
+                        '6. ❌ Cancelar';
+            
+            var escolha = prompt(opcoes);
+            
+            if (!escolha || escolha === '6') {
+                return;
+            }
+            
+            switch(escolha) {
+                case '1':
+                    criarMedicacaoTeste('PA-01', 'baixa', 'Dipirona 500mg');
+                    break;
+                case '2':
+                    criarMedicacaoTeste('PA-02', 'normal', 'Paracetamol 750mg');
+                    break;
+                case '3':
+                    criarMedicacaoTeste('PA-03', 'alta', 'Morfina 10mg');
+                    break;
+                case '4':
+                    criarMedicacaoTeste('PA-04', 'urgente', 'Adrenalina 1mg');
+                    break;
+                case '5':
+                    testarTodasPrioridades();
+                    break;
+                default:
+                    alert('Opção inválida!');
+            }
+        }
+        
+        // FUNCAO PARA CRIAR MEDICACAO DE TESTE
+        function criarMedicacaoTeste(leitoId, prioridade, medicamento) {
+            console.log('💊 Criando medicação de teste:', leitoId, prioridade, medicamento);
+            
+            // Criar dados do paciente
+            var dadosPaciente = {
+                pacienteIniciais: 'PACIENTE TESTE',
+                registro: Math.floor(Math.random() * 90000) + 10000,
+                dataNascimento: '01/01/1980',
+                idade: 44,
+                origem: 'UPA CENTRO',
+                dataHoraAdmissao: new Date().toISOString(),
+                status: 'EM ATENDIMENTO',
+                observacoes: 'Paciente de teste para medicação',
+                leito: leitoId
+            };
+            
+            // Criar dados da medicação
+            var medicacao = {
+                leitoId: leitoId,
+                paciente: dadosPaciente.pacienteIniciais,
+                medicamentos: medicamento,
+                dosagem: '1x ao dia',
+                observacoes: 'Medicação de teste - ' + prioridade,
+                responsavel: 'Farmacêutico Teste',
+                prioridade: prioridade,
+                dataHora: new Date().toISOString(),
+                status: 'liberada'
+            };
+            
+            // Atualizar dados do leito
+            dadosLeitos[leitoId] = dadosPaciente;
+            dadosLeitos[leitoId].medicacaoLiberada = medicacao;
+            dadosLeitos[leitoId].statusMedicacao = 'liberada';
+            
+            // Atualizar interface
+            atualizarLeito(leitoId, dadosLeitos[leitoId]);
+            
+            // Atualizar status de medicação
+            atualizarStatusMedicacao(leitoId, medicacao);
+            
+            var cores = {
+                'baixa': '🔵 Azul',
+                'normal': '🟢 Verde', 
+                'alta': '🟡 Amarelo',
+                'urgente': '🔴 Vermelho'
+            };
+            
+            alert('💊 MEDICAÇÃO CRIADA\n\n' +
+                  'Paciente: ' + dadosPaciente.pacienteIniciais + '\n' +
+                  'Leito: ' + leitoId + '\n' +
+                  'Medicamento: ' + medicamento + '\n' +
+                  'Prioridade: ' + cores[prioridade] + '\n\n' +
+                  'Observe o fundo colorido no card!');
+        }
+        
+        // FUNCAO PARA TESTAR TODAS AS PRIORIDADES
+        function testarTodasPrioridades() {
+            console.log('📊 Testando todas as prioridades de medicação...');
+            
+            var prioridades = [
+                { leito: 'PA-01', prioridade: 'baixa', medicamento: 'Vitamina C' },
+                { leito: 'PA-02', prioridade: 'normal', medicamento: 'Paracetamol' },
+                { leito: 'PA-03', prioridade: 'alta', medicamento: 'Morfina' },
+                { leito: 'PA-04', prioridade: 'urgente', medicamento: 'Adrenalina' }
+            ];
+            
+            prioridades.forEach(function(item, index) {
+                setTimeout(function() {
+                    criarMedicacaoTeste(item.leito, item.prioridade, item.medicamento);
+                }, index * 1000);
+            });
+            
+            alert('📊 TESTE DE TODAS PRIORIDADES\n\n' +
+                  'PA-01: Baixa (azul) - em 0s\n' +
+                  'PA-02: Normal (verde) - em 1s\n' +
+                  'PA-03: Alta (amarelo) - em 2s\n' +
+                  'PA-04: Urgente (vermelho) - em 3s\n\n' +
+                  'Observe as diferentes cores e animações!');
+        }
+        
         // FUNCAO PARA TESTAR DIFERENTES CENARIOS DE 72H
         function testarCenarios72h() {
             console.log('📊 Iniciando teste de cenários de 72h...');
@@ -9183,7 +9405,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                 var leitoInfo = document.getElementById('info-' + leitoId);
                 if (leitoInfo) {
                     // Adicionar status de medicação
-                    var medicacaoHtml = '<div class="info-row medicacao-status-row">' +
+                    var medicacaoHtml = '<div class="info-row medicacao-status-row ' + medicacao.prioridade + '">' +
                         '<span class="info-label">Medicação:</span>' +
                         '<span class="info-value medicacao-status ' + medicacao.prioridade + '">' +
                             'LIBERADA - ' + medicacao.prioridade.toUpperCase() +
