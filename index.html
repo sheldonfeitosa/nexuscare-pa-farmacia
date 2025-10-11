@@ -2616,6 +2616,9 @@
                         <button onclick="debugDadosLeitos()" class="btn-secondary" style="margin-left: 10px;">🔍 Debug Dados Leitos</button>
                         <button onclick="inicializarLeitosVazios()" class="btn-secondary" style="margin-left: 10px;">🏥 Inicializar Leitos</button>
                         <button onclick="testarAlerta72h()" class="btn-secondary" style="margin-left: 10px;">⚠️ Testar Alerta 72h</button>
+                        <button onclick="testar72hRealista()" class="btn-secondary" style="margin-left: 10px;">🕐 Teste 72h Realista</button>
+                        <button onclick="testarCenarios72h()" class="btn-secondary" style="margin-left: 10px;">📊 Cenários 72h</button>
+                        <button onclick="limparTestes72h()" class="btn-secondary" style="margin-left: 10px;">🧹 Limpar Testes</button>
                         <button onclick="forcarSincronizacaoInterface()" class="btn-secondary" style="margin-left: 10px;">🔄 Sincronizar Interface</button>
                         <button onclick="corrigirDadosInvalidos()" class="btn-secondary" style="margin-left: 10px;">🔧 Corrigir Dados</button>
                         <button onclick="fecharTodosModais()" class="btn-secondary" style="margin-left: 10px;">❌ Fechar Todos Modais</button>
@@ -8641,6 +8644,234 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             }, 1000);
             
             console.log('✅ Teste de alerta 72h iniciado para leito:', leitoTeste);
+        }
+        
+        // FUNCAO PARA TESTE REALISTA DE 72H
+        function testar72hRealista() {
+            console.log('🕐 Iniciando teste realista de 72h...');
+            
+            // Simular um paciente realista com 72h exatas
+            var leitoTeste = 'PA-02';
+            var dataAdmissao = new Date();
+            dataAdmissao.setHours(dataAdmissao.getHours() - 72); // Exatamente 72 horas atrás
+            
+            var dadosTeste = {
+                pacienteIniciais: 'MARIA SILVA',
+                registro: '12345',
+                dataNascimento: '15/03/1975',
+                idade: 49,
+                origem: 'UPA CENTRO',
+                dataHoraAdmissao: dataAdmissao.toISOString(),
+                status: 'EM ATENDIMENTO',
+                observacoes: 'Paciente com dor abdominal, aguardando cirurgia',
+                leito: leitoTeste
+            };
+            
+            console.log('📋 Dados do teste:', dadosTeste);
+            console.log('⏰ Data de admissão:', new Date(dataAdmissao).toLocaleString('pt-BR'));
+            console.log('⏰ Agora:', new Date().toLocaleString('pt-BR'));
+            console.log('⏰ Diferença em horas:', calcularTempoPermanenciaHoras(dataAdmissao.toISOString()));
+            
+            // Atualizar dados do leito
+            dadosLeitos[leitoTeste] = dadosTeste;
+            
+            // Atualizar interface
+            atualizarLeito(leitoTeste, dadosTeste);
+            
+            // Forçar atualização do contador de tempo
+            setTimeout(function() {
+                atualizarContadorTempo(leitoTeste, dadosTeste.dataHoraAdmissao);
+            }, 500);
+            
+            // Verificar alerta após 1 segundo
+            setTimeout(function() {
+                console.log('🔍 Verificando alerta para leito:', leitoTeste);
+                verificarAlerta72Horas(leitoTeste, dadosTeste, 72);
+            }, 1000);
+            
+            // Mostrar informações do teste
+            var infoTeste = '🧪 TESTE 72H INICIADO\n\n' +
+                           'Paciente: ' + dadosTeste.pacienteIniciais + '\n' +
+                           'Leito: ' + leitoTeste + '\n' +
+                           'Admissão: ' + new Date(dataAdmissao).toLocaleString('pt-BR') + '\n' +
+                           'Tempo atual: ' + calcularTempoPermanencia(dataAdmissao.toISOString()) + '\n\n' +
+                           'O modal de justificativa deve aparecer em breve!';
+            
+            alert(infoTeste);
+            
+            console.log('✅ Teste realista de 72h iniciado para leito:', leitoTeste);
+        }
+        
+        // FUNCAO PARA TESTAR DIFERENTES CENARIOS DE 72H
+        function testarCenarios72h() {
+            console.log('📊 Iniciando teste de cenários de 72h...');
+            
+            var opcoes = 'Escolha o cenário de teste:\n\n' +
+                        '1. 🟢 72h exatas (normal)\n' +
+                        '2. 🟡 75h (3h após 72h)\n' +
+                        '3. 🔴 80h (8h após 72h)\n' +
+                        '4. 🚨 96h (24h após 72h)\n' +
+                        '5. 📊 Múltiplos pacientes\n' +
+                        '6. ❌ Cancelar';
+            
+            var escolha = prompt(opcoes);
+            
+            if (!escolha || escolha === '6') {
+                return;
+            }
+            
+            switch(escolha) {
+                case '1':
+                    testarCenario72hExatas();
+                    break;
+                case '2':
+                    testarCenario75h();
+                    break;
+                case '3':
+                    testarCenario80h();
+                    break;
+                case '4':
+                    testarCenario96h();
+                    break;
+                case '5':
+                    testarMultiplosPacientes();
+                    break;
+                default:
+                    alert('Opção inválida!');
+            }
+        }
+        
+        // CENARIO 1: 72h exatas
+        function testarCenario72hExatas() {
+            criarPacienteTeste('PA-03', 72, 'JOÃO SANTOS', 'Aguardando exame');
+        }
+        
+        // CENARIO 2: 75h (3h após 72h)
+        function testarCenario75h() {
+            criarPacienteTeste('PA-04', 75, 'ANA COSTA', 'Aguardando cirurgia');
+        }
+        
+        // CENARIO 3: 80h (8h após 72h)
+        function testarCenario80h() {
+            criarPacienteTeste('PA-05', 80, 'CARLOS OLIVEIRA', 'Aguardando UTI');
+        }
+        
+        // CENARIO 4: 96h (24h após 72h)
+        function testarCenario96h() {
+            criarPacienteTeste('PA-06', 96, 'MARIA FERNANDES', 'Família não autoriza alta');
+        }
+        
+        // CENARIO 5: Múltiplos pacientes
+        function testarMultiplosPacientes() {
+            console.log('📊 Criando múltiplos pacientes para teste...');
+            
+            // Paciente com 72h
+            criarPacienteTeste('PA-07', 72, 'PEDRO SILVA', 'Aguardando resultado');
+            
+            // Paciente com 78h
+            setTimeout(() => {
+                criarPacienteTeste('PA-08', 78, 'LUCIA MARTINS', 'Aguardando especialista');
+            }, 2000);
+            
+            // Paciente com 84h
+            setTimeout(() => {
+                criarPacienteTeste('PA-09', 84, 'ROBERTO LIMA', 'Condição instável');
+            }, 4000);
+            
+            alert('📊 Múltiplos pacientes criados!\n\n' +
+                  'PA-07: 72h (JOÃO SANTOS)\n' +
+                  'PA-08: 78h (LUCIA MARTINS) - em 2s\n' +
+                  'PA-09: 84h (ROBERTO LIMA) - em 4s\n\n' +
+                  'Observe os alertas sequenciais!');
+        }
+        
+        // FUNCAO AUXILIAR PARA CRIAR PACIENTE DE TESTE
+        function criarPacienteTeste(leitoId, horasAtras, nome, observacoes) {
+            var dataAdmissao = new Date();
+            dataAdmissao.setHours(dataAdmissao.getHours() - horasAtras);
+            
+            var dadosTeste = {
+                pacienteIniciais: nome,
+                registro: Math.floor(Math.random() * 90000) + 10000,
+                dataNascimento: '01/01/1980',
+                idade: 44,
+                origem: 'UPA CENTRO',
+                dataHoraAdmissao: dataAdmissao.toISOString(),
+                status: 'EM ATENDIMENTO',
+                observacoes: observacoes,
+                leito: leitoId
+            };
+            
+            console.log('🧪 Criando paciente de teste:', dadosTeste);
+            console.log('⏰ Horas atrás:', horasAtras);
+            console.log('⏰ Data admissão:', new Date(dataAdmissao).toLocaleString('pt-BR'));
+            
+            // Atualizar dados do leito
+            dadosLeitos[leitoId] = dadosTeste;
+            
+            // Atualizar interface
+            atualizarLeito(leitoId, dadosTeste);
+            
+            // Forçar atualização do contador
+            setTimeout(function() {
+                atualizarContadorTempo(leitoId, dadosTeste.dataHoraAdmissao);
+            }, 500);
+            
+            // Verificar alerta
+            setTimeout(function() {
+                verificarAlerta72Horas(leitoId, dadosTeste, horasAtras);
+            }, 1000);
+            
+            var info = '🧪 PACIENTE CRIADO\n\n' +
+                      'Nome: ' + nome + '\n' +
+                      'Leito: ' + leitoId + '\n' +
+                      'Tempo: ' + horasAtras + 'h\n' +
+                      'Status: ' + (horasAtras >= 72 ? 'ALERTA ATIVO' : 'Normal') + '\n' +
+                      'Observações: ' + observacoes;
+            
+            alert(info);
+        }
+        
+        // FUNCAO PARA LIMPAR TESTES DE 72H
+        function limparTestes72h() {
+            console.log('🧹 Limpando testes de 72h...');
+            
+            var leitosTeste = ['PA-01', 'PA-02', 'PA-03', 'PA-04', 'PA-05', 'PA-06', 'PA-07', 'PA-08', 'PA-09'];
+            var limpos = 0;
+            
+            leitosTeste.forEach(function(leitoId) {
+                if (dadosLeitos[leitoId]) {
+                    // Limpar dados do leito
+                    delete dadosLeitos[leitoId];
+                    
+                    // Limpar interface
+                    limparLeito(leitoId);
+                    
+                    // Limpar alertas
+                    delete alertasTempo[leitoId + '_72h'];
+                    delete ultimaJustificativa[leitoId];
+                    
+                    limpos++;
+                }
+            });
+            
+            // Fechar todos os modais
+            fecharTodosModais();
+            
+            // Forçar sincronização da interface
+            setTimeout(function() {
+                forcarSincronizacaoInterface();
+            }, 500);
+            
+            var mensagem = '🧹 TESTES LIMPOS\n\n' +
+                          'Leitos limpos: ' + limpos + '\n' +
+                          'Modais fechados\n' +
+                          'Interface sincronizada\n\n' +
+                          'Sistema pronto para novos testes!';
+            
+            alert(mensagem);
+            
+            console.log('✅ Testes de 72h limpos:', limpos, 'leitos');
         }
         
         // FUNCOES PARA SISTEMA DE MEDICACAO
