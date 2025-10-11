@@ -228,7 +228,16 @@
 
         /* Modal de Transferência com z-index maior */
         #modalTransferir {
-            z-index: 2000;
+            z-index: 2000 !important;
+        }
+        
+        /* Garantir que o modal de transferência seja visível */
+        #modalTransferir.modal {
+            display: none !important;
+        }
+        
+        #modalTransferir.modal.show {
+            display: block !important;
         }
         .modal-content {
             background-color: white;
@@ -2486,6 +2495,7 @@
                         <button onclick="testarWhatsApp()" class="btn-secondary">📱 Testar WhatsApp</button>
                         <button onclick="testarSincronizacaoAudio()" class="btn-secondary">🔊 Testar Sincronização de Áudio</button>
                         <button onclick="testarSistema()" class="btn-secondary" style="margin-left: 10px;">🧪 Testar Sistema Completo</button>
+                        <button onclick="testarModalTransferencia()" class="btn-secondary" style="margin-left: 10px;">🔄 Testar Modal Transferência</button>
                         <div id="statusSincronizacaoAudio" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #e8f5e8; display: none;">
                             <strong>🔊 Status da Sincronização de Áudio:</strong>
                             <div id="statusAudioTexto">Verificando...</div>
@@ -4776,16 +4786,47 @@
             // OBTER DADOS DO PACIENTE
             var dadosPaciente = dadosLeitos[leitoId];
             
+            // VALIDAR SE HÁ DADOS DO PACIENTE
+            if (!dadosPaciente || dadosPaciente.status !== 'EM ATENDIMENTO') {
+                console.log('❌ Nenhum paciente encontrado no leito:', leitoId);
+                alert('Não há paciente para transferir neste leito.');
+                return;
+            }
+            
+            console.log('✅ Dados do paciente encontrados:', dadosPaciente);
+            
             // PREENCHER INFORMACOES DO PACIENTE
-            document.getElementById('infoPacienteNome').textContent = dadosPaciente.pacienteIniciais;
-            document.getElementById('infoPacienteRegistro').textContent = dadosPaciente.registro;
-            document.getElementById('infoPacienteOrigem').textContent = dadosPaciente.origem;
-            document.getElementById('infoPacienteLeito').textContent = dadosPaciente.leito;
-            document.getElementById('infoPacienteAdmissao').textContent = new Date(dadosPaciente.dataHoraAdmissao).toLocaleString('pt-BR');
+            document.getElementById('infoPacienteNome').textContent = dadosPaciente.pacienteIniciais || 'N/A';
+            document.getElementById('infoPacienteRegistro').textContent = dadosPaciente.registro || 'N/A';
+            document.getElementById('infoPacienteOrigem').textContent = dadosPaciente.origem || 'N/A';
+            document.getElementById('infoPacienteLeito').textContent = dadosPaciente.leito || leitoId;
+            document.getElementById('infoPacienteAdmissao').textContent = dadosPaciente.dataHoraAdmissao ? 
+                new Date(dadosPaciente.dataHoraAdmissao).toLocaleString('pt-BR') : 'N/A';
             document.getElementById('infoPacienteObservacoes').textContent = dadosPaciente.observacoes || 'Nenhuma';
             
+            // LIMPAR FORMULÁRIO DE TRANSFERÊNCIA
+            document.getElementById('formTransferir').reset();
+            
             document.getElementById('modalTituloTransferir').textContent = 'Transferir Paciente - ' + leitoId;
-            document.getElementById('modalTransferir').style.display = 'block';
+            
+            // Usar classe CSS para mostrar o modal
+            var modal = document.getElementById('modalTransferir');
+            if (modal) {
+                modal.classList.add('show');
+                modal.style.display = 'block';
+                modal.style.zIndex = '2000';
+                
+                // Forçar reflow para garantir que o modal seja exibido
+                modal.offsetHeight;
+                
+                console.log('✅ Modal de transferência aberto com sucesso');
+                console.log('Modal display:', modal.style.display);
+                console.log('Modal z-index:', modal.style.zIndex);
+                console.log('Modal classes:', modal.className);
+            } else {
+                console.log('❌ Modal de transferência não encontrado no DOM');
+                alert('Erro: Modal de transferência não encontrado.');
+            }
         }
         
         // FUNCAO PARA FECHAR MODAL DE ADMISSAO
@@ -4851,8 +4892,11 @@
         
         // FUNCAO PARA FECHAR MODAL DE TRANSFERENCIA
         function fecharModalTransferir() {
-            document.getElementById('modalTransferir').style.display = 'none';
+            var modal = document.getElementById('modalTransferir');
+            modal.classList.remove('show');
+            modal.style.display = 'none';
             document.getElementById('formTransferir').reset();
+            console.log('✅ Modal de transferência fechado');
         }
         
         // FUNCAO PARA ENVIAR EVENTO DE AUDIO VIA FIREBASE (Sincronização entre dispositivos)
@@ -7127,7 +7171,43 @@
             console.log('- Leitos:', Object.keys(dadosLeitos).length);
             console.log('- Histórico:', historicoPacientes.length);
             
+            // Testar modal de transferência
+            console.log('🔍 Testando modal de transferência...');
+            var modalTransferir = document.getElementById('modalTransferir');
+            if (modalTransferir) {
+                console.log('✅ Modal de transferência encontrado');
+                console.log('Modal display:', modalTransferir.style.display);
+                console.log('Modal z-index:', modalTransferir.style.zIndex);
+            } else {
+                console.log('❌ Modal de transferência não encontrado');
+            }
+            
             alert('✅ Teste do sistema concluído! Verifique o console para detalhes.');
+        }
+        
+        // FUNCAO DE TESTE ESPECÍFICA PARA MODAL DE TRANSFERÊNCIA
+        function testarModalTransferencia() {
+            console.log('🧪 Testando modal de transferência...');
+            
+            // Verificar se há pacientes para transferir
+            var leitosComPacientes = [];
+            for (var leito in dadosLeitos) {
+                if (dadosLeitos[leito] && dadosLeitos[leito].status === 'EM ATENDIMENTO') {
+                    leitosComPacientes.push(leito);
+                }
+            }
+            
+            if (leitosComPacientes.length === 0) {
+                alert('❌ Não há pacientes para transferir. Admita um paciente primeiro.');
+                return;
+            }
+            
+            console.log('✅ Leitos com pacientes:', leitosComPacientes);
+            
+            // Testar abrir modal com o primeiro leito com paciente
+            var leitoTeste = leitosComPacientes[0];
+            console.log('🔍 Testando com leito:', leitoTeste);
+            abrirModalTransferir(leitoTeste);
         }
         
         // FUNCOES DE RELATORIOS AUTOMATICOS
