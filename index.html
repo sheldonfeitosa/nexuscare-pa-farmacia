@@ -2513,6 +2513,7 @@
                         <button onclick="debugDadosLeitos()" class="btn-secondary" style="margin-left: 10px;">🔍 Debug Dados Leitos</button>
                         <button onclick="inicializarLeitosVazios()" class="btn-secondary" style="margin-left: 10px;">🏥 Inicializar Leitos</button>
                         <button onclick="forcarSincronizacaoInterface()" class="btn-secondary" style="margin-left: 10px;">🔄 Sincronizar Interface</button>
+                        <button onclick="corrigirDadosInvalidos()" class="btn-secondary" style="margin-left: 10px;">🔧 Corrigir Dados</button>
                         <button onclick="fecharTodosModais()" class="btn-secondary" style="margin-left: 10px;">❌ Fechar Todos Modais</button>
                         <div id="statusSincronizacaoAudio" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #e8f5e8; display: none;">
                             <strong>🔊 Status da Sincronização de Áudio:</strong>
@@ -5317,16 +5318,65 @@
         
         // FUNCAO PARA CALCULAR IDADE
         function calcularIdade(dataNascimento) {
-            var hoje = new Date();
-            var nascimento = new Date(dataNascimento);
-            var idade = hoje.getFullYear() - nascimento.getFullYear();
-            var mes = hoje.getMonth() - nascimento.getMonth();
+            try {
+                var hoje = new Date();
+                var nascimento = new Date(dataNascimento);
+                
+                // Validar se a data é válida
+                if (isNaN(nascimento.getTime())) {
+                    console.log('⚠️ Data de nascimento inválida:', dataNascimento);
+                    return 0;
+                }
+                
+                // Validar se a data não é no futuro
+                if (nascimento > hoje) {
+                    console.log('⚠️ Data de nascimento no futuro:', dataNascimento);
+                    return 0;
+                }
+                
+                var idade = hoje.getFullYear() - nascimento.getFullYear();
+                var mes = hoje.getMonth() - nascimento.getMonth();
+                
+                if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
+                    idade--;
+                }
+                
+                // Validar se a idade é razoável (entre 0 e 150 anos)
+                if (idade < 0 || idade > 150) {
+                    console.log('⚠️ Idade inválida calculada:', idade, 'para data:', dataNascimento);
+                    return 0;
+                }
+                
+                return idade;
+            } catch (error) {
+                console.log('❌ Erro ao calcular idade:', error, 'para data:', dataNascimento);
+                return 0;
+            }
+        }
+        
+        // FUNCAO PARA CORRIGIR DADOS INVALIDOS
+        function corrigirDadosInvalidos() {
+            console.log('🔧 Corrigindo dados inválidos...');
             
-            if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
-                idade--;
+            var corrigidos = 0;
+            for (var leito in dadosLeitos) {
+                var dados = dadosLeitos[leito];
+                if (dados && dados.dataNascimento) {
+                    var idade = calcularIdade(dados.dataNascimento);
+                    if (dados.idade !== idade) {
+                        console.log(`🔧 Corrigindo idade do leito ${leito}: ${dados.idade} → ${idade}`);
+                        dados.idade = idade;
+                        dadosLeitos[leito] = dados;
+                        salvarNoFirebase('leitos', leito, dados);
+                        corrigidos++;
+                    }
+                }
             }
             
-            return idade;
+            console.log(`✅ Dados corrigidos: ${corrigidos} leitos`);
+            if (corrigidos > 0) {
+                forcarSincronizacaoInterface();
+            }
         }
         
         // FUNCAO PARA FORMATAR DATA DE NASCIMENTO
@@ -7314,9 +7364,70 @@
                     
                     if (estaVago) {
                         limparLeito(leitoId);
+                        // Forçar atualização visual imediata
+                        setTimeout(function(id) {
+                            var leitoCard = document.getElementById('leito-' + id);
+                            if (leitoCard) {
+                                var statusBadge = document.getElementById('status-' + id);
+                                if (statusBadge) {
+                                    statusBadge.textContent = 'VAGO';
+                                    statusBadge.className = 'status-badge vago';
+                                }
+                                var leitoInfo = document.getElementById('info-' + id);
+                                if (leitoInfo) {
+                                    leitoInfo.innerHTML = '<p>Leito disponível</p>';
+                                }
+                                var btnContainer = document.getElementById('btn-' + id);
+                                if (btnContainer) {
+                                    btnContainer.innerHTML = '<button class="btn" onclick="abrirModal(\'' + id + '\')">Admitir Paciente</button>';
+                                }
+                            }
+                        }, 50 * i, leitoId); // Delay escalonado para evitar conflitos
                         console.log(`✅ Interface limpa para leito vago: ${leitoId}`);
                     } else {
                         atualizarLeito(leitoId, dados);
+                        // Forçar atualização visual imediata
+                        setTimeout(function(id, dadosLeito) {
+                            var leitoCard = document.getElementById('leito-' + id);
+                            if (leitoCard) {
+                                var statusBadge = document.getElementById('status-' + id);
+                                if (statusBadge) {
+                                    statusBadge.textContent = 'EM ATENDIMENTO';
+                                    statusBadge.className = 'status-badge ocupado';
+                                }
+                                var leitoInfo = document.getElementById('info-' + id);
+                                if (leitoInfo) {
+                                    var dataHora = new Date(dadosLeito.dataHoraAdmissao).toLocaleString('pt-BR');
+                                    leitoInfo.innerHTML = 
+                                        '<div class="info-row">' +
+                                            '<span class="info-label">Paciente:</span>' +
+                                            '<span class="info-value"><strong>' + dadosLeito.pacienteIniciais + '</strong></span>' +
+                                        '</div>' +
+                                        '<div class="info-row">' +
+                                            '<span class="info-label">Registro:</span>' +
+                                            '<span class="info-value">' + dadosLeito.registro + '</span>' +
+                                        '</div>' +
+                                        '<div class="info-row">' +
+                                            '<span class="info-label">Nascimento:</span>' +
+                                            '<span class="info-value">' + dadosLeito.dataNascimento + ' (' + dadosLeito.idade + ' anos)</span>' +
+                                        '</div>' +
+                                        '<div class="info-row">' +
+                                            '<span class="info-label">Origem:</span>' +
+                                            '<span class="info-value">' + dadosLeito.origem + '</span>' +
+                                        '</div>' +
+                                        '<div class="info-row">' +
+                                            '<span class="info-label">Admissão:</span>' +
+                                            '<span class="info-value">' + dataHora + '</span>' +
+                                        '</div>';
+                                }
+                                var btnContainer = document.getElementById('btn-' + id);
+                                if (btnContainer) {
+                                    btnContainer.innerHTML = 
+                                        '<button class="btn btn-warning" onclick="abrirModalTransferir(\'' + id + '\')">Transferir</button>' +
+                                        '<button class="btn btn-danger" onclick="darAlta(\'' + id + '\')">Dar Alta</button>';
+                                }
+                            }
+                        }, 50 * i, leitoId, dados); // Delay escalonado para evitar conflitos
                         console.log(`✅ Interface atualizada para leito ocupado: ${leitoId}`);
                     }
                 } else {
@@ -7957,6 +8068,10 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             // Sincronizar dados do histórico com dadosLeitos ao carregar
             setTimeout(function() {
                 sincronizarDadosLeitos();
+                // Forçar sincronização da interface após sincronizar dados
+                setTimeout(function() {
+                    forcarSincronizacaoInterface();
+                }, 1000);
             }, 2000); // Aguardar 2 segundos para garantir que os dados foram carregados
         });
         
@@ -8169,9 +8284,39 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             if (isVago) {
                 console.log('🔄 Leito vago detectado, limpando interface...');
                 limparLeito(leitoId);
+                // Forçar atualização visual
+                setTimeout(function() {
+                    var leitoCard = document.getElementById('leito-' + leitoId);
+                    if (leitoCard) {
+                        var statusBadge = document.getElementById('status-' + leitoId);
+                        if (statusBadge) {
+                            statusBadge.textContent = 'VAGO';
+                            statusBadge.className = 'status-badge vago';
+                        }
+                        var leitoInfo = document.getElementById('info-' + leitoId);
+                        if (leitoInfo) {
+                            leitoInfo.innerHTML = '<p>Leito disponível</p>';
+                        }
+                        var btnContainer = document.getElementById('btn-' + leitoId);
+                        if (btnContainer) {
+                            btnContainer.innerHTML = '<button class="btn" onclick="abrirModal(\'' + leitoId + '\')">Admitir Paciente</button>';
+                        }
+                    }
+                }, 100);
             } else {
                 console.log('🔄 Leito ocupado detectado, atualizando interface...');
                 atualizarLeito(leitoId, dados);
+                // Forçar atualização visual
+                setTimeout(function() {
+                    var leitoCard = document.getElementById('leito-' + leitoId);
+                    if (leitoCard) {
+                        var statusBadge = document.getElementById('status-' + leitoId);
+                        if (statusBadge) {
+                            statusBadge.textContent = 'EM ATENDIMENTO';
+                            statusBadge.className = 'status-badge ocupado';
+                        }
+                    }
+                }, 100);
             }
             
             // Atualizar interface se estiver na aba correta
