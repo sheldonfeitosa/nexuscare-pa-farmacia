@@ -2816,6 +2816,7 @@
                         <button onclick="testeSimples72h()" class="btn-secondary" style="margin-left: 10px;">⚡ Teste Simples 72h</button>
                         <button onclick="forcarModal72h()" class="btn-secondary" style="margin-left: 10px;">🚨 Forçar Modal 72h</button>
                         <button onclick="testarMedicacaoPrioridades()" class="btn-secondary" style="margin-left: 10px;">💊 Testar Medicação</button>
+                        <button onclick="testarContadorTempo()" class="btn-secondary" style="margin-left: 10px;">⏰ Testar Contador</button>
                         <button onclick="testarCenarios72h()" class="btn-secondary" style="margin-left: 10px;">📊 Cenários 72h</button>
                         <button onclick="limparTestes72h()" class="btn-secondary" style="margin-left: 10px;">🧹 Limpar Testes</button>
                         <button onclick="forcarSincronizacaoInterface()" class="btn-secondary" style="margin-left: 10px;">🔄 Sincronizar Interface</button>
@@ -8110,6 +8111,12 @@
                         console.log(`✅ Interface limpa para leito vago: ${leitoId}`);
                     } else {
                         atualizarLeito(leitoId, dados);
+                        
+                        // Atualizar contador de tempo
+                        setTimeout(function(id, dadosLeito) {
+                            atualizarContadorTempo(id, dadosLeito.dataHoraAdmissao);
+                        }, 100 * i, leitoId, dados);
+                        
                         // Forçar atualização visual imediata
                         setTimeout(function(id, dadosLeito) {
                             var leitoCard = document.getElementById('leito-' + id);
@@ -8122,6 +8129,28 @@
                                 var leitoInfo = document.getElementById('info-' + id);
                                 if (leitoInfo) {
                                     var dataHora = new Date(dadosLeito.dataHoraAdmissao).toLocaleString('pt-BR');
+                                    
+                                    // Calcular tempo de permanência
+                                    var tempoPermanencia = calcularTempoPermanencia(dadosLeito.dataHoraAdmissao);
+                                    var tempoHtml = '<div class="info-row tempo-permanencia">' +
+                                        '<span class="info-label">Tempo:</span>' +
+                                        '<span class="info-value tempo-counter" id="tempo-' + id + '">' + tempoPermanencia + '</span>' +
+                                    '</div>';
+                                    
+                                    // Status de medicação
+                                    var medicacaoHtml = '';
+                                    if (dadosLeito.medicacaoLiberada) {
+                                        var prioridade = dadosLeito.medicacaoLiberada.prioridade || 'normal';
+                                        medicacaoHtml = '<div class="info-row medicacao-status-row ' + prioridade + '">' +
+                                            '<span class="sparkle-icon">✨</span>' +
+                                            '<span class="medicacao-icon">💊</span>' +
+                                            '<span class="info-label">Medicação:</span>' +
+                                            '<span class="info-value medicacao-status ' + prioridade + '">' +
+                                                'LIBERADA - ' + prioridade.toUpperCase() +
+                                            '</span>' +
+                                        '</div>';
+                                    }
+                                    
                                     leitoInfo.innerHTML = 
                                         '<div class="info-row">' +
                                             '<span class="info-label">Paciente:</span>' +
@@ -8142,7 +8171,9 @@
                                         '<div class="info-row">' +
                                             '<span class="info-label">Admissão:</span>' +
                                             '<span class="info-value">' + dataHora + '</span>' +
-                                        '</div>';
+                                        '</div>' +
+                                        tempoHtml +
+                                        medicacaoHtml;
                                 }
                                 var btnContainer = document.getElementById('btn-' + id);
                                 if (btnContainer) {
@@ -9365,6 +9396,61 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             alert(mensagem);
             
             console.log('✅ Testes de 72h limpos:', limpos, 'leitos');
+        }
+        
+        // FUNCAO PARA TESTAR CONTADOR DE TEMPO
+        function testarContadorTempo() {
+            console.log('⏰ Testando contador de tempo em todos os cards...');
+            
+            // Criar pacientes de teste em vários leitos
+            var leitosTeste = ['PA-01', 'PA-02', 'PA-03', 'PA-04', 'PA-05'];
+            var temposDiferentes = [1, 5, 12, 25, 48]; // 1h, 5h, 12h, 25h, 48h
+            
+            leitosTeste.forEach(function(leitoId, index) {
+                var dataAdmissao = new Date();
+                dataAdmissao.setHours(dataAdmissao.getHours() - temposDiferentes[index]);
+                
+                var dadosTeste = {
+                    pacienteIniciais: 'PACIENTE ' + (index + 1),
+                    registro: Math.floor(Math.random() * 90000) + 10000,
+                    dataNascimento: '01/01/1980',
+                    idade: 44,
+                    origem: 'UPA CENTRO',
+                    dataHoraAdmissao: dataAdmissao.toISOString(),
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Teste de contador de tempo - ' + temposDiferentes[index] + 'h',
+                    leito: leitoId
+                };
+                
+                console.log('⏰ Criando paciente de teste:', leitoId, dadosTeste);
+                
+                // Atualizar dados do leito
+                dadosLeitos[leitoId] = dadosTeste;
+                
+                // Atualizar interface
+                atualizarLeito(leitoId, dadosTeste);
+                
+                // Atualizar contador de tempo
+                setTimeout(function() {
+                    atualizarContadorTempo(leitoId, dadosTeste.dataHoraAdmissao);
+                }, 200 * (index + 1));
+            });
+            
+            // Forçar sincronização da interface
+            setTimeout(function() {
+                forcarSincronizacaoInterface();
+            }, 1000);
+            
+            alert('⏰ TESTE DE CONTADOR INICIADO\n\n' +
+                  'PA-01: 1h (PACIENTE 1)\n' +
+                  'PA-02: 5h (PACIENTE 2)\n' +
+                  'PA-03: 12h (PACIENTE 3)\n' +
+                  'PA-04: 25h (PACIENTE 4)\n' +
+                  'PA-05: 48h (PACIENTE 5)\n\n' +
+                  'Verifique se o contador de tempo aparece em todos os cards!\n\n' +
+                  'Se não aparecer, clique em "🔄 Sincronizar Interface"');
+            
+            console.log('✅ Teste de contador de tempo iniciado');
         }
         
         // FUNCOES PARA SISTEMA DE MEDICACAO
