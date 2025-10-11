@@ -2511,6 +2511,7 @@
                         <button onclick="testarSistema()" class="btn-secondary" style="margin-left: 10px;">🧪 Testar Sistema Completo</button>
                         <button onclick="testarModalTransferencia()" class="btn-secondary" style="margin-left: 10px;">🔄 Testar Modal Transferência</button>
                         <button onclick="debugDadosLeitos()" class="btn-secondary" style="margin-left: 10px;">🔍 Debug Dados Leitos</button>
+                        <button onclick="inicializarLeitosVazios()" class="btn-secondary" style="margin-left: 10px;">🏥 Inicializar Leitos</button>
                         <button onclick="fecharTodosModais()" class="btn-secondary" style="margin-left: 10px;">❌ Fechar Todos Modais</button>
                         <div id="statusSincronizacaoAudio" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #e8f5e8; display: none;">
                             <strong>🔊 Status da Sincronização de Áudio:</strong>
@@ -5376,9 +5377,15 @@
                 return;
             }
             
-            // Validar se o leito está realmente vago
-            if (dadosLeitos[leitoAtual] && dadosLeitos[leitoAtual].status !== 'VAGO') {
-                alert('Este leito não está disponível para admissão.');
+            // Validar se o leito está realmente vago (mais flexível)
+            if (dadosLeitos[leitoAtual] && 
+                dadosLeitos[leitoAtual].status && 
+                dadosLeitos[leitoAtual].status !== 'VAGO' && 
+                dadosLeitos[leitoAtual].status !== 'vago' &&
+                dadosLeitos[leitoAtual].pacienteIniciais && 
+                dadosLeitos[leitoAtual].pacienteIniciais !== '') {
+                console.log('⚠️ Leito ocupado:', dadosLeitos[leitoAtual]);
+                alert('Este leito não está disponível para admissão. Status: ' + dadosLeitos[leitoAtual].status);
                 event.target.dataset.processing = 'false';
                 return;
             }
@@ -7263,9 +7270,36 @@
             console.log('✅ Todos os modais fechados');
         }
         
+        // FUNCAO PARA INICIALIZAR LEITOS VAZIOS
+        function inicializarLeitosVazios() {
+            console.log('🔄 Inicializando leitos vazios...');
+            
+            // Inicializar todos os leitos PA-01 a PA-15 como vazios
+            for (var i = 1; i <= 15; i++) {
+                var leitoId = 'PA-' + (i < 10 ? '0' + i : i);
+                if (!dadosLeitos[leitoId]) {
+                    dadosLeitos[leitoId] = {
+                        status: 'VAGO',
+                        pacienteIniciais: '',
+                        registro: '',
+                        dataNascimento: '',
+                        idade: '',
+                        origem: '',
+                        observacoes: '',
+                        dataHoraAdmissao: null,
+                        leito: leitoId
+                    };
+                    console.log(`✅ Leito ${leitoId} inicializado como vago`);
+                }
+            }
+        }
+        
         // FUNCAO PARA SINCRONIZAR DADOS DO HISTORICO COM DADOSLEITOS
         function sincronizarDadosLeitos() {
             console.log('🔄 Sincronizando dados do histórico com dadosLeitos...');
+            
+            // Primeiro, inicializar todos os leitos como vazios
+            inicializarLeitosVazios();
             
             // Verificar se há dados no histórico que deveriam estar nos leitos
             var pacientesAtivos = historicoPacientes.filter(function(h) {
@@ -8007,12 +8041,23 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             // Limpar dados antes de enviar para evitar erros 400
             var dadosLimpos = JSON.parse(JSON.stringify(dados));
             
-            // Remover campos undefined ou null que podem causar erro 400
+            // Remover campos undefined, null ou vazios que podem causar erro 400
             Object.keys(dadosLimpos).forEach(key => {
-                if (dadosLimpos[key] === undefined || dadosLimpos[key] === null) {
+                if (dadosLimpos[key] === undefined || 
+                    dadosLimpos[key] === null || 
+                    dadosLimpos[key] === '' ||
+                    (typeof dadosLimpos[key] === 'object' && Object.keys(dadosLimpos[key]).length === 0)) {
                     delete dadosLimpos[key];
                 }
             });
+            
+            // Converter datas para timestamp se necessário
+            if (dadosLimpos.dataHoraAdmissao) {
+                dadosLimpos.dataHoraAdmissao = firebase.firestore.Timestamp.fromDate(new Date(dadosLimpos.dataHoraAdmissao));
+            }
+            if (dadosLimpos.dataHoraSaida) {
+                dadosLimpos.dataHoraSaida = firebase.firestore.Timestamp.fromDate(new Date(dadosLimpos.dataHoraSaida));
+            }
             
             return db.collection(colecao).doc(documento).set(dadosLimpos)
                 .then(function() {
