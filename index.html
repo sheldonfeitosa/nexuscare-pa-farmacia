@@ -148,6 +148,33 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
+        
+        /* ESTILO PARA PACIENTES COM 72H+ */
+        .leito-card.paciente-72h {
+            background: rgba(220, 53, 69, 0.1) !important;
+            border: 2px solid rgba(220, 53, 69, 0.4) !important;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3) !important;
+            animation: pulse-72h 2s infinite;
+        }
+        
+        .leito-card.paciente-72h:hover {
+            background: rgba(220, 53, 69, 0.15) !important;
+            border: 2px solid rgba(220, 53, 69, 0.6) !important;
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4) !important;
+        }
+        
+        /* ANIMACAO PARA PACIENTES COM 72H+ */
+        @keyframes pulse-72h {
+            0% {
+                box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(220, 53, 69, 0.5);
+            }
+            100% {
+                box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            }
+        }
         .leito-header {
             display: flex;
             justify-content: space-between;
@@ -2554,6 +2581,7 @@
                         <option value="geral">Relatorio Geral</option>
                         <option value="ocupacao">Ocupacao de Leitos</option>
                         <option value="origem">Por Origem</option>
+                        <option value="tempo_72h">⚠️ Pacientes 72h+</option>
                     </select>
                     <button class="btn btn-primary" onclick="gerarRelatorio()">Gerar Relatorio</button>
                     <button class="btn" onclick="exportarRelatorio()">Exportar CSV</button>
@@ -2587,8 +2615,8 @@
                     <div style="margin-bottom: 20px;">
                         <h4>🔔 Emails de Admissão:</h4>
                         <div id="emailsAdmissao" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                            <input type="email" placeholder="sheldonfeitosa@gmail.com" class="email-input" value="sheldonfeitosa@gmail.com">
                             <input type="email" placeholder="farmacia@inmceb.com" class="email-input" value="farmacia@inmceb.com">
-                            <input type="email" placeholder="enfermagem@inmceb.com" class="email-input" value="enfermagem@inmceb.com">
                         </div>
                         <button onclick="adicionarEmail('admissao')" class="btn-secondary" style="font-size: 12px;">+ Adicionar Email</button>
                     </div>
@@ -2596,8 +2624,8 @@
                     <div style="margin-bottom: 20px;">
                         <h4>🔄 Emails de Transferência:</h4>
                         <div id="emailsTransferencia" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                            <input type="email" placeholder="sheldonfeitosa@gmail.com" class="email-input" value="sheldonfeitosa@gmail.com">
                             <input type="email" placeholder="farmacia@inmceb.com" class="email-input" value="farmacia@inmceb.com">
-                            <input type="email" placeholder="enfermagem@inmceb.com" class="email-input" value="enfermagem@inmceb.com">
                         </div>
                         <button onclick="adicionarEmail('transferencia')" class="btn-secondary" style="font-size: 12px;">+ Adicionar Email</button>
                     </div>
@@ -2605,10 +2633,22 @@
                     <div style="margin-bottom: 20px;">
                         <h4>✅ Emails de Alta:</h4>
                         <div id="emailsAlta" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                            <input type="email" placeholder="sheldonfeitosa@gmail.com" class="email-input" value="sheldonfeitosa@gmail.com">
                             <input type="email" placeholder="farmacia@inmceb.com" class="email-input" value="farmacia@inmceb.com">
-                            <input type="email" placeholder="enfermagem@inmceb.com" class="email-input" value="enfermagem@inmceb.com">
                         </div>
                         <button onclick="adicionarEmail('alta')" class="btn-secondary" style="font-size: 12px;">+ Adicionar Email</button>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4>⚠️ Emails de Alerta 72h+:</h4>
+                        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                            Emails enviados quando um paciente ultrapassa 72 horas de permanência no PA
+                        </p>
+                        <div id="emailsAlerta72h" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                            <input type="email" placeholder="sheldonfeitosa@gmail.com" class="email-input" value="sheldonfeitosa@gmail.com">
+                            <input type="email" placeholder="gerencia@inmceb.com" class="email-input" value="gerencia@inmceb.com">
+                        </div>
+                        <button onclick="adicionarEmail('alerta72h')" class="btn-secondary" style="font-size: 12px;">+ Adicionar Email</button>
                     </div>
                 </div>
                 
@@ -2673,7 +2713,7 @@
                         </div>
                         
                         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <button onclick="testarConfigEmailJS()" class="btn-secondary">🧪 Testar Configuração</button>
+                            <!-- Botão de teste removido para versão de produção -->
                             <button onclick="mostrarExemploTemplate()" class="btn-secondary">📝 Ver Template</button>
                             <button onclick="mostrarGuiaCompleto()" class="btn-primary">📖 Guia Completo</button>
                         </div>
@@ -2706,7 +2746,7 @@
                 
                 <div style="text-align: center;">
                     <button onclick="salvarConfigEmail()" class="btn-primary">💾 Salvar Configurações</button>
-                    <button onclick="testarEmail()" class="btn-secondary">📧 Testar Envio de Email</button>
+                    <!-- Botão de teste removido para versão de produção -->
                 </div>
                 
                 <div id="statusConfigEmail" style="margin-top: 20px; padding: 15px; border-radius: 5px; display: none;"></div>
@@ -2745,7 +2785,7 @@
                         </div>
                     </div>
                     
-                    <button onclick="testarRelatorioAutomatico()" class="btn-secondary">📊 Testar Relatório</button>
+                    <!-- Botão de teste removido para versão de produção -->
                 </div>
                 
                 <!-- NOTIFICACOES PUSH -->
@@ -2825,25 +2865,14 @@
                     </div>
                     
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button onclick="testarWhatsApp()" class="btn-secondary">📱 Testar WhatsApp</button>
-                        <button onclick="testarSincronizacaoAudio()" class="btn-secondary">🔊 Testar Sincronização de Áudio</button>
-                        <button onclick="testarSistema()" class="btn-secondary" style="margin-left: 10px;">🧪 Testar Sistema Completo</button>
-                        <button onclick="testarModalTransferencia()" class="btn-secondary" style="margin-left: 10px;">🔄 Testar Modal Transferência</button>
-                        <button onclick="debugDadosLeitos()" class="btn-secondary" style="margin-left: 10px;">🔍 Debug Dados Leitos</button>
-                        <button onclick="inicializarLeitosVazios()" class="btn-secondary" style="margin-left: 10px;">🏥 Inicializar Leitos</button>
-                        <button onclick="testarAlerta72h()" class="btn-secondary" style="margin-left: 10px;">⚠️ Testar Alerta 72h</button>
-                        <button onclick="testar72hRealista()" class="btn-secondary" style="margin-left: 10px;">🕐 Teste 72h Realista</button>
-                        <button onclick="testeSimples72h()" class="btn-secondary" style="margin-left: 10px;">⚡ Teste Simples 72h</button>
-                        <button onclick="forcarModal72h()" class="btn-secondary" style="margin-left: 10px;">🚨 Forçar Modal 72h</button>
-                        <button onclick="testarMedicacaoPrioridades()" class="btn-secondary" style="margin-left: 10px;">💊 Testar Medicação</button>
-                        <button onclick="testarContadorTempo()" class="btn-secondary" style="margin-left: 10px;">⏰ Testar Contador</button>
-                        <button onclick="testarSincronizacao()" class="btn-secondary" style="margin-left: 10px;">🔄 Testar Sincronização</button>
-                        <button onclick="testarEstatisticas()" class="btn-secondary" style="margin-left: 10px;">📊 Testar Estatísticas</button>
-                        <button onclick="testarCenarios72h()" class="btn-secondary" style="margin-left: 10px;">📊 Cenários 72h</button>
-                        <button onclick="limparTestes72h()" class="btn-secondary" style="margin-left: 10px;">🧹 Limpar Testes</button>
+                        <!-- Botões de teste removidos para versão de produção -->
                         <button onclick="forcarSincronizacaoInterface()" class="btn-secondary" style="margin-left: 10px;">🔄 Sincronizar Interface</button>
                         <button onclick="corrigirDadosInvalidos()" class="btn-secondary" style="margin-left: 10px;">🔧 Corrigir Dados</button>
                         <button onclick="fecharTodosModais()" class="btn-secondary" style="margin-left: 10px;">❌ Fechar Todos Modais</button>
+                        <button onclick="testarMailto()" class="btn-secondary" style="margin-left: 10px;">📧 Testar Mailto</button>
+                        <button onclick="testarEmailAlerta72h()" class="btn-secondary" style="margin-left: 10px;">🚨 Testar Email 72h+</button>
+                        <button onclick="testarConfirmacao()" class="btn-secondary" style="margin-left: 10px;">💾 Testar Confirmação</button>
+                        <button onclick="testarSalvamentoSimples()" class="btn-secondary" style="margin-left: 10px;">🧪 Testar Salvamento</button>
                         <div id="statusSincronizacaoAudio" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #e8f5e8; display: none;">
                             <strong>🔊 Status da Sincronização de Áudio:</strong>
                             <div id="statusAudioTexto">Verificando...</div>
@@ -3428,10 +3457,11 @@
         // CONFIGURACOES DE EMAIL
         var configEmail = {
             destinatarios: {
-                admissao: ['farmacia@inmceb.com', 'enfermagem@inmceb.com'],
-                transferencia: ['farmacia@inmceb.com', 'enfermagem@inmceb.com'],
-                alta: ['farmacia@inmceb.com', 'enfermagem@inmceb.com'],
-                relatorios: ['gerencia@inmceb.com', 'direcao@inmceb.com']
+                admissao: ['sheldonfeitosa@gmail.com', 'farmacia@inmceb.com'],
+                transferencia: ['sheldonfeitosa@gmail.com', 'farmacia@inmceb.com'],
+                alta: ['sheldonfeitosa@gmail.com', 'farmacia@inmceb.com'],
+                alerta72h: ['sheldonfeitosa@gmail.com', 'gerencia@inmceb.com'],
+                relatorios: ['sheldonfeitosa@gmail.com', 'gerencia@inmceb.com']
             },
             servidor: {
                 host: 'smtp.gmail.com',
@@ -4683,7 +4713,7 @@
             mostrarEfeitoCarregamento();
             
             setTimeout(function() {
-                atualizarEstatisticas();
+                atualizarEstatisticasDashboard();
                 calcularEstatisticasDescritivas();
                 gerarGraficoOcupacao();
                 gerarGraficoMovimentacoes();
@@ -4724,7 +4754,7 @@
             carregarDashboard();
         }
         
-        function atualizarEstatisticas() {
+        function atualizarEstatisticasDashboard() {
             var agora = new Date();
             var inicioPeriodo = new Date(agora.getTime() - (dashboardData.periodoAtual * 60 * 60 * 1000));
             
@@ -5870,6 +5900,12 @@
         
         // FUNCAO PARA VERIFICAR ALERTAS DE TEMPO DE PERMANENCIA
         function verificarAlertasTempo() {
+            // Verificar se usuário está logado antes de verificar alertas
+            if (!usuarioLogado) {
+                console.log('⚠️ Usuário não logado, pulando verificação de alertas');
+                return;
+            }
+            
             console.log('🔍 Verificando alertas de tempo de permanência...');
             
             for (var leitoId in dadosLeitos) {
@@ -5936,6 +5972,11 @@
             if (!ultimaJustificativaHora || tempoDesdeUltimaJustificativa >= 3) {
                 console.log('🚨 ALERTA 72h para leito:', leitoId, 'Tempo:', tempoHoras + 'h');
                 
+                // Enviar email de alerta (apenas na primeira vez ou a cada 24h)
+                if (!ultimaJustificativaHora || tempoDesdeUltimaJustificativa >= 24) {
+                    enviarEmailAlerta72h(dados, leitoId);
+                }
+                
                 // Tocar som de alerta
                 tocarSomAlertaTempo();
                 
@@ -5947,63 +5988,156 @@
             }
         }
         
-        // FUNCAO PARA TOCAR SOM DE ALERTA DE TEMPO
-        function tocarSomAlertaTempo() {
+        // VARIAVEIS PARA CONTROLE DE ALERTA SONORO CONTINUO
+        var alertaSonoroAtivo = false;
+        var intervaloAlertaSonoro = null;
+        var audioContextAlerta = null;
+        
+        // FUNCAO PARA INICIAR ALERTA SONORO CONTINUO
+        function iniciarAlertaSonoroContinuo() {
+            if (alertaSonoroAtivo) {
+                console.log('🔊 Alerta sonoro já está ativo');
+                return;
+            }
+            
+            alertaSonoroAtivo = true;
+            console.log('🔊 Iniciando alerta sonoro contínuo...');
+            
             try {
-                // Criar um som mais agudo e repetitivo para alerta
-                var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                var oscillator = audioContext.createOscillator();
-                var gainNode = audioContext.createGain();
+                // Criar contexto de áudio
+                audioContextAlerta = new (window.AudioContext || window.webkitAudioContext)();
                 
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
+                // Função para tocar um ciclo de alerta
+                function tocarCicloAlerta() {
+                    if (!alertaSonoroAtivo) return;
+                    
+                    try {
+                        // Sequência de 3 bips agudos
+                        var oscillator1 = audioContextAlerta.createOscillator();
+                        var gainNode1 = audioContextAlerta.createGain();
+                        
+                        oscillator1.connect(gainNode1);
+                        gainNode1.connect(audioContextAlerta.destination);
+                        
+                        oscillator1.frequency.setValueAtTime(1000, audioContextAlerta.currentTime);
+                        oscillator1.type = 'square';
+                        gainNode1.gain.setValueAtTime(0.4, audioContextAlerta.currentTime);
+                        
+                        oscillator1.start(audioContextAlerta.currentTime);
+                        oscillator1.stop(audioContextAlerta.currentTime + 0.2);
+                        
+                        // Segundo bip
+                        setTimeout(() => {
+                            if (!alertaSonoroAtivo) return;
+                            var oscillator2 = audioContextAlerta.createOscillator();
+                            var gainNode2 = audioContextAlerta.createGain();
+                            
+                            oscillator2.connect(gainNode2);
+                            gainNode2.connect(audioContextAlerta.destination);
+                            
+                            oscillator2.frequency.setValueAtTime(1200, audioContextAlerta.currentTime);
+                            oscillator2.type = 'square';
+                            gainNode2.gain.setValueAtTime(0.4, audioContextAlerta.currentTime);
+                            
+                            oscillator2.start(audioContextAlerta.currentTime);
+                            oscillator2.stop(audioContextAlerta.currentTime + 0.2);
+                        }, 250);
+                        
+                        // Terceiro bip
+                        setTimeout(() => {
+                            if (!alertaSonoroAtivo) return;
+                            var oscillator3 = audioContextAlerta.createOscillator();
+                            var gainNode3 = audioContextAlerta.createGain();
+                            
+                            oscillator3.connect(gainNode3);
+                            gainNode3.connect(audioContextAlerta.destination);
+                            
+                            oscillator3.frequency.setValueAtTime(1000, audioContextAlerta.currentTime);
+                            oscillator3.type = 'square';
+                            gainNode3.gain.setValueAtTime(0.4, audioContextAlerta.currentTime);
+                            
+                            oscillator3.start(audioContextAlerta.currentTime);
+                            oscillator3.stop(audioContextAlerta.currentTime + 0.2);
+                        }, 500);
+                        
+                    } catch (error) {
+                        console.log('❌ Erro no ciclo de alerta:', error);
+                    }
+                }
                 
-                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                oscillator.frequency.setValueAtTime(1000, audioContext.currentTime + 0.1);
-                oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.2);
+                // Tocar primeiro ciclo imediatamente
+                tocarCicloAlerta();
                 
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                // Repetir a cada 3 segundos
+                intervaloAlertaSonoro = setInterval(tocarCicloAlerta, 3000);
                 
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.3);
+                console.log('🔊 Alerta sonoro contínuo ativado - repetindo a cada 3 segundos');
                 
-                // Repetir o som 3 vezes
-                setTimeout(() => {
-                    oscillator = audioContext.createOscillator();
-                    oscillator.connect(gainNode);
-                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(1000, audioContext.currentTime + 0.1);
-                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.2);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.3);
-                }, 500);
-                
-                setTimeout(() => {
-                    oscillator = audioContext.createOscillator();
-                    oscillator.connect(gainNode);
-                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(1000, audioContext.currentTime + 0.1);
-                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.2);
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.3);
-                }, 1000);
-                
-                console.log('🔊 Som de alerta de tempo tocado');
             } catch (error) {
-                console.log('Erro ao tocar som de alerta:', error);
-                // Fallback: beep simples
+                console.log('❌ Erro ao iniciar alerta sonoro contínuo:', error);
+                // Fallback: beep simples repetitivo
                 try {
                     var audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
-                    audio.play();
+                    audio.volume = 0.8;
+                    
+                    function tocarBeepFallback() {
+                        if (!alertaSonoroAtivo) return;
+                        audio.play();
+                    }
+                    
+                    tocarBeepFallback();
+                    intervaloAlertaSonoro = setInterval(tocarBeepFallback, 3000);
+                    
+                    console.log('🔊 Fallback de áudio contínuo ativado');
                 } catch (e) {
-                    console.log('Fallback de som também falhou');
+                    console.log('❌ Todos os métodos de áudio falharam');
                 }
             }
         }
         
+        // FUNCAO PARA PARAR ALERTA SONORO CONTINUO
+        function pararAlertaSonoroContinuo() {
+            if (!alertaSonoroAtivo) {
+                console.log('🔊 Alerta sonoro já está parado');
+                return;
+            }
+            
+            alertaSonoroAtivo = false;
+            console.log('🔊 Parando alerta sonoro contínuo...');
+            
+            // Parar intervalo
+            if (intervaloAlertaSonoro) {
+                clearInterval(intervaloAlertaSonoro);
+                intervaloAlertaSonoro = null;
+            }
+            
+            // Fechar contexto de áudio
+            if (audioContextAlerta) {
+                try {
+                    audioContextAlerta.close();
+                } catch (error) {
+                    console.log('❌ Erro ao fechar contexto de áudio:', error);
+                }
+                audioContextAlerta = null;
+            }
+            
+            console.log('✅ Alerta sonoro contínuo parado');
+        }
+        
+        // FUNCAO PARA TOCAR SOM DE ALERTA DE TEMPO
+        function tocarSomAlertaTempo() {
+            // Iniciar alerta contínuo
+            iniciarAlertaSonoroContinuo();
+        }
+        
         // FUNCAO PARA ABRIR MODAL DE JUSTIFICATIVA
         function abrirModalJustificativa(leitoId, dados, tempoHoras) {
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('⚠️ Usuário não logado, não abrindo modal de justificativa');
+                return;
+            }
+            
             console.log('📋 Abrindo modal de justificativa para leito:', leitoId);
             
             // Preencher informações do paciente
@@ -6028,15 +6162,29 @@
         // FUNCAO PARA FECHAR MODAL DE JUSTIFICATIVA
         function fecharModalJustificativa() {
             var modal = document.getElementById('modalJustificativaTempo');
-            modal.style.display = 'none';
-            modal.classList.remove('show');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+                console.log('✅ Modal de justificativa fechado');
+            }
         }
         
         // FUNCAO PARA SALVAR JUSTIFICATIVA
         function salvarJustificativaTempo(event) {
             event.preventDefault();
             
+            console.log('💾 Iniciando salvamento de justificativa...');
+            console.log('👤 Usuário logado:', usuarioLogado ? 'SIM' : 'NÃO');
+            
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('❌ Usuário não está logado');
+                alert('Sessão expirada. Faça login novamente.');
+                return;
+            }
+            
             var leitoId = document.getElementById('justificativaLeito').textContent;
+            console.log('🏥 Leito ID:', leitoId);
             var motivo = document.getElementById('justificativaMotivo').value;
             var detalhes = document.getElementById('justificativaDetalhes').value;
             var responsavel = document.getElementById('justificativaResponsavel').value;
@@ -6054,21 +6202,45 @@
                 responsavel: responsavel,
                 proximosPassos: proximosPassos,
                 dataHora: new Date().toISOString(),
-                tempoPermanencia: calcularTempoPermanencia(dadosLeitos[leitoId].dataHoraAdmissao)
+                tempoPermanencia: dadosLeitos[leitoId] ? calcularTempoPermanencia(dadosLeitos[leitoId].dataHoraAdmissao) : 'N/A'
             };
             
             console.log('💾 Salvando justificativa:', justificativa);
             
-            // Salvar no Firebase
-            salvarJustificativaNoFirebase(justificativa);
-            
-            // Marcar última justificativa
-            ultimaJustificativa[leitoId] = new Date().getTime();
-            
-            // Fechar modal
-            fecharModalJustificativa();
-            
-            alert('Justificativa salva com sucesso!');
+            try {
+                // Salvar no localStorage primeiro
+                salvarJustificativaLocal(justificativa);
+                console.log('✅ Justificativa salva no localStorage');
+                
+                // Salvar no Firebase
+                salvarJustificativaNoFirebase(justificativa);
+                console.log('✅ Justificativa enviada para Firebase');
+                
+                // Marcar última justificativa
+                ultimaJustificativa[leitoId] = new Date().getTime();
+                
+                console.log('✅ Justificativa salva, fechando modal...');
+                
+                // PARAR ALERTA SONORO CONTÍNUO
+                pararAlertaSonoroContinuo();
+                console.log('🔊 Alerta sonoro parado após salvar justificativa');
+                
+                // Fechar modal
+                fecharModalJustificativa();
+                
+                // Limpar formulário
+                document.getElementById('formJustificativaTempo').reset();
+                
+                console.log('✅ Modal fechado e formulário limpo');
+                
+                alert('✅ Justificativa salva com sucesso!\n\n🔊 Alerta sonoro parado!');
+                
+                console.log('✅ Processo de salvamento concluído');
+                
+            } catch (error) {
+                console.log('❌ Erro durante salvamento:', error);
+                alert('Erro ao salvar justificativa. Tente novamente.');
+            }
         }
         
         // FUNCAO PARA SALVAR JUSTIFICATIVA NO FIREBASE
@@ -6389,7 +6561,7 @@
                         '<span class="medicacao-icon">💊</span>' +
                         '<span class="info-label">Medicação:</span>' +
                         '<span class="info-value medicacao-status ' + prioridade + '">' +
-                            'LIBERADA - ' + prioridade.toUpperCase() +
+                            'LIBERADA - ' + (prioridade ? prioridade.toUpperCase() : 'NORMAL') +
                         '</span>' +
                     '</div>';
                 }
@@ -6419,6 +6591,29 @@
                     medicacaoHtml +
                     observacoesHtml;
                 
+                // VERIFICAR SE PACIENTE ULTRAPASSOU 72H E APLICAR ESTILO
+                var agora = new Date();
+                var dataAdmissao = new Date(dados.dataHoraAdmissao);
+                var diferencaHoras = (agora - dataAdmissao) / (1000 * 60 * 60);
+                
+                if (diferencaHoras >= 72) {
+                    // Aplicar fundo vermelho transparente para pacientes com 72h+
+                    leitoCard.style.backgroundColor = 'rgba(220, 53, 69, 0.15)';
+                    leitoCard.style.border = '2px solid rgba(220, 53, 69, 0.5)';
+                    leitoCard.style.boxShadow = '0 4px 12px rgba(220, 53, 69, 0.3)';
+                    
+                    // Adicionar classe para identificação
+                    leitoCard.classList.add('paciente-72h');
+                    
+                    console.log('⚠️ Paciente com 72h+ detectado:', leitoId, diferencaHoras.toFixed(1) + 'h');
+                } else {
+                    // Remover estilos de 72h se não aplicável
+                    leitoCard.style.backgroundColor = '';
+                    leitoCard.style.border = '';
+                    leitoCard.style.boxShadow = '';
+                    leitoCard.classList.remove('paciente-72h');
+                }
+                
                 // ATUALIZAR BOTOES
                 var btn = leitoCard.querySelector('.btn');
                 btn.innerHTML = 
@@ -6434,7 +6629,7 @@
                 
                 // Atualizar estatísticas
                 setTimeout(function() {
-                    atualizarEstatisticas();
+                    atualizarEstatisticasDashboard();
                 }, 150);
             }
         }
@@ -6597,7 +6792,7 @@
                 
                 // Atualizar estatísticas
                 setTimeout(function() {
-                    atualizarEstatisticas();
+                    atualizarEstatisticasDashboard();
                 }, 150);
                 
                 console.log('Leito limpo com sucesso:', leitoId);
@@ -6794,7 +6989,7 @@
         }
         
         // FUNCAO PARA CALCULAR TEMPO DE PERMANENCIA EM DIAS, HORAS E MINUTOS
-        function calcularTempoPermanencia(dataAdmissao, dataSaida) {
+        function calcularTempoPermanenciaHistorico(dataAdmissao, dataSaida) {
             try {
                 var inicio = new Date(dataAdmissao);
                 var fim = dataSaida ? new Date(dataSaida) : new Date();
@@ -6875,7 +7070,7 @@
                 row.insertCell().textContent = historico.setorAcao || 'Sistema';
                 // Adicionar coluna de tempo de permanência
                 row.insertCell().innerHTML = '<span style="color: #28a745; font-weight: bold;">' + 
-                    calcularTempoPermanencia(historico.dataHoraAdmissao, historico.dataHoraSaida) + '</span>';
+                    calcularTempoPermanenciaHistorico(historico.dataHoraAdmissao, historico.dataHoraSaida) + '</span>';
             }
             
             // Atualizar controles de paginação
@@ -7001,7 +7196,7 @@
                 row.insertCell().textContent = historico.setorAcao || 'Sistema';
                 // Adicionar coluna de tempo de permanência
                 row.insertCell().innerHTML = '<span style="color: #28a745; font-weight: bold;">' + 
-                    calcularTempoPermanencia(historico.dataHoraAdmissao, historico.dataHoraSaida) + '</span>';
+                    calcularTempoPermanenciaHistorico(historico.dataHoraAdmissao, historico.dataHoraSaida) + '</span>';
             }
             
             // Atualizar controles de paginação
@@ -7039,6 +7234,12 @@
                 console.log('⚠️ Nenhum dado encontrado no histórico');
                 var content = document.getElementById('relatorioContent');
                 content.innerHTML = '<div style="text-align: center; padding: 40px; color: #6c757d;"><h3>📊 Nenhum Dado Disponível</h3><p>Não há registros de pacientes para gerar o relatório.</p><p>Admita alguns pacientes para ver os dados aqui.</p></div>';
+                return;
+            }
+            
+            // Verificar se é relatório de 72h
+            if (tipoRelatorio === 'tempo_72h') {
+                gerarRelatorio72h();
                 return;
             }
             
@@ -7108,7 +7309,7 @@
             
             for (var i = 0; i < dadosPagina.length; i++) {
                 var h = dadosPagina[i];
-                var tempoPermanencia = calcularTempoPermanencia(h.dataHoraAdmissao, h.dataHoraSaida);
+                var tempoPermanencia = calcularTempoPermanenciaHistorico(h.dataHoraAdmissao, h.dataHoraSaida);
                 
                 html += '<tr>';
                 html += '<td>' + h.paciente + '</td>';
@@ -7163,7 +7364,7 @@
                 var h = dadosLimitados[i];
                 var inicio = new Date(h.dataHoraAdmissao);
                 var fim = new Date(h.dataHoraSaida);
-                var tempoTotal = calcularTempoPermanencia(h.dataHoraAdmissao, h.dataHoraSaida);
+                var tempoTotal = calcularTempoPermanenciaHistorico(h.dataHoraAdmissao, h.dataHoraSaida);
                 
                 html += '<tr style="border-bottom: 1px solid #dee2e6;">';
                 html += '<td style="padding: 12px; border: 1px solid #dee2e6;"><strong>' + h.pacienteIniciais + '</strong></td>';
@@ -7218,7 +7419,7 @@
                 html += '<td>' + h.origem + '</td>';
                 html += '<td>' + formatarDataHora(h.dataHoraAdmissao) + '</td>';
                 html += '<td>' + (h.dataHoraSaida ? formatarDataHora(h.dataHoraSaida) : 'Em atendimento') + '</td>';
-                html += '<td><span class="badge badge-' + (h.tipo === 'admissao' ? 'success' : h.tipo === 'transferencia' ? 'warning' : 'info') + '">' + h.tipo.toUpperCase() + '</span></td>';
+                html += '<td><span class="badge badge-' + (h.tipo === 'admissao' ? 'success' : h.tipo === 'transferencia' ? 'warning' : 'info') + '">' + (h.tipo ? h.tipo.toUpperCase() : 'N/A') + '</span></td>';
                 html += '</tr>';
             }
             
@@ -7260,7 +7461,7 @@
             
             for (var i = 0; i < dadosLimitados.length; i++) {
                 var h = dadosLimitados[i];
-                var tempoTotal = calcularTempoPermanencia(h.dataHoraAdmissao, h.dataHoraSaida);
+                var tempoTotal = calcularTempoPermanenciaHistorico(h.dataHoraAdmissao, h.dataHoraSaida);
                 
                 html += '<tr style="border-bottom: 1px solid #dee2e6;">';
                 html += '<td style="padding: 12px; border: 1px solid #dee2e6;"><strong>' + h.pacienteIniciais + '</strong></td>';
@@ -7868,7 +8069,14 @@
         }
         
         function adicionarEmail(tipo) {
-            var container = document.getElementById('emails' + tipo.charAt(0).toUpperCase() + tipo.slice(1));
+            var containerId;
+            if (tipo === 'alerta72h') {
+                containerId = 'emailsAlerta72h';
+            } else {
+                containerId = 'emails' + tipo.charAt(0).toUpperCase() + tipo.slice(1);
+            }
+            
+            var container = document.getElementById(containerId);
             var input = document.createElement('input');
             input.type = 'email';
             input.className = 'email-input';
@@ -7877,6 +8085,68 @@
         }
         
         function salvarConfigEmail() {
+            // Coletar informações para mostrar na confirmação
+            var emailsAdmissao = [];
+            document.querySelectorAll('#emailsAdmissao .email-input').forEach(function(input) {
+                if (input.value.trim()) emailsAdmissao.push(input.value.trim());
+            });
+            
+            var emailsAlerta72h = [];
+            document.querySelectorAll('#emailsAlerta72h .email-input').forEach(function(input) {
+                if (input.value.trim()) emailsAlerta72h.push(input.value.trim());
+            });
+            
+            var metodoEnvio = document.querySelector('input[name="metodoEnvio"]:checked') ? 
+                             document.querySelector('input[name="metodoEnvio"]:checked').value : 'mailto';
+            
+            // Criar mensagem de confirmação detalhada
+            var mensagemConfirmacao = '💾 CONFIRMAR SALVAMENTO DAS CONFIGURAÇÕES DE EMAIL\n\n' +
+                                    '📧 Emails de Admissão: ' + emailsAdmissao.length + ' destinatário(s)\n' +
+                                    '🚨 Emails de Alerta 72h+: ' + emailsAlerta72h.length + ' destinatário(s)\n' +
+                                    '⚙️ Método de Envio: ' + (metodoEnvio === 'mailto' ? 'Cliente de Email' : 'EmailJS') + '\n\n' +
+                                    '⚠️ ATENÇÃO: Isso irá sobrescrever as configurações atuais!\n\n' +
+                                    'Deseja continuar?';
+            
+            // Usar modal personalizado para confirmação
+            mostrarModalConfirmacao(
+                'CONFIRMAR SALVAMENTO',
+                mensagemConfirmacao,
+                function(confirmado) {
+                    if (confirmado) {
+                        console.log('💾 Salvando configurações de email...');
+                        continuarSalvamento();
+                    } else {
+                        console.log('❌ Salvamento cancelado pelo usuário');
+                    }
+                }
+            );
+        }
+        
+        function continuarSalvamento() {
+            // Verificar e restaurar sessão se necessário
+            if (!usuarioLogado) {
+                console.log('⚠️ Usuário não está logado, tentando restaurar sessão...');
+                
+                // Tentar restaurar sessão do localStorage
+                var sessaoSalva = localStorage.getItem('usuarioLogado');
+                if (sessaoSalva) {
+                    try {
+                        usuarioLogado = JSON.parse(sessaoSalva);
+                        console.log('✅ Sessão restaurada:', usuarioLogado.nome);
+                    } catch (error) {
+                        console.log('❌ Erro ao restaurar sessão:', error);
+                        alert('❌ Sessão expirada. Faça login novamente.');
+                        return;
+                    }
+                } else {
+                    console.log('❌ Nenhuma sessão encontrada');
+                    alert('❌ Sessão expirada. Faça login novamente.');
+                    return;
+                }
+            }
+            
+            console.log('💾 Continuando salvamento para usuário:', usuarioLogado.nome);
+            
             // Salvar destinatários
             configEmail.destinatarios.admissao = [];
             document.querySelectorAll('#emailsAdmissao .email-input').forEach(function(input) {
@@ -7899,6 +8169,13 @@
                 }
             });
             
+            configEmail.destinatarios.alerta72h = [];
+            document.querySelectorAll('#emailsAlerta72h .email-input').forEach(function(input) {
+                if (input.value.trim()) {
+                    configEmail.destinatarios.alerta72h.push(input.value.trim());
+                }
+            });
+            
             // Salvar configurações SMTP
             configEmail.servidor.host = document.getElementById('smtpHost').value;
             configEmail.servidor.porta = parseInt(document.getElementById('smtpPorta').value);
@@ -7911,19 +8188,18 @@
             configEmail.emailjs.templateId = document.getElementById('emailjsTemplateId').value;
             configEmail.emailjs.publicKey = document.getElementById('emailjsPublicKey').value;
             
-            // Salvar no localStorage
-            localStorage.setItem('configEmail', JSON.stringify(configEmail));
-            
-            var status = document.getElementById('statusConfigEmail');
-            status.style.display = 'block';
-            status.style.background = '#d4edda';
-            status.style.color = '#155724';
-            status.style.border = '1px solid #c3e6cb';
-            status.innerHTML = '✅ Configurações de email salvas com sucesso!';
-            
-            setTimeout(function() {
-                status.style.display = 'none';
-            }, 3000);
+            // Salvar no localStorage com tratamento de erro
+            try {
+                localStorage.setItem('configEmail', JSON.stringify(configEmail));
+                console.log('✅ Configurações salvas no localStorage com sucesso');
+                
+                // Mostrar notificação de sucesso simples
+                mostrarNotificacaoSimples('✅ Configurações de email salvas com sucesso!');
+                
+            } catch (error) {
+                console.log('❌ Erro ao salvar no localStorage:', error);
+                alert('❌ Erro ao salvar configurações. Tente novamente.');
+            }
         }
         
         function testarEmail() {
@@ -7988,6 +8264,18 @@
                     input.value = email;
                     emailsAlta.appendChild(input);
                 });
+                
+                var emailsAlerta72h = document.getElementById('emailsAlerta72h');
+                emailsAlerta72h.innerHTML = '';
+                if (configEmail.destinatarios.alerta72h) {
+                    configEmail.destinatarios.alerta72h.forEach(function(email) {
+                        var input = document.createElement('input');
+                        input.type = 'email';
+                        input.className = 'email-input';
+                        input.value = email;
+                        emailsAlerta72h.appendChild(input);
+                    });
+                }
                 
                 // Atualizar SMTP
                 document.getElementById('smtpHost').value = configEmail.servidor.host;
@@ -8192,7 +8480,7 @@
                                             '<span class="medicacao-icon">💊</span>' +
                                             '<span class="info-label">Medicação:</span>' +
                                             '<span class="info-value medicacao-status ' + prioridade + '">' +
-                                                'LIBERADA - ' + prioridade.toUpperCase() +
+                                                'LIBERADA - ' + (prioridade ? prioridade.toUpperCase() : 'NORMAL') +
                                             '</span>' +
                                         '</div>';
                                     }
@@ -8532,6 +8820,398 @@
             } else {
                 alert('Backup não encontrado para a data selecionada.');
             }
+        }
+        
+        // FUNCAO PARA ENVIAR EMAIL DE ALERTA 72H+
+        function enviarEmailAlerta72h(dadosPaciente, leito) {
+            if (!configEmail.ativo || !configEmail.destinatarios.alerta72h || configEmail.destinatarios.alerta72h.length === 0) {
+                console.log('📧 Email de alerta 72h+ desabilitado ou sem destinatários');
+                return;
+            }
+            
+            try {
+                var agora = new Date();
+                var dataAdmissao = new Date(dadosPaciente.dataHoraAdmissao);
+                var tempoPermanencia = Math.floor((agora - dataAdmissao) / (1000 * 60 * 60));
+                
+                var assunto = '🚨 ALERTA: Paciente com 72h+ no PA - ' + dadosPaciente.pacienteIniciais;
+                var corpo = `
+                    <h2>🚨 ALERTA DE PERMANÊNCIA PROLONGADA</h2>
+                    <p><strong>Paciente:</strong> ${dadosPaciente.pacienteIniciais}</p>
+                    <p><strong>Registro:</strong> ${dadosPaciente.registro}</p>
+                    <p><strong>Leito:</strong> ${leito}</p>
+                    <p><strong>Tempo de Permanência:</strong> ${tempoPermanencia} horas</p>
+                    <p><strong>Data de Admissão:</strong> ${formatarDataHora(dadosPaciente.dataHoraAdmissao)}</p>
+                    <p><strong>Origem:</strong> ${dadosPaciente.origem}</p>
+                    <p><strong>Observações:</strong> ${dadosPaciente.observacoes || 'Nenhuma'}</p>
+                    
+                    <hr>
+                    <p><em>Este é um alerta automático do sistema NexusCare.</em></p>
+                    <p><em>Por favor, verifique a situação do paciente e tome as medidas necessárias.</em></p>
+                `;
+                
+                // Enviar para todos os destinatários
+                configEmail.destinatarios.alerta72h.forEach(function(email) {
+                    enviarEmail(email, assunto, corpo);
+                });
+                
+                console.log('📧 Email de alerta 72h+ enviado para:', configEmail.destinatarios.alerta72h);
+                
+            } catch (error) {
+                console.log('❌ Erro ao enviar email de alerta 72h+:', error);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR MAILTO
+        function testarMailto() {
+            console.log('📧 Testando mailto...');
+            
+            var destinatario = 'sheldonfeitosa@gmail.com';
+            var assunto = '🧪 TESTE MAILTO - Sistema NexusCare';
+            var corpo = `
+                <h2>✅ Teste de Email via Mailto</h2>
+                <p><strong>Data/Hora:</strong> ${new Date().toLocaleString('pt-BR')}</p>
+                <p><strong>Sistema:</strong> NexusCare PA</p>
+                <p><strong>Status:</strong> Configuração de email funcionando!</p>
+                
+                <hr>
+                <p><em>Este é um teste do sistema de emails do NexusCare.</em></p>
+                <p><em>Se você recebeu este email, a configuração está funcionando corretamente!</em></p>
+            `;
+            
+            // Usar mailto diretamente
+            var mailtoLink = 'mailto:' + destinatario + 
+                           '?subject=' + encodeURIComponent(assunto) + 
+                           '&body=' + encodeURIComponent(corpo);
+            
+            console.log('📧 Abrindo mailto:', mailtoLink);
+            
+            // Abrir cliente de email
+            window.open(mailtoLink);
+            
+            // Mostrar notificação
+            var notificacao = document.createElement('div');
+            notificacao.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                z-index: 10000;
+                font-family: Arial, sans-serif;
+                max-width: 300px;
+            `;
+            
+            notificacao.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 20px;">📧</span>
+                    <div>
+                        <strong>Cliente de Email Aberto!</strong><br>
+                        <small>Para: ${destinatario}</small>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notificacao);
+            
+            // Remover notificação após 5 segundos
+            setTimeout(function() {
+                if (notificacao.parentNode) {
+                    notificacao.parentNode.removeChild(notificacao);
+                }
+            }, 5000);
+            
+            console.log('✅ Teste de mailto executado com sucesso!');
+        }
+        
+        // FUNCAO PARA MOSTRAR MODAL DE CONFIRMACAO
+        function mostrarModalConfirmacao(titulo, mensagem, callback) {
+            // Criar modal de confirmação
+            var modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+                font-family: Arial, sans-serif;
+            `;
+            
+            var modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                max-width: 500px;
+                width: 90%;
+                text-align: center;
+            `;
+            
+            modalContent.innerHTML = `
+                <div style="font-size: 48px; margin-bottom: 20px;">💾</div>
+                <h2 style="color: #333; margin: 0 0 20px 0; font-size: 24px;">${titulo}</h2>
+                <div style="color: #666; margin-bottom: 30px; line-height: 1.6; white-space: pre-line;">${mensagem}</div>
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <button id="btnConfirmarSim" style="
+                        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        font-weight: bold;
+                        transition: transform 0.2s;
+                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        ✅ Sim, Salvar
+                    </button>
+                    <button id="btnConfirmarNao" style="
+                        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+                        color: white;
+                        border: none;
+                        padding: 12px 25px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        font-weight: bold;
+                        transition: transform 0.2s;
+                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        ❌ Cancelar
+                    </button>
+                </div>
+            `;
+            
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            // Event listeners
+            document.getElementById('btnConfirmarSim').onclick = function() {
+                document.body.removeChild(modal);
+                callback(true);
+            };
+            
+            document.getElementById('btnConfirmarNao').onclick = function() {
+                document.body.removeChild(modal);
+                callback(false);
+            };
+            
+            // Fechar ao clicar fora do modal
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                    callback(false);
+                }
+            };
+        }
+        
+        // FUNCAO PARA MOSTRAR NOTIFICACAO DE SUCESSO
+        function mostrarNotificacaoSucesso(titulo, mensagem) {
+            var notificacao = document.createElement('div');
+            notificacao.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                color: white;
+                padding: 20px 25px;
+                border-radius: 12px;
+                box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+                z-index: 10000;
+                font-family: Arial, sans-serif;
+                max-width: 350px;
+                animation: slideInRight 0.5s ease-out;
+            `;
+            
+            notificacao.innerHTML = `
+                <div style="display: flex; align-items: flex-start; gap: 15px;">
+                    <div style="font-size: 24px; margin-top: 2px;">✅</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">${titulo}</div>
+                        <div style="font-size: 14px; opacity: 0.9; line-height: 1.4;">${mensagem}</div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        background: none;
+                        border: none;
+                        color: white;
+                        font-size: 18px;
+                        cursor: pointer;
+                        padding: 0;
+                        margin-left: 10px;
+                        opacity: 0.7;
+                        transition: opacity 0.2s;
+                    " onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                        ×
+                    </button>
+                </div>
+            `;
+            
+            // Adicionar animação CSS
+            var style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notificacao);
+            
+            // Remover automaticamente após 5 segundos
+            setTimeout(function() {
+                if (notificacao.parentNode) {
+                    notificacao.style.animation = 'slideInRight 0.3s ease-out reverse';
+                    setTimeout(function() {
+                        if (notificacao.parentNode) {
+                            notificacao.parentNode.removeChild(notificacao);
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+        
+        // FUNCAO PARA MOSTRAR NOTIFICACAO SIMPLES E SEGURA
+        function mostrarNotificacaoSimples(mensagem) {
+            try {
+                // Criar notificação simples
+                var notificacao = document.createElement('div');
+                notificacao.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #28a745;
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                    z-index: 10000;
+                    font-family: Arial, sans-serif;
+                    font-weight: bold;
+                    max-width: 300px;
+                `;
+                notificacao.textContent = mensagem;
+                
+                document.body.appendChild(notificacao);
+                
+                // Remover após 3 segundos
+                setTimeout(function() {
+                    if (notificacao.parentNode) {
+                        notificacao.parentNode.removeChild(notificacao);
+                    }
+                }, 3000);
+                
+                console.log('✅ Notificação exibida:', mensagem);
+                
+            } catch (error) {
+                console.log('❌ Erro ao mostrar notificação:', error);
+                // Fallback: usar alert simples
+                alert(mensagem);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR CONFIRMACAO
+        function testarConfirmacao() {
+            console.log('💾 Testando modal de confirmação...');
+            
+            var mensagemTeste = '📧 Emails de Admissão: 2 destinatário(s)\n' +
+                              '🚨 Emails de Alerta 72h+: 2 destinatário(s)\n' +
+                              '⚙️ Método de Envio: Cliente de Email\n\n' +
+                              '⚠️ ATENÇÃO: Isso irá sobrescrever as configurações atuais!\n\n' +
+                              'Deseja continuar?';
+            
+            mostrarModalConfirmacao(
+                'TESTE DE CONFIRMAÇÃO',
+                mensagemTeste,
+                function(confirmado) {
+                    if (confirmado) {
+                        console.log('✅ Usuário confirmou o salvamento');
+                        mostrarNotificacaoSucesso('✅ Teste de Confirmação', 'Modal de confirmação funcionando perfeitamente!');
+                    } else {
+                        console.log('❌ Usuário cancelou o salvamento');
+                        alert('❌ Salvamento cancelado - Modal funcionando corretamente!');
+                    }
+                }
+            );
+        }
+        
+        // FUNCAO PARA TESTAR SALVAMENTO SIMPLES
+        function testarSalvamentoSimples() {
+            console.log('🧪 Testando salvamento simples...');
+            
+            try {
+                // Verificar sessão
+                if (!usuarioLogado) {
+                    var sessaoSalva = localStorage.getItem('usuarioLogado');
+                    if (sessaoSalva) {
+                        usuarioLogado = JSON.parse(sessaoSalva);
+                        console.log('✅ Sessão restaurada para teste');
+                    } else {
+                        console.log('❌ Nenhuma sessão encontrada');
+                        alert('❌ Faça login primeiro para testar o salvamento');
+                        return;
+                    }
+                }
+                
+                // Testar salvamento simples
+                var configTeste = {
+                    teste: true,
+                    timestamp: new Date().toISOString(),
+                    usuario: usuarioLogado.nome
+                };
+                
+                localStorage.setItem('configTeste', JSON.stringify(configTeste));
+                console.log('✅ Teste de salvamento realizado com sucesso');
+                
+                // Verificar se salvou
+                var configSalva = localStorage.getItem('configTeste');
+                if (configSalva) {
+                    var dados = JSON.parse(configSalva);
+                    console.log('✅ Dados salvos e recuperados:', dados);
+                    mostrarNotificacaoSimples('✅ Teste de salvamento funcionando!');
+                } else {
+                    console.log('❌ Erro: dados não foram salvos');
+                    alert('❌ Erro no salvamento');
+                }
+                
+            } catch (error) {
+                console.log('❌ Erro no teste de salvamento:', error);
+                alert('❌ Erro: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR EMAIL DE ALERTA 72H+
+        function testarEmailAlerta72h() {
+            console.log('📧 Testando email de alerta 72h+...');
+            
+            var dadosTeste = {
+                pacienteIniciais: 'PACIENTE TESTE',
+                registro: 'TESTE001',
+                dataHoraAdmissao: new Date(Date.now() - 75 * 60 * 60 * 1000).toISOString(),
+                origem: 'EMERGÊNCIA',
+                observacoes: 'Paciente de teste para verificar email de alerta 72h+'
+            };
+            
+            var leitoTeste = 'PA-01';
+            
+            // Chamar função de envio de email
+            enviarEmailAlerta72h(dadosTeste, leitoTeste);
+            
+            console.log('✅ Teste de email de alerta 72h+ executado!');
         }
         
         // FUNCAO PARA ATIVAR AUDIO CONTEXT (necessário em alguns navegadores)
@@ -8888,10 +9568,131 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             iniciarVerificacaoAlertasTempo();
             
             // Atualizar estatísticas iniciais
-            atualizarEstatisticas();
+            atualizarEstatisticasLeitos();
         }, 1000);
     }, 2000); // Aguardar 2 segundos para garantir que os dados foram carregados
         });
+        
+        // FUNCAO PARA GERAR RELATORIO DE PACIENTES COM 72H
+        function gerarRelatorio72h() {
+            console.log('📊 Gerando relatório de pacientes com 72h...');
+            
+            // Buscar justificativas salvas
+            var justificativas = [];
+            try {
+                justificativas = JSON.parse(localStorage.getItem('justificativas_tempo') || '[]');
+            } catch (error) {
+                console.log('❌ Erro ao ler justificativas:', error);
+            }
+            
+            // Buscar pacientes ativos com mais de 72h
+            var pacientes72h = [];
+            var agora = new Date();
+            
+            for (var leitoId in dadosLeitos) {
+                var dados = dadosLeitos[leitoId];
+                if (dados && dados.pacienteIniciais && dados.status === 'EM ATENDIMENTO') {
+                    var dataAdmissao = new Date(dados.dataHoraAdmissao);
+                    var diferencaHoras = (agora - dataAdmissao) / (1000 * 60 * 60);
+                    
+                    if (diferencaHoras >= 72) {
+                        // Buscar justificativa correspondente
+                        var justificativa = justificativas.find(function(j) {
+                            return j.leito === leitoId && j.paciente === dados.pacienteIniciais;
+                        });
+                        
+                        pacientes72h.push({
+                            leito: leitoId,
+                            paciente: dados.pacienteIniciais,
+                            registro: dados.registro,
+                            dataAdmissao: dados.dataHoraAdmissao,
+                            tempoPermanencia: diferencaHoras,
+                            justificativa: justificativa || null
+                        });
+                    }
+                }
+            }
+            
+            // Ordenar por tempo de permanência (maior primeiro)
+            pacientes72h.sort(function(a, b) {
+                return b.tempoPermanencia - a.tempoPermanencia;
+            });
+            
+            var html = '<div class="table-container">';
+            html += '<h3>⚠️ Relatório de Pacientes com 72h+ de Permanência</h3>';
+            html += '<div style="margin-bottom: 15px; color: #dc3545; font-weight: bold;">';
+            html += 'Total de pacientes: ' + pacientes72h.length;
+            html += '</div>';
+            
+            if (pacientes72h.length === 0) {
+                html += '<div style="text-align: center; padding: 40px; color: #28a745;">';
+                html += '<h4>✅ Nenhum paciente com 72h+ encontrado!</h4>';
+                html += '<p>Todos os pacientes estão dentro do tempo limite.</p>';
+                html += '</div>';
+            } else {
+                html += '<table class="table" style="width: 100%; border-collapse: collapse;">';
+                html += '<thead>';
+                html += '<tr style="background: #f8f9fa;">';
+                html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Paciente</th>';
+                html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Registro</th>';
+                html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Leito</th>';
+                html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Admissão</th>';
+                html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Tempo</th>';
+                html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Justificativa</th>';
+                html += '<th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Responsável</th>';
+                html += '</tr>';
+                html += '</thead>';
+                html += '<tbody>';
+                
+                pacientes72h.forEach(function(paciente) {
+                    var dataAdmissao = new Date(paciente.dataAdmissao).toLocaleString('pt-BR');
+                    var tempoFormatado = Math.floor(paciente.tempoPermanencia / 24) + 'd ' + 
+                                       Math.floor(paciente.tempoPermanencia % 24) + 'h';
+                    
+                    var corLinha = paciente.tempoPermanencia >= 96 ? '#ffebee' : '#fff3e0';
+                    var corTexto = paciente.tempoPermanencia >= 96 ? '#c62828' : '#e65100';
+                    
+                    html += '<tr style="background: ' + corLinha + ';">';
+                    html += '<td style="padding: 12px; border: 1px solid #dee2e6; color: ' + corTexto + '; font-weight: bold;">' + paciente.paciente + '</td>';
+                    html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + paciente.registro + '</td>';
+                    html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + paciente.leito + '</td>';
+                    html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + dataAdmissao + '</td>';
+                    html += '<td style="padding: 12px; border: 1px solid #dee2e6; color: ' + corTexto + '; font-weight: bold;">' + tempoFormatado + '</td>';
+                    
+                    if (paciente.justificativa) {
+                        html += '<td style="padding: 12px; border: 1px solid #dee2e6;">';
+                        html += '<strong>Motivo:</strong> ' + paciente.justificativa.motivo + '<br>';
+                        html += '<strong>Detalhes:</strong> ' + (paciente.justificativa.detalhes || 'N/A');
+                        html += '</td>';
+                        html += '<td style="padding: 12px; border: 1px solid #dee2e6;">' + (paciente.justificativa.responsavel || 'N/A') + '</td>';
+                    } else {
+                        html += '<td style="padding: 12px; border: 1px solid #dee2e6; color: #dc3545; font-weight: bold;">❌ SEM JUSTIFICATIVA</td>';
+                        html += '<td style="padding: 12px; border: 1px solid #dee2e6; color: #dc3545;">❌ PENDENTE</td>';
+                    }
+                    
+                    html += '</tr>';
+                });
+                
+                html += '</tbody>';
+                html += '</table>';
+                
+                // Resumo
+                html += '<div style="margin-top: 20px; padding: 15px; background: #e3f2fd; border-radius: 8px;">';
+                html += '<h4>📊 Resumo:</h4>';
+                html += '<p><strong>Total de pacientes com 72h+:</strong> ' + pacientes72h.length + '</p>';
+                html += '<p><strong>Com justificativa:</strong> ' + pacientes72h.filter(function(p) { return p.justificativa; }).length + '</p>';
+                html += '<p><strong>Sem justificativa:</strong> ' + pacientes72h.filter(function(p) { return !p.justificativa; }).length + '</p>';
+                html += '<p><strong>Com 96h+ (crítico):</strong> ' + pacientes72h.filter(function(p) { return p.tempoPermanencia >= 96; }).length + '</p>';
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            
+            var content = document.getElementById('relatorioContent');
+            content.innerHTML = html;
+            
+            console.log('✅ Relatório de 72h gerado:', pacientes72h.length, 'pacientes');
+        }
         
         // FUNCAO PARA TESTAR ALERTA DE 72H
         function testarAlerta72h() {
@@ -9069,12 +9870,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                     }
                 }, 1000);
                 
-                alert('⚡ TESTE SIMPLES 72H\n\n' +
-                      'Paciente: ' + dadosTeste.pacienteIniciais + '\n' +
-                      'Leito: ' + leitoTeste + '\n' +
-                      'Tempo: 72h\n\n' +
-                      'Modal deve aparecer em 1 segundo!\n\n' +
-                      'Verifique o console para detalhes.');
+                console.log('⚡ TESTE SIMPLES 72H - Modal deve aparecer em 1 segundo!');
                 
             } catch (error) {
                 console.error('❌ Erro no teste simples:', error);
@@ -9502,8 +10298,16 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             console.log('✅ Teste de contador de tempo iniciado');
         }
         
-        // FUNCAO PARA ATUALIZAR ESTATISTICAS DO SISTEMA
-        function atualizarEstatisticas() {
+        // FUNCAO PARA ATUALIZAR ESTATISTICAS DO SISTEMA DE LEITOS
+        var ultimaAtualizacaoEstatisticas = 0;
+        function atualizarEstatisticasLeitos() {
+            var agora = new Date().getTime();
+            // Evitar atualizações muito frequentes (máximo a cada 5 segundos)
+            if (agora - ultimaAtualizacaoEstatisticas < 5000) {
+                return;
+            }
+            ultimaAtualizacaoEstatisticas = agora;
+            
             console.log('📊 Atualizando estatísticas do sistema...');
             
             var totalLeitos = 15;
@@ -9667,7 +10471,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             
             // Forçar atualização das estatísticas
             setTimeout(function() {
-                atualizarEstatisticas();
+                atualizarEstatisticasDashboard();
                 
                 // Verificar se as estatísticas foram atualizadas
                 var totalPacientes = document.getElementById('totalPacientesAtivos').textContent;
@@ -9689,6 +10493,698 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             }, 1000);
             
             console.log('✅ Teste de estatísticas iniciado');
+        }
+        
+        // FUNCAO PARA VER JUSTIFICATIVAS SALVAS
+        function verJustificativasSalvas() {
+            console.log('📋 Verificando justificativas salvas...');
+            
+            // Verificar no localStorage
+            try {
+                var justificativas = JSON.parse(localStorage.getItem('justificativas_tempo') || '[]');
+                console.log('💾 Justificativas no localStorage:', justificativas);
+                
+                if (justificativas.length === 0) {
+                    alert('📋 NENHUMA JUSTIFICATIVA ENCONTRADA\n\n' +
+                          'Local: localStorage\n' +
+                          'Status: Vazio\n\n' +
+                          'Faça um teste de 72h primeiro!');
+                } else {
+                    var mensagem = '📋 JUSTIFICATIVAS SALVAS (' + justificativas.length + ')\n\n';
+                    justificativas.forEach(function(just, index) {
+                        mensagem += '--- JUSTIFICATIVA ' + (index + 1) + ' ---\n';
+                        mensagem += 'Paciente: ' + just.paciente + '\n';
+                        mensagem += 'Leito: ' + just.leito + '\n';
+                        mensagem += 'Motivo: ' + just.motivo + '\n';
+                        mensagem += 'Responsável: ' + just.responsavel + '\n';
+                        mensagem += 'Data: ' + just.dataHora + '\n';
+                        mensagem += 'Detalhes: ' + just.detalhes + '\n\n';
+                    });
+                    alert(mensagem);
+                }
+            } catch (error) {
+                console.log('❌ Erro ao ler justificativas:', error);
+                alert('❌ ERRO AO LER JUSTIFICATIVAS\n\n' +
+                      'Erro: ' + error.message);
+            }
+            
+            // Verificar no Firebase (se disponível)
+            if (firebase && firebase.firestore) {
+                console.log('🔥 Verificando justificativas no Firebase...');
+                firebase.firestore().collection('justificativas_tempo').get()
+                    .then(function(querySnapshot) {
+                        console.log('🔥 Justificativas no Firebase:', querySnapshot.docs.length);
+                        if (querySnapshot.docs.length > 0) {
+                            console.log('📋 Justificativas Firebase encontradas:');
+                            querySnapshot.forEach(function(doc) {
+                                console.log('📄', doc.id, doc.data());
+                            });
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log('❌ Erro ao ler Firebase:', error);
+                    });
+            }
+        }
+        
+        // FUNCAO PARA VERIFICAR E MANTER SESSAO ATIVA
+        var intervalosAtivos = [];
+        
+        function verificarSessaoAtiva() {
+            if (!usuarioLogado) {
+                console.log('⚠️ Sessão perdida, parando intervalos...');
+                pararTodosIntervalos();
+                return false;
+            }
+            return true;
+        }
+        
+        function pararTodosIntervalos() {
+            intervalosAtivos.forEach(function(intervalId) {
+                clearInterval(intervalId);
+            });
+            intervalosAtivos = [];
+            console.log('🛑 Todos os intervalos parados');
+        }
+        
+        function adicionarIntervalo(intervalId) {
+            intervalosAtivos.push(intervalId);
+        }
+        
+        // FUNCAO PARA LIMPAR SESSAO E PARAR TODOS OS PROCESSOS
+        function limparSessao() {
+            console.log('🧹 Limpando sessão...');
+            usuarioLogado = null;
+            localStorage.removeItem('usuarioLogado');
+            pararTodosIntervalos();
+            
+            // Esconder conteúdo principal e mostrar login
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('loginPanel').style.display = 'block';
+            
+            console.log('✅ Sessão limpa');
+        }
+        
+        // FUNCAO PARA TESTAR FUNDO VERMELHO 72H
+        function testarFundoVermelho72h() {
+            console.log('🔴 Testando fundo vermelho para pacientes 72h+...');
+            
+            // Criar pacientes de teste com diferentes tempos
+            var leitosTeste = ['PA-01', 'PA-02', 'PA-03', 'PA-04', 'PA-05'];
+            var temposDiferentes = [1, 5, 12, 25, 75]; // 1h, 5h, 12h, 25h, 75h
+            
+            leitosTeste.forEach(function(leitoId, index) {
+                var dataAdmissao = new Date();
+                dataAdmissao.setHours(dataAdmissao.getHours() - temposDiferentes[index]);
+                
+                var dadosTeste = {
+                    pacienteIniciais: 'PACIENTE ' + (index + 1),
+                    registro: Math.floor(Math.random() * 90000) + 10000,
+                    dataNascimento: '01/01/1980',
+                    idade: 44,
+                    origem: 'UPA CENTRO',
+                    dataHoraAdmissao: dataAdmissao.toISOString(),
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Teste de fundo vermelho - ' + temposDiferentes[index] + 'h',
+                    leito: leitoId
+                };
+                
+                console.log('🔴 Criando paciente de teste:', leitoId, dadosTeste);
+                
+                // Atualizar dados do leito
+                dadosLeitos[leitoId] = dadosTeste;
+                
+                // Atualizar interface
+                atualizarLeito(leitoId, dadosTeste);
+            });
+            
+            // Forçar atualização das estatísticas
+            setTimeout(function() {
+                atualizarEstatisticasDashboard();
+            }, 1000);
+            
+            alert('🔴 TESTE DE FUNDO VERMELHO INICIADO\n\n' +
+                  'PA-01: 1h (normal)\n' +
+                  'PA-02: 5h (normal)\n' +
+                  'PA-03: 12h (normal)\n' +
+                  'PA-04: 25h (normal)\n' +
+                  'PA-05: 75h (🔴 FUNDO VERMELHO)\n\n' +
+                  'Observe que apenas o PA-05 deve ter fundo vermelho!');
+            
+            console.log('✅ Teste de fundo vermelho iniciado');
+        }
+        
+        // FUNCAO PARA TESTAR SALVAMENTO DE JUSTIFICATIVA SEM MODAL
+        function testarSalvamentoJustificativa() {
+            try {
+                console.log('🧪 Testando salvamento de justificativa...');
+                
+                // Verificar se usuário está logado
+                if (!usuarioLogado) {
+                    console.log('❌ Usuário não está logado');
+                    alert('Faça login primeiro!');
+                    return;
+                }
+                
+                // Criar justificativa de teste
+                var justificativa = {
+                    leitoId: 'PA-01',
+                    paciente: 'PACIENTE TESTE',
+                    motivo: 'aguardando_exame',
+                    detalhes: 'Teste de salvamento sem modal',
+                    responsavel: 'Dr. Teste',
+                    proximosPassos: 'Aguardar resultado',
+                    dataHora: new Date().toISOString(),
+                    tempoPermanencia: '3d 0h 0min'
+                };
+                
+                console.log('💾 Salvando justificativa de teste:', justificativa);
+                
+                // Salvar no localStorage
+                salvarJustificativaLocal(justificativa);
+                
+                console.log('✅ Justificativa de teste salva!');
+                alert('✅ Justificativa de teste salva com sucesso!\n\nVerifique se não redirecionou para login.');
+            } catch (error) {
+                console.log('❌ Erro no teste:', error);
+                alert('❌ Erro no teste: ' + error.message);
+            }
+        }
+        
+        // FUNCAO DE TESTE SIMPLES
+        function testeSimples() {
+            console.log('🧪 Teste simples iniciado');
+            alert('✅ Teste simples funcionou!');
+        }
+        
+        // FUNCAO PARA TESTAR APENAS O SALVAMENTO
+        function testarSalvamentoDireto() {
+            console.log('🧪 Testando salvamento direto...');
+            
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('❌ Usuário não está logado');
+                alert('Usuário não está logado');
+                return;
+            }
+            
+            // Criar justificativa de teste
+            var justificativa = {
+                leitoId: 'PA-01',
+                motivo: 'teste',
+                detalhes: 'Teste de salvamento direto',
+                responsavel: 'Teste',
+                proximosPassos: 'Teste',
+                dataHora: new Date().toISOString(),
+                tempoPermanencia: '3d 0h 0min'
+            };
+            
+            console.log('💾 Salvando justificativa de teste:', justificativa);
+            
+            try {
+                // Salvar no localStorage
+                salvarJustificativaLocal(justificativa);
+                console.log('✅ Justificativa salva no localStorage');
+                
+                // Salvar no Firebase
+                salvarJustificativaNoFirebase(justificativa);
+                console.log('✅ Justificativa enviada para Firebase');
+                
+                alert('✅ Teste de salvamento concluído com sucesso!');
+                console.log('✅ Teste de salvamento concluído');
+                
+            } catch (error) {
+                console.log('❌ Erro durante teste de salvamento:', error);
+                alert('❌ Erro durante teste: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR MODAL DIRETO SEM ALERT
+        function testarModalDireto() {
+            console.log('🧪 Testando modal direto...');
+            
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('❌ Usuário não está logado');
+                return;
+            }
+            
+            try {
+                // Criar dados de teste
+                var leitoTeste = 'PA-01';
+                var dadosTeste = {
+                    pacienteIniciais: 'TESTE MODAL',
+                    registro: '88888',
+                    dataNascimento: '01/01/1990',
+                    idade: 34,
+                    origem: 'TESTE',
+                    dataHoraAdmissao: new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString(),
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Teste modal direto',
+                    leito: leitoTeste
+                };
+                
+                console.log('📋 Dados do teste modal:', dadosTeste);
+                
+                // Atualizar dados
+                dadosLeitos[leitoTeste] = dadosTeste;
+                
+                // Atualizar interface
+                atualizarLeito(leitoTeste, dadosTeste);
+                
+                // Abrir modal diretamente
+                var modal = document.getElementById('modalJustificativaTempo');
+                if (modal) {
+                    // Preencher informações
+                    document.getElementById('justificativaPaciente').textContent = dadosTeste.pacienteIniciais;
+                    document.getElementById('justificativaLeito').textContent = leitoTeste;
+                    document.getElementById('justificativaTempo').textContent = '3d 0h 0min';
+                    
+                    // Mostrar modal
+                    modal.style.display = 'block';
+                    modal.classList.add('show');
+                    
+                    console.log('✅ Modal aberto diretamente');
+                } else {
+                    console.log('❌ Modal não encontrado');
+                }
+                
+            } catch (error) {
+                console.log('❌ Erro no teste modal:', error);
+            }
+        }
+        
+        // FUNCAO PARA CRIAR 3 PACIENTES DE TESTE COM TEMPOS ESPECIFICOS
+        function criarPacientesTesteCompletos() {
+            console.log('🧪 Criando 3 pacientes de teste com tempos específicos...');
+            
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('❌ Usuário não está logado');
+                alert('Usuário não está logado');
+                return;
+            }
+            
+            try {
+                var agora = new Date();
+                
+                // PACIENTE 1: 5 minutos para completar 72h (71h 55min)
+                var paciente1 = {
+                    pacienteIniciais: 'PACIENTE CRÍTICO',
+                    registro: 'CRI001',
+                    dataNascimento: '15/03/1985',
+                    idade: 39,
+                    origem: 'EMERGÊNCIA',
+                    dataHoraAdmissao: new Date(agora.getTime() - (71 * 60 + 55) * 60 * 1000).toISOString(),
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Paciente crítico - 5min para 72h',
+                    leito: 'PA-01'
+                };
+                
+                // PACIENTE 2: 2 minutos para completar 72h (71h 58min)
+                var paciente2 = {
+                    pacienteIniciais: 'PACIENTE URGENTE',
+                    registro: 'URG002',
+                    dataNascimento: '22/07/1978',
+                    idade: 46,
+                    origem: 'UTI',
+                    dataHoraAdmissao: new Date(agora.getTime() - (71 * 60 + 58) * 60 * 1000).toISOString(),
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Paciente urgente - 2min para 72h',
+                    leito: 'PA-02'
+                };
+                
+                // PACIENTE 3: 10 minutos para completar 72h (71h 50min)
+                var paciente3 = {
+                    pacienteIniciais: 'PACIENTE ALERTA',
+                    registro: 'ALT003',
+                    dataNascimento: '08/12/1992',
+                    idade: 32,
+                    origem: 'AMBULATÓRIO',
+                    dataHoraAdmissao: new Date(agora.getTime() - (71 * 60 + 50) * 60 * 1000).toISOString(),
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Paciente alerta - 10min para 72h',
+                    leito: 'PA-03'
+                };
+                
+                console.log('📋 Criando pacientes de teste:');
+                console.log('1. PACIENTE CRÍTICO - 5min para 72h');
+                console.log('2. PACIENTE URGENTE - 2min para 72h');
+                console.log('3. PACIENTE ALERTA - 10min para 72h');
+                
+                // Atualizar dados dos leitos
+                dadosLeitos['PA-01'] = paciente1;
+                dadosLeitos['PA-02'] = paciente2;
+                dadosLeitos['PA-03'] = paciente3;
+                
+                // Atualizar interface
+                atualizarLeito('PA-01', paciente1);
+                atualizarLeito('PA-02', paciente2);
+                atualizarLeito('PA-03', paciente3);
+                
+                // Atualizar estatísticas
+                atualizarEstatisticasLeitos();
+                
+                // Iniciar verificação de alertas
+                iniciarVerificacaoAlertasTempo();
+                
+                console.log('✅ Pacientes de teste criados com sucesso!');
+                console.log('🚨 Alertas sonoros serão ativados automaticamente!');
+                
+                alert('✅ 3 Pacientes de teste criados!\n\n' +
+                      '1. PACIENTE CRÍTICO (PA-01) - 5min para 72h\n' +
+                      '2. PACIENTE URGENTE (PA-02) - 2min para 72h\n' +
+                      '3. PACIENTE ALERTA (PA-03) - 10min para 72h\n\n' +
+                      '🚨 Alertas sonoros ativados!\n' +
+                      '📊 Teste o relatório de 72h+');
+                
+            } catch (error) {
+                console.log('❌ Erro ao criar pacientes de teste:', error);
+                alert('❌ Erro ao criar pacientes: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA FORMATAR DATA E HORA
+        function formatarDataHora(dataHora) {
+            try {
+                if (!dataHora) return 'N/A';
+                
+                var data = new Date(dataHora);
+                if (isNaN(data.getTime())) return 'Data inválida';
+                
+                // Formatar para dd/mm/aaaa, hh:mm:ss
+                var dia = String(data.getDate()).padStart(2, '0');
+                var mes = String(data.getMonth() + 1).padStart(2, '0');
+                var ano = data.getFullYear();
+                var horas = String(data.getHours()).padStart(2, '0');
+                var minutos = String(data.getMinutes()).padStart(2, '0');
+                var segundos = String(data.getSeconds()).padStart(2, '0');
+                
+                return dia + '/' + mes + '/' + ano + ', ' + horas + ':' + minutos + ':' + segundos;
+            } catch (error) {
+                console.log('❌ Erro ao formatar data:', error);
+                return 'Erro na data';
+            }
+        }
+        
+        // FUNCAO PARA TESTAR RELATORIO DE 72H
+        function testarRelatorio72h() {
+            console.log('📊 Testando relatório de 72h...');
+            
+            // Verificar se há pacientes com 72h+
+            var pacientes72h = [];
+            var agora = new Date();
+            
+            for (var leitoId in dadosLeitos) {
+                var dados = dadosLeitos[leitoId];
+                if (dados && dados.pacienteIniciais && dados.status === 'EM ATENDIMENTO') {
+                    var dataAdmissao = new Date(dados.dataHoraAdmissao);
+                    var diferencaHoras = (agora - dataAdmissao) / (1000 * 60 * 60);
+                    
+                    if (diferencaHoras >= 72) {
+                        pacientes72h.push({
+                            leito: leitoId,
+                            paciente: dados.pacienteIniciais,
+                            tempo: diferencaHoras
+                        });
+                    }
+                }
+            }
+            
+            console.log('📊 Pacientes com 72h+ encontrados:', pacientes72h.length);
+            
+            if (pacientes72h.length === 0) {
+                alert('📊 Nenhum paciente com 72h+ encontrado.\n\nCrie pacientes de teste primeiro!');
+                return;
+            }
+            
+            // Abrir painel de relatórios
+            mostrarRelatorios();
+            
+            // Selecionar relatório de 72h
+            setTimeout(function() {
+                var selectRelatorio = document.getElementById('tipoRelatorio');
+                if (selectRelatorio) {
+                    selectRelatorio.value = 'tempo_72h';
+                    gerarRelatorio();
+                    console.log('✅ Relatório de 72h gerado');
+                }
+            }, 500);
+            
+            alert('📊 Relatório de 72h gerado!\n\n' +
+                  'Pacientes encontrados: ' + pacientes72h.length + '\n\n' +
+                  'Verifique o painel de relatórios!');
+        }
+        
+        // FUNCAO PARA CRIAR PACIENTE COM 72H+ PARA RELATORIO
+        function criarPaciente72hParaRelatorio() {
+            console.log('🧪 Criando paciente com 72h+ para relatório...');
+            
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('❌ Usuário não está logado');
+                alert('Usuário não está logado');
+                return;
+            }
+            
+            try {
+                var agora = new Date();
+                
+                // PACIENTE COM 72H+ (75 horas para ser mais claro)
+                var paciente72h = {
+                    pacienteIniciais: 'PACIENTE 72H+',
+                    registro: '72H001',
+                    dataNascimento: '10/05/1980',
+                    idade: 44,
+                    origem: 'EMERGÊNCIA',
+                    dataHoraAdmissao: new Date(agora.getTime() - 75 * 60 * 60 * 1000).toISOString(), // 75 horas atrás
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Paciente com 75h de permanência - para teste do relatório',
+                    leito: 'PA-01'
+                };
+                
+                console.log('📋 Criando paciente 72h+:', paciente72h);
+                console.log('⏰ Tempo de permanência: 75 horas');
+                
+                // Atualizar dados do leito
+                dadosLeitos['PA-01'] = paciente72h;
+                
+                // Atualizar interface
+                atualizarLeito('PA-01', paciente72h);
+                
+                // Adicionar ao histórico de pacientes
+                if (!historicoPacientes) {
+                    historicoPacientes = [];
+                }
+                
+                // Adicionar entrada de admissão no histórico
+                historicoPacientes.push({
+                    pacienteIniciais: paciente72h.pacienteIniciais,
+                    registro: paciente72h.registro,
+                    dataHoraAdmissao: paciente72h.dataHoraAdmissao,
+                    dataHoraSaida: null,
+                    leito: paciente72h.leito,
+                    origem: paciente72h.origem,
+                    tipo: 'admissao',
+                    observacoes: paciente72h.observacoes
+                });
+                
+                // Salvar no Firebase
+                salvarNoFirebase('historico_pacientes', historicoPacientes);
+                
+                // Atualizar estatísticas
+                atualizarEstatisticasLeitos();
+                
+                console.log('✅ Paciente 72h+ criado com sucesso!');
+                console.log('📊 Histórico atualizado com', historicoPacientes.length, 'registros');
+                
+                alert('✅ Paciente 72h+ criado!\n\n' +
+                      '👤 Paciente: PACIENTE 72H+\n' +
+                      '🏥 Leito: PA-01\n' +
+                      '⏰ Tempo: 75 horas\n' +
+                      '📊 Histórico: Atualizado\n\n' +
+                      'Agora teste o relatório de 72h+!');
+                
+            } catch (error) {
+                console.log('❌ Erro ao criar paciente 72h+:', error);
+                alert('❌ Erro ao criar paciente: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR RELATORIO 72H+ COM PACIENTE CRIADO
+        function testarRelatorio72hComPaciente() {
+            console.log('📊 Testando relatório 72h+ com paciente criado...');
+            
+            try {
+                // Verificar se há pacientes com 72h+
+                var pacientes72h = [];
+                var agora = new Date();
+                
+                for (var leitoId in dadosLeitos) {
+                    var dados = dadosLeitos[leitoId];
+                    if (dados && dados.pacienteIniciais && dados.status === 'EM ATENDIMENTO') {
+                        var dataAdmissao = new Date(dados.dataHoraAdmissao);
+                        var diferencaHoras = (agora - dataAdmissao) / (1000 * 60 * 60);
+                        
+                        if (diferencaHoras >= 72) {
+                            pacientes72h.push({
+                                leito: leitoId,
+                                paciente: dados.pacienteIniciais,
+                                tempo: diferencaHoras
+                            });
+                        }
+                    }
+                }
+                
+                console.log('📊 Pacientes com 72h+ encontrados:', pacientes72h.length);
+                
+                if (pacientes72h.length === 0) {
+                    alert('📊 Nenhum paciente com 72h+ encontrado.\n\nClique em "👤 Criar Paciente 72h+" primeiro!');
+                    return;
+                }
+                
+                // Abrir painel de relatórios
+                mostrarRelatorios();
+                
+                // Selecionar relatório de 72h
+                setTimeout(function() {
+                    var selectRelatorio = document.getElementById('tipoRelatorio');
+                    if (selectRelatorio) {
+                        selectRelatorio.value = 'tempo_72h';
+                        gerarRelatorio();
+                        console.log('✅ Relatório de 72h+ gerado');
+                    }
+                }, 500);
+                
+                alert('📊 Relatório de 72h+ gerado!\n\n' +
+                      'Pacientes encontrados: ' + pacientes72h.length + '\n\n' +
+                      'Verifique o painel de relatórios!');
+                
+            } catch (error) {
+                console.log('❌ Erro no teste do relatório 72h+:', error);
+                alert('❌ Erro no teste: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR RELATORIO SIMPLES
+        function testarRelatorioSimples() {
+            console.log('📊 Testando relatório simples...');
+            
+            try {
+                // Testar função formatarDataHora
+                console.log('🧪 Testando formatarDataHora...');
+                var dataTeste = new Date().toISOString();
+                var dataFormatada = formatarDataHora(dataTeste);
+                console.log('✅ formatarDataHora funcionando:', dataFormatada);
+                
+                // Verificar se há dados no histórico
+                if (!historicoPacientes || historicoPacientes.length === 0) {
+                    console.log('⚠️ Nenhum dado no histórico, criando dados de teste...');
+                    
+                    // Criar dados de teste no histórico
+                    historicoPacientes = [
+                        {
+                            pacienteIniciais: 'PACIENTE TESTE 1',
+                            registro: 'TEST001',
+                            dataHoraAdmissao: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                            dataHoraSaida: null,
+                            leito: 'PA-01',
+                            origem: 'EMERGÊNCIA',
+                            tipo: 'admissao'
+                        },
+                        {
+                            pacienteIniciais: 'PACIENTE TESTE 2',
+                            registro: 'TEST002',
+                            dataHoraAdmissao: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                            dataHoraSaida: new Date().toISOString(),
+                            leito: 'PA-02',
+                            origem: 'UTI',
+                            tipo: 'alta'
+                        }
+                    ];
+                    
+                    console.log('✅ Dados de teste criados no histórico');
+                }
+                
+                // Testar relatório geral diretamente
+                console.log('📊 Testando relatório geral...');
+                gerarRelatorio();
+                
+                alert('📊 Teste de relatório concluído!\n\n' +
+                      '✅ formatarDataHora: OK\n' +
+                      '✅ Dados de teste: Criados\n' +
+                      '✅ Relatório geral: Testado\n\n' +
+                      'Verifique o console para detalhes!');
+                
+            } catch (error) {
+                console.log('❌ Erro no teste de relatório:', error);
+                alert('❌ Erro no teste: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR TODOS OS RELATORIOS
+        function testarTodosRelatorios() {
+            console.log('📊 Testando todos os relatórios...');
+            
+            try {
+                // Testar função formatarDataHora
+                console.log('🧪 Testando formatarDataHora...');
+                var dataTeste = new Date().toISOString();
+                var dataFormatada = formatarDataHora(dataTeste);
+                console.log('✅ formatarDataHora funcionando:', dataFormatada);
+                
+                // Verificar se há dados no histórico
+                if (!historicoPacientes || historicoPacientes.length === 0) {
+                    console.log('⚠️ Nenhum dado no histórico, criando dados de teste...');
+                    
+                    // Criar dados de teste no histórico
+                    historicoPacientes = [
+                        {
+                            pacienteIniciais: 'PACIENTE TESTE 1',
+                            registro: 'TEST001',
+                            dataHoraAdmissao: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                            dataHoraSaida: null,
+                            leito: 'PA-01',
+                            origem: 'EMERGÊNCIA',
+                            tipo: 'admissao'
+                        },
+                        {
+                            pacienteIniciais: 'PACIENTE TESTE 2',
+                            registro: 'TEST002',
+                            dataHoraAdmissao: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                            dataHoraSaida: new Date().toISOString(),
+                            leito: 'PA-02',
+                            origem: 'UTI',
+                            tipo: 'alta'
+                        }
+                    ];
+                    
+                    console.log('✅ Dados de teste criados no histórico');
+                }
+                
+                // Abrir painel de relatórios
+                mostrarRelatorios();
+                
+                // Testar relatório geral
+                setTimeout(function() {
+                    var selectRelatorio = document.getElementById('tipoRelatorio');
+                    if (selectRelatorio) {
+                        selectRelatorio.value = 'geral';
+                        gerarRelatorio();
+                        console.log('✅ Relatório geral testado');
+                    }
+                }, 500);
+                
+                alert('📊 Teste de relatórios iniciado!\n\n' +
+                      '✅ formatarDataHora: OK\n' +
+                      '✅ Dados de teste: Criados\n' +
+                      '✅ Relatório geral: Testado\n\n' +
+                      'Verifique o painel de relatórios!');
+                
+            } catch (error) {
+                console.log('❌ Erro no teste de relatórios:', error);
+                alert('❌ Erro no teste: ' + error.message);
+            }
         }
         
         // FUNCOES PARA SISTEMA DE MEDICACAO
@@ -9740,6 +11236,13 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
         // FUNCAO PARA SALVAR LIBERACAO DE MEDICACAO
         function salvarLiberacaoMedicacao(event) {
             event.preventDefault();
+            
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('❌ Usuário não está logado');
+                alert('Sessão expirada. Faça login novamente.');
+                return;
+            }
             
             var leitoId = document.getElementById('medicacaoLeito').textContent;
             var medicamentos = document.getElementById('medicamentos').value;
@@ -9831,7 +11334,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                         '<span class="medicacao-icon">💊</span>' +
                         '<span class="info-label">Medicação:</span>' +
                         '<span class="info-value medicacao-status ' + medicacao.prioridade + '">' +
-                            'LIBERADA - ' + medicacao.prioridade.toUpperCase() +
+                            'LIBERADA - ' + (medicacao.prioridade ? medicacao.prioridade.toUpperCase() : 'NORMAL') +
                         '</span>' +
                     '</div>';
                     
@@ -9863,7 +11366,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                           'Leito: ' + medicacao.leitoId + '\n' +
                           'Medicamentos: ' + medicacao.medicamentos + '\n' +
                           'Dosagem: ' + medicacao.dosagem + '\n' +
-                          'Prioridade: ' + medicacao.prioridade.toUpperCase() + '\n' +
+                          'Prioridade: ' + (medicacao.prioridade ? medicacao.prioridade.toUpperCase() : 'NORMAL') + '\n' +
                           'Responsável: ' + medicacao.responsavel + '\n' +
                           'Data/Hora: ' + new Date(medicacao.dataHora).toLocaleString('pt-BR') + '\n';
             
@@ -9878,14 +11381,26 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
         function iniciarVerificacaoAlertasTempo() {
             console.log('🕐 Iniciando verificação automática de alertas de tempo...');
             
+            // Verificar se usuário está logado
+            if (!usuarioLogado) {
+                console.log('⚠️ Usuário não logado, não iniciando alertas');
+                return;
+            }
+            
             // Verificar imediatamente
             verificarAlertasTempo();
             
             // Verificar a cada minuto
-            setInterval(function() {
+            var intervalId = setInterval(function() {
+                if (!usuarioLogado) {
+                    console.log('⚠️ Usuário não logado, parando verificação de alertas');
+                    clearInterval(intervalId);
+                    return;
+                }
                 verificarAlertasTempo();
             }, 60000); // 60 segundos
             
+            adicionarIntervalo(intervalId);
             console.log('✅ Sistema de alertas de tempo iniciado');
         }
         
@@ -9899,7 +11414,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             projectId: "nexuscare-inmceb",
             storageBucket: "nexuscare-inmceb.appspot.com",
             messagingSenderId: "600913039133",
-            appId: "1:600913039133:web:exemplo123456"
+            appId: "1:600913039133:web:nexuscare-inmceb"
         };
         
         function inicializarFirebase() {
@@ -10135,7 +11650,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                 
                 // Atualizar estatísticas
                 setTimeout(function() {
-                    atualizarEstatisticas();
+                    atualizarEstatisticasDashboard();
                 }, 400);
                 // Forçar atualização visual
                 setTimeout(function() {
@@ -10163,7 +11678,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             
             // Atualizar estatísticas
             setTimeout(function() {
-                atualizarEstatisticas();
+                atualizarEstatisticasDashboard();
             }, 500);
         }
         
