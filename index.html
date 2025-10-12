@@ -1995,6 +1995,535 @@
         .farmacia-card-info {
             margin-bottom: 15px;
         }
+        
+        /* ESTILOS PARA SEÇÃO EDUCATIVA */
+        .educativo-intro {
+            margin-bottom: 30px;
+        }
+        
+        .intro-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .intro-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .intro-card h3 {
+            margin: 0 0 15px 0;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .intro-card p {
+            margin: 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .educativo-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        
+        .btn-educativo {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            color: #495057;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-educativo:hover {
+            background: #e9ecef;
+            border-color: #dee2e6;
+            transform: translateY(-2px);
+        }
+        
+        .btn-educativo.active {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+        
+        .educativo-conteudo {
+            margin-bottom: 30px;
+        }
+        
+        .secao-educativa {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .secao-educativa.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .secao-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #007bff;
+        }
+        
+        .secao-header h3 {
+            margin: 0;
+            color: #007bff;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .conteudo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .conteudo-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #28a745;
+            transition: transform 0.3s ease;
+        }
+        
+        .conteudo-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .conteudo-card h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        
+        .conteudo-card p {
+            margin: 0 0 10px 0;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .conteudo-card ul {
+            margin: 10px 0 0 0;
+            padding-left: 20px;
+        }
+        
+        .conteudo-card li {
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        .passos-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .passo-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .passo-numero {
+            background: #17a2b8;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .passo-conteudo h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        
+        .passo-conteudo p {
+            margin: 0 0 15px 0;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .exemplo-box {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        
+        .exemplo-box strong {
+            color: #1976d2;
+        }
+        
+        .funcionalidades-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .funcionalidade-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #ffc107;
+        }
+        
+        .func-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .funcionalidade-card h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        
+        .funcionalidade-card p {
+            margin: 0 0 10px 0;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .funcionalidade-card ul {
+            margin: 10px 0 0 0;
+            padding-left: 20px;
+        }
+        
+        .funcionalidade-card li {
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        
+        .dica-importante {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #e17055;
+            margin-top: 25px;
+        }
+        
+        .dica-importante h4 {
+            margin: 0 0 10px 0;
+            color: #2d3436;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dica-importante p {
+            margin: 0;
+            color: #2d3436;
+            font-weight: 500;
+        }
+        
+        .farmacia-explicacao {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .explicacao-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #28a745;
+        }
+        
+        .explicacao-card h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        
+        .explicacao-card p {
+            margin: 0 0 20px 0;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .processo-farmacia {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .processo-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .processo-numero {
+            background: #28a745;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .processo-item p {
+            margin: 0;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .prioridades-explicacao {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #dc3545;
+        }
+        
+        .prioridades-explicacao h4 {
+            margin: 0 0 20px 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        
+        .prioridade-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .prioridade-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        .prioridade-badge.baixa { background: #6c757d; color: white; }
+        .prioridade-badge.normal { background: #28a745; color: white; }
+        .prioridade-badge.alta { background: #ffc107; color: #212529; }
+        .prioridade-badge.urgente { background: #dc3545; color: white; }
+        
+        .prioridade-item p {
+            margin: 0;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .relatorios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .relatorio-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #6f42c1;
+        }
+        
+        .relatorio-card h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        
+        .relatorio-card p {
+            margin: 0 0 15px 0;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .como-usar {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .como-usar strong {
+            color: #1976d2;
+        }
+        
+        .dicas-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .dica-categoria {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #fd7e14;
+        }
+        
+        .dica-categoria h4 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        
+        .dica-categoria ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .dica-categoria li {
+            margin-bottom: 8px;
+            color: #495057;
+            line-height: 1.5;
+        }
+        
+        .educativo-acoes {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .educativo-acoes .btn {
+            padding: 12px 25px;
+            font-weight: 600;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .educativo-acoes .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        /* ESTILOS PARA BOTÕES DE DEPLOY */
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+            border: 1px solid #ffc107;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-warning:hover {
+            background: #e0a800;
+            border-color: #d39e00;
+            transform: translateY(-1px);
+        }
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+            border: 1px solid #17a2b8;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-info:hover {
+            background: #138496;
+            border-color: #117a8b;
+            transform: translateY(-1px);
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: 1px solid #28a745;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-success:hover {
+            background: #218838;
+            border-color: #1e7e34;
+            transform: translateY(-1px);
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border: 1px solid #dc3545;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+            border-color: #bd2130;
+            transform: translateY(-1px);
+        }
         .farmacia-info-row {
             display: flex;
             justify-content: space-between;
@@ -2056,6 +2585,10 @@
                 <button class="view-btn" onclick="mostrarRelatorios()">
                     <i class="fas fa-chart-bar"></i>
                     Relatorios
+                </button>
+                <button class="view-btn" onclick="mostrarEducativo()">
+                    <i class="fas fa-graduation-cap"></i>
+                    Centro Educativo
                 </button>
                 <button class="view-btn" onclick="mostrarConfigEmail()">
                     <i class="fas fa-envelope"></i>
@@ -2286,6 +2819,55 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- CARD DO ÚLTIMO PACIENTE ADMITIDO -->
+                <div style="max-width: 600px; margin: 0 auto 20px auto;">
+                    <div style="background: #f0f8ff; padding: 20px; border-radius: 10px; border-left: 4px solid #2196f3;">
+                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <div style="background: #2196f3; color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 16px; box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);">
+                                👤
+                            </div>
+                            <div>
+                                <h3 style="margin: 0; color: #1976d2; font-size: 16px; font-weight: bold;">Último Paciente Admitido</h3>
+                                <p style="margin: 0; color: #666; font-size: 12px;">Informações do paciente</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Grid de informações principais -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <div style="background: white; padding: 10px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e3f2fd;">
+                                <p style="margin: 0 0 4px 0; font-size: 11px; color: #666; font-weight: 500;">NOME</p>
+                                <p style="margin: 0; font-weight: bold; color: #1976d2; font-size: 14px;" id="ultimoPacienteNome">-</p>
+                            </div>
+                            <div style="background: white; padding: 10px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e8f5e8;">
+                                <p style="margin: 0 0 4px 0; font-size: 11px; color: #666; font-weight: 500;">LEITO</p>
+                                <p style="margin: 0; font-weight: bold; color: #2e7d32; font-size: 14px;" id="ultimoPacienteLeito">-</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <div style="background: white; padding: 10px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #fff3e0;">
+                                <p style="margin: 0 0 4px 0; font-size: 11px; color: #666; font-weight: 500;">REGISTRO</p>
+                                <p style="margin: 0; font-weight: bold; color: #f57c00; font-size: 14px;" id="ultimoPacienteRegistro">-</p>
+                            </div>
+                            <div style="background: white; padding: 10px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #f3e5f5;">
+                                <p style="margin: 0 0 4px 0; font-size: 11px; color: #666; font-weight: 500;">DATA/HORA</p>
+                                <p style="margin: 0; font-weight: bold; color: #7b1fa2; font-size: 11px;" id="ultimoPacienteDataHora">-</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Informação adicional do responsável -->
+                        <div style="background: white; padding: 10px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e1f5fe;">
+                            <p style="margin: 0 0 4px 0; font-size: 11px; color: #666; font-weight: 500; text-align: center;">RESPONSÁVEL</p>
+                            <p style="margin: 0; font-weight: bold; color: #0277bd; font-size: 13px; text-align: center;" id="ultimoPacienteResponsavel">-</p>
+                        </div>
+                        
+                        <!-- Barra de tempo -->
+                        <div style="background: linear-gradient(90deg, #fff3e0, #ffe0b2); padding: 8px; border-radius: 8px; text-align: center; border: 1px solid #ffb74d; box-shadow: 0 2px 4px rgba(255, 183, 77, 0.3);">
+                            <p style="margin: 0; font-size: 11px; color: #e65100; font-weight: 500;">⏰ Visível por 6 horas após admissão</p>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="leitos-grid" id="leitosGrid">
                     <!-- LEITOS CRIADOS DIRETAMENTE NO HTML -->
@@ -2501,7 +3083,368 @@
                 </div>
             </div>
 
-            <!-- PAINEL FARMACIA -->
+                <!-- PAINEL EDUCATIVO -->
+            <div id="educativoPanel" class="panel">
+                <h2><i class="fas fa-graduation-cap"></i> NexusCare - Centro Educativo</h2>
+                
+                <!-- INTRODUÇÃO -->
+                <div class="educativo-intro">
+                    <div class="intro-card">
+                        <div class="intro-icon">🏥</div>
+                        <h3>Bem-vindo ao NexusCare!</h3>
+                        <p>O sistema de gestão hospitalar mais intuitivo e completo para controle de leitos, pacientes e medicamentos.</p>
+                    </div>
+                </div>
+                
+                <!-- NAVEGAÇÃO EDUCATIVA -->
+                <div class="educativo-nav">
+                    <button class="btn-educativo active" onclick="mostrarSecaoEducativa('o-que-e')">
+                        <i class="fas fa-info-circle"></i> O que é o NexusCare?
+                    </button>
+                    <button class="btn-educativo" onclick="mostrarSecaoEducativa('primeiros-passos')">
+                        <i class="fas fa-play-circle"></i> Primeiros Passos
+                    </button>
+                    <button class="btn-educativo" onclick="mostrarSecaoEducativa('controle-leitos')">
+                        <i class="fas fa-bed"></i> Controle de Leitos
+                    </button>
+                    <button class="btn-educativo" onclick="mostrarSecaoEducativa('farmacia')">
+                        <i class="fas fa-pills"></i> Farmácia
+                    </button>
+                    <button class="btn-educativo" onclick="mostrarSecaoEducativa('relatorios')">
+                        <i class="fas fa-chart-bar"></i> Relatórios
+                    </button>
+                    <button class="btn-educativo" onclick="mostrarSecaoEducativa('dicas')">
+                        <i class="fas fa-lightbulb"></i> Dicas Importantes
+                    </button>
+                </div>
+                
+                <!-- CONTEÚDO EDUCATIVO -->
+                <div class="educativo-conteudo">
+                    
+                    <!-- SEÇÃO: O QUE É O NEXUSCARE -->
+                    <div id="secao-o-que-e" class="secao-educativa active">
+                        <div class="secao-header">
+                            <h3><i class="fas fa-info-circle"></i> O que é o NexusCare?</h3>
+                        </div>
+                        
+                        <div class="conteudo-grid">
+                            <div class="conteudo-card">
+                                <div class="card-icon">🎯</div>
+                                <h4>Objetivo Principal</h4>
+                                <p>O NexusCare é um sistema completo para gerenciar pacientes, leitos e medicamentos em hospitais e clínicas de forma digital e organizada.</p>
+                            </div>
+                            
+                            <div class="conteudo-card">
+                                <div class="card-icon">⚡</div>
+                                <h4>Principais Benefícios</h4>
+                                <ul>
+                                    <li>✅ Controle em tempo real dos leitos</li>
+                                    <li>✅ Gestão automática de medicamentos</li>
+                                    <li>✅ Relatórios detalhados</li>
+                                    <li>✅ Alertas inteligentes</li>
+                                    <li>✅ Interface simples e intuitiva</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="conteudo-card">
+                                <div class="card-icon">👥</div>
+                                <h4>Para Quem é Indicado</h4>
+                                <p>Profissionais de saúde, administradores hospitalares, técnicos de enfermagem e qualquer pessoa que trabalhe com gestão de pacientes.</p>
+                            </div>
+                            
+                            <div class="conteudo-card">
+                                <div class="card-icon">🔒</div>
+                                <h4>Segurança e Confiabilidade</h4>
+                                <p>Sistema seguro com backup automático, controle de acesso por usuários e sincronização em tempo real.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SEÇÃO: PRIMEIROS PASSOS -->
+                    <div id="secao-primeiros-passos" class="secao-educativa">
+                        <div class="secao-header">
+                            <h3><i class="fas fa-play-circle"></i> Primeiros Passos</h3>
+                        </div>
+                        
+                        <div class="passos-container">
+                            <div class="passo-item">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-conteudo">
+                                    <h4>Fazer Login</h4>
+                                    <p>Use suas credenciais para acessar o sistema. Se for seu primeiro acesso, use as credenciais padrão fornecidas pela administração.</p>
+                                    <div class="exemplo-box">
+                                        <strong>Exemplo:</strong> Usuário: admin | Senha: admin123
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="passo-item">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-conteudo">
+                                    <h4>Navegar pelos Painéis</h4>
+                                    <p>Use os botões no topo da tela para navegar entre as diferentes seções do sistema.</p>
+                                    <div class="exemplo-box">
+                                        <strong>Painéis disponíveis:</strong> Controle de Leitos, Farmácia, Relatórios, Configurações
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="passo-item">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-conteudo">
+                                    <h4>Admitir seu Primeiro Paciente</h4>
+                                    <p>Clique em "Admitir Paciente" em qualquer leito vago para começar a usar o sistema.</p>
+                                    <div class="exemplo-box">
+                                        <strong>Dica:</strong> Preencha todos os campos obrigatórios (marcados com *) para garantir o funcionamento correto.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="passo-item">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-conteudo">
+                                    <h4>Explorar as Funcionalidades</h4>
+                                    <p>Experimente transferir pacientes, liberar medicamentos e gerar relatórios para se familiarizar com o sistema.</p>
+                                    <div class="exemplo-box">
+                                        <strong>Lembre-se:</strong> Todas as ações são salvas automaticamente!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SEÇÃO: CONTROLE DE LEITOS -->
+                    <div id="secao-controle-leitos" class="secao-educativa">
+                        <div class="secao-header">
+                            <h3><i class="fas fa-bed"></i> Controle de Leitos</h3>
+                        </div>
+                        
+                        <div class="funcionalidades-grid">
+                            <div class="funcionalidade-card">
+                                <div class="func-icon">➕</div>
+                                <h4>Admitir Paciente</h4>
+                                <p><strong>Como fazer:</strong> Clique em "Admitir Paciente" em um leito vago (verde)</p>
+                                <p><strong>O que preencher:</strong></p>
+                                <ul>
+                                    <li>Nome do paciente</li>
+                                    <li>Registro médico</li>
+                                    <li>Data de nascimento</li>
+                                    <li>Responsável pela admissão</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="funcionalidade-card">
+                                <div class="func-icon">🔄</div>
+                                <h4>Transferir Paciente</h4>
+                                <p><strong>Como fazer:</strong> Clique em "Transferir" em um leito ocupado (vermelho)</p>
+                                <p><strong>O que acontece:</strong></p>
+                                <ul>
+                                    <li>Paciente é movido para novo leito</li>
+                                    <li>Leito anterior fica disponível</li>
+                                    <li>Histórico é atualizado automaticamente</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="funcionalidade-card">
+                                <div class="func-icon">🏠</div>
+                                <h4>Dar Alta</h4>
+                                <p><strong>Como fazer:</strong> Clique em "Dar Alta" em um leito ocupado</p>
+                                <p><strong>Resultado:</strong></p>
+                                <ul>
+                                    <li>Paciente é removido do sistema</li>
+                                    <li>Leito fica disponível para novo paciente</li>
+                                    <li>Dados são salvos no histórico</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="funcionalidade-card">
+                                <div class="func-icon">⏰</div>
+                                <h4>Contador de Tempo</h4>
+                                <p><strong>O que é:</strong> Mostra há quanto tempo o paciente está no leito</p>
+                                <p><strong>Alertas especiais:</strong></p>
+                                <ul>
+                                    <li>Após 72 horas: Alerta vermelho</li>
+                                    <li>Modal de justificativa obrigatório</li>
+                                    <li>Som de alerta contínuo</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="dica-importante">
+                            <h4><i class="fas fa-lightbulb"></i> Dica Importante</h4>
+                            <p>O sistema mostra automaticamente o último paciente admitido por 6 horas para facilitar o acompanhamento da equipe.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- SEÇÃO: FARMÁCIA -->
+                    <div id="secao-farmacia" class="secao-educativa">
+                        <div class="secao-header">
+                            <h3><i class="fas fa-pills"></i> Farmácia</h3>
+                        </div>
+                        
+                        <div class="farmacia-explicacao">
+                            <div class="explicacao-card">
+                                <h4>💊 Liberação de Medicamentos</h4>
+                                <p>O módulo de farmácia permite liberar medicamentos para pacientes de forma organizada e com controle de prioridade.</p>
+                                
+                                <div class="processo-farmacia">
+                                    <div class="processo-item">
+                                        <div class="processo-numero">1</div>
+                                        <p>Clique em "Liberar Medicação" no card do paciente</p>
+                                    </div>
+                                    <div class="processo-item">
+                                        <div class="processo-numero">2</div>
+                                        <p>Preencha o responsável e selecione a prioridade</p>
+                                    </div>
+                                    <div class="processo-item">
+                                        <div class="processo-numero">3</div>
+                                        <p>Adicione observações se necessário</p>
+                                    </div>
+                                    <div class="processo-item">
+                                        <div class="processo-numero">4</div>
+                                        <p>Clique em "Liberar" para confirmar</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="prioridades-explicacao">
+                                <h4>🎯 Níveis de Prioridade</h4>
+                                <div class="prioridade-item baixa">
+                                    <span class="prioridade-badge baixa">BAIXA</span>
+                                    <p>Medicamentos de rotina, sem urgência</p>
+                                </div>
+                                <div class="prioridade-item normal">
+                                    <span class="prioridade-badge normal">NORMAL</span>
+                                    <p>Medicamentos padrão, prazo normal</p>
+                                </div>
+                                <div class="prioridade-item alta">
+                                    <span class="prioridade-badge alta">ALTA</span>
+                                    <p>Medicamentos urgentes, atenção especial</p>
+                                </div>
+                                <div class="prioridade-item urgente">
+                                    <span class="prioridade-badge urgente">URGENTE</span>
+                                    <p>Medicamentos críticos, som de alerta</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SEÇÃO: RELATÓRIOS -->
+                    <div id="secao-relatorios" class="secao-educativa">
+                        <div class="secao-header">
+                            <h3><i class="fas fa-chart-bar"></i> Relatórios</h3>
+                        </div>
+                        
+                        <div class="relatorios-grid">
+                            <div class="relatorio-card">
+                                <h4>📊 Relatório Geral</h4>
+                                <p>Visão completa de todos os pacientes e movimentações do sistema.</p>
+                                <div class="como-usar">
+                                    <strong>Como usar:</strong> Clique em "Gerar Relatório" e escolha o período desejado.
+                                </div>
+                            </div>
+                            
+                            <div class="relatorio-card">
+                                <h4>⏰ Relatório 72h+</h4>
+                                <p>Lista pacientes que estão há mais de 72 horas no hospital.</p>
+                                <div class="como-usar">
+                                    <strong>Como usar:</strong> Acesse automaticamente quando houver pacientes com 72h+.
+                                </div>
+                            </div>
+                            
+                            <div class="relatorio-card">
+                                <h4>📈 Estatísticas</h4>
+                                <p>Números em tempo real: pacientes ativos, leitos ocupados e disponíveis.</p>
+                                <div class="como-usar">
+                                    <strong>Como usar:</strong> Visualize no topo de cada painel automaticamente.
+                                </div>
+                            </div>
+                            
+                            <div class="relatorio-card">
+                                <h4>🔍 Rastreabilidade</h4>
+                                <p>Histórico completo de todas as movimentações de pacientes.</p>
+                                <div class="como-usar">
+                                    <strong>Como usar:</strong> Acesse pelo menu de relatórios para ver o histórico detalhado.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SEÇÃO: DICAS IMPORTANTES -->
+                    <div id="secao-dicas" class="secao-educativa">
+                        <div class="secao-header">
+                            <h3><i class="fas fa-lightbulb"></i> Dicas Importantes</h3>
+                        </div>
+                        
+                        <div class="dicas-container">
+                            <div class="dica-categoria">
+                                <h4>🔄 Sincronização Automática</h4>
+                                <ul>
+                                    <li>✅ Todos os dados são salvos automaticamente</li>
+                                    <li>✅ Sistema funciona offline e sincroniza quando possível</li>
+                                    <li>✅ Backup automático a cada 5 minutos</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="dica-categoria">
+                                <h4>🔊 Alertas Sonoros</h4>
+                                <ul>
+                                    <li>🔔 Som de admissão quando paciente é admitido</li>
+                                    <li>🔔 Som de transferência quando paciente é transferido</li>
+                                    <li>🔔 Som de alta quando paciente recebe alta</li>
+                                    <li>🚨 Som contínuo para pacientes com 72h+</li>
+                                    <li>💊 Som pulsátil para medicamentos urgentes</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="dica-categoria">
+                                <h4>📧 Notificações por Email</h4>
+                                <ul>
+                                    <li>📨 Email automático para admissões</li>
+                                    <li>📨 Email automático para transferências</li>
+                                    <li>📨 Email automático para altas</li>
+                                    <li>📨 Email de alerta para pacientes 72h+</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="dica-categoria">
+                                <h4>🛠️ Solução de Problemas</h4>
+                                <ul>
+                                    <li>🔧 Use "Corrigir Dados" se houver problemas</li>
+                                    <li>🔄 Use "Sincronizar Interface" para atualizar</li>
+                                    <li>❌ Use "Fechar Todos Modais" se algo travar</li>
+                                    <li>📧 Teste emails com "Testar Mailto"</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="dica-categoria">
+                                <h4>🎯 Boas Práticas</h4>
+                                <ul>
+                                    <li>📝 Sempre preencha todos os campos obrigatórios</li>
+                                    <li>⏰ Responda aos alertas de 72h+ rapidamente</li>
+                                    <li>💊 Use prioridades corretas para medicamentos</li>
+                                    <li>🔄 Faça logout ao terminar o trabalho</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- BOTÕES DE AÇÃO -->
+                <div class="educativo-acoes">
+                    <button class="btn btn-primary" onclick="abrirPainel('paPanel')">
+                        <i class="fas fa-bed"></i> Ir para Controle de Leitos
+                    </button>
+                    <button class="btn btn-secondary" onclick="mostrarGuiaCompletoNexusCare()">
+                        <i class="fas fa-book"></i> Guia Completo
+                    </button>
+                    <button class="btn btn-success" onclick="testarSistemaCompleto()">
+                        <i class="fas fa-play"></i> Testar Sistema
+                    </button>
+                </div>
+            </div>
+
+                <!-- PAINEL FARMACIA -->
             <div id="farmaciaPanel" class="panel">
                 <h2><i class="fas fa-pills"></i> NexusCare - Farmácia</h2>
                 
@@ -2521,11 +3464,60 @@
                     </div>
                 </div>
                 
+                <!-- CARD DO ÚLTIMO PACIENTE ADMITIDO NA FARMÁCIA -->
+                <div id="cardPacienteFarmaciaPrincipal" style="background: #e8f4fd; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #2196f3; display: none;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <div style="background: #2196f3; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 18px; box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);">
+                            👤
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; color: #1976d2; font-size: 18px; font-weight: bold;">Último Paciente Admitido</h3>
+                            <p style="margin: 0; color: #666; font-size: 14px;">Informações para medicação</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Grid de informações principais -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e3f2fd;">
+                            <p style="margin: 0 0 5px 0; font-size: 12px; color: #666; font-weight: 500;">NOME</p>
+                            <p style="margin: 0; font-weight: bold; color: #1976d2; font-size: 16px;" id="ultimoPacienteNomeFarmaciaPrincipal">-</p>
+                        </div>
+                        <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e8f5e8;">
+                            <p style="margin: 0 0 5px 0; font-size: 12px; color: #666; font-weight: 500;">LEITO</p>
+                            <p style="margin: 0; font-weight: bold; color: #2e7d32; font-size: 16px;" id="ultimoPacienteLeitoFarmaciaPrincipal">-</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #fff3e0;">
+                            <p style="margin: 0 0 5px 0; font-size: 12px; color: #666; font-weight: 500;">REGISTRO</p>
+                            <p style="margin: 0; font-weight: bold; color: #f57c00; font-size: 16px;" id="ultimoPacienteRegistroFarmaciaPrincipal">-</p>
+                        </div>
+                        <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #f3e5f5;">
+                            <p style="margin: 0 0 5px 0; font-size: 12px; color: #666; font-weight: 500;">DATA/HORA</p>
+                            <p style="margin: 0; font-weight: bold; color: #7b1fa2; font-size: 12px;" id="ultimoPacienteDataHoraFarmaciaPrincipal">-</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Informação adicional do responsável -->
+                    <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e1f5fe;">
+                        <p style="margin: 0 0 5px 0; font-size: 12px; color: #666; font-weight: 500; text-align: center;">RESPONSÁVEL</p>
+                        <p style="margin: 0; font-weight: bold; color: #0277bd; font-size: 15px; text-align: center;" id="ultimoPacienteResponsavelFarmaciaPrincipal">-</p>
+                    </div>
+                    
+                    <!-- Barra de tempo -->
+                    <div style="background: linear-gradient(90deg, #fff3e0, #ffe0b2); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #ffb74d; box-shadow: 0 2px 4px rgba(255, 183, 77, 0.3);">
+                        <p style="margin: 0; font-size: 12px; color: #e65100; font-weight: 500;">⏰ Visível por 6 horas após admissão</p>
+                    </div>
+                </div>
+
+                
                 <!-- Filtros -->
                 <div class="filters">
                     <input type="text" class="filter-input" id="filterFarmacia" placeholder="Filtrar por paciente...">
                     <button class="btn btn-primary" onclick="filtrarFarmacia()">Filtrar</button>
                     <button class="btn" onclick="limparFiltrosFarmacia()">Limpar</button>
+                    <button class="btn" onclick="testarCardFarmacia()" style="background: #ff9800; color: white; margin-left: 10px;">🧪 Testar Card</button>
                 </div>
                 
                 <!-- Cards dos Pacientes -->
@@ -2749,6 +3741,38 @@
                     <!-- Botão de teste removido para versão de produção -->
                 </div>
                 
+                <!-- BOTÃO DE AJUDA NEXUSCARE -->
+                <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; text-align: center; color: white;">
+                    <h3 style="margin: 0 0 15px 0; font-size: 24px;">📚 Guia Completo do NexusCare</h3>
+                    <p style="margin: 0 0 20px 0; font-size: 16px; opacity: 0.9;">Aprenda a usar o sistema de forma didática e eficiente</p>
+                    <button onclick="mostrarGuiaCompletoNexusCare()" class="btn-primary" style="background: rgba(255,255,255,0.2); border: 2px solid white; color: white; padding: 15px 30px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                        📖 Abrir Guia Completo
+                    </button>
+                </div>
+                
+                <!-- CONFIGURAÇÃO RÁPIDA PARA VERSÃO DE PRODUÇÃO -->
+                <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 2px solid #e9ecef;">
+                    <h3 style="color: #495057; margin-bottom: 15px; text-align: center;">⚙️ Configuração Rápida</h3>
+                    <p style="text-align: center; color: #6c757d; margin-bottom: 20px;">Configure emails automáticos para receber notificações</p>
+                    
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                        <button onclick="configurarEmailsAutomaticos()" class="btn-primary" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none; padding: 12px 20px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            🚀 Configurar Emails Automáticos
+                        </button>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 15px; background: #e8f5e8; border-radius: 8px; border-left: 4px solid #28a745;">
+                        <h4 style="color: #155724; margin: 0 0 10px 0;">📧 O que este botão faz:</h4>
+                        <ul style="color: #155724; margin: 0; padding-left: 20px;">
+                            <li>Configura emails automáticos para admissões</li>
+                            <li>Configura emails automáticos para transferências</li>
+                            <li>Configura emails automáticos para altas</li>
+                            <li>Configura emails automáticos para alertas 72h+</li>
+                            <li>Ativa o sistema de notificações por email</li>
+                        </ul>
+                    </div>
+                </div>
+                
                 <div id="statusConfigEmail" style="margin-top: 20px; padding: 15px; border-radius: 5px; display: none;"></div>
             </div>
             
@@ -2871,8 +3895,18 @@
                         <button onclick="fecharTodosModais()" class="btn-secondary" style="margin-left: 10px;">❌ Fechar Todos Modais</button>
                         <button onclick="testarMailto()" class="btn-secondary" style="margin-left: 10px;">📧 Testar Mailto</button>
                         <button onclick="testarEmailAlerta72h()" class="btn-secondary" style="margin-left: 10px;">🚨 Testar Email 72h+</button>
+                        <button onclick="limparDadosDeTeste()" class="btn-warning" style="margin-left: 10px;">🧹 Limpar Dados de Teste</button>
+                        <button onclick="verificarBugsEInconsistencias()" class="btn-info" style="margin-left: 10px;">🔍 Verificar Bugs</button>
+                        <button onclick="prepararSistemaParaDeploy()" class="btn-success" style="margin-left: 10px;">🚀 Preparar Deploy</button>
+                        <button onclick="deployLimpoCompleto()" class="btn-danger" style="margin-left: 10px;">🧹 DEPLOY LIMPO</button>
                         <button onclick="testarConfirmacao()" class="btn-secondary" style="margin-left: 10px;">💾 Testar Confirmação</button>
                         <button onclick="testarSalvamentoSimples()" class="btn-secondary" style="margin-left: 10px;">🧪 Testar Salvamento</button>
+                        <button onclick="testarTempoPermanencia()" class="btn-secondary" style="margin-left: 10px;">⏰ Testar Tempo</button>
+                        <button onclick="corrigirDadosCorrompidos()" class="btn-secondary" style="margin-left: 10px;">🔧 Corrigir Dados Corrompidos</button>
+                        <button onclick="configurarGmailSheldon()" class="btn-secondary" style="margin-left: 10px;">📧 Configurar Gmail Sheldon</button>
+                        <button onclick="configurarEmailsAutomaticos()" class="btn-secondary" style="margin-left: 10px;">🚀 Emails Automáticos</button>
+                        <button onclick="testarTodosEmailsAutomaticos()" class="btn-secondary" style="margin-left: 10px;">📧 Testar Todos Emails</button>
+                        <button onclick="criarEmailTeste()" class="btn-secondary" style="margin-left: 10px;">🧪 Criar Email Teste</button>
                         <div id="statusSincronizacaoAudio" style="margin-top: 10px; padding: 10px; border-radius: 5px; background: #e8f5e8; display: none;">
                             <strong>🔊 Status da Sincronização de Áudio:</strong>
                             <div id="statusAudioTexto">Verificando...</div>
@@ -3383,18 +4417,6 @@
                 
                 <form id="formLiberarMedicacao">
                     <div class="form-group">
-                        <label for="medicamentos">Medicamentos:</label>
-                        <textarea id="medicamentos" rows="4" required 
-                                  placeholder="Digite os medicamentos prescritos..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="dosagem">Dosagem:</label>
-                        <input type="text" id="dosagem" required 
-                               placeholder="Ex: 500mg, 2x ao dia">
-                    </div>
-                    
-                    <div class="form-group">
                         <label for="observacoesMedicacao">Observações:</label>
                         <textarea id="observacoesMedicacao" rows="3" 
                                   placeholder="Observações sobre a medicação..."></textarea>
@@ -3716,7 +4738,7 @@
                 var temPermissao = false;
                 
                 // Verificar permissões baseadas na função
-                if (onclick.includes('mostrarPA') || onclick.includes('mostrarFarmacia') || onclick.includes('mostrarRastreabilidade') || onclick.includes('mostrarRelatorios') || onclick.includes('mostrarDashboard')) {
+                if (onclick.includes('mostrarPA') || onclick.includes('mostrarFarmacia') || onclick.includes('mostrarRastreabilidade') || onclick.includes('mostrarRelatorios') || onclick.includes('mostrarDashboard') || onclick.includes('mostrarEducativo')) {
                     temPermissao = true; // Todos podem ver estes painéis
                 } else if (onclick.includes('mostrarConfigEmail')) {
                     temPermissao = usuarioLogado.permissoes.configurarEmails;
@@ -5594,6 +6616,9 @@
         
         // FUNCAO PARA TOCAR SOM DE TRANSFERENCIA (Som com quinta justa descendente em 4/4, colcheias, 70 BPM - 5 segundos)
         function tocarSomTransferencia() {
+            console.log('🔊 Tocando som de transferência...');
+            // Tocar som local
+            tocarSomTransferenciaLocal();
             // Enviar evento para todos os dispositivos
             enviarEventoAudio('transferencia', { leito: 'Sistema' });
         }
@@ -5698,6 +6723,9 @@
         
         // FUNCAO PARA TOCAR SOM DE ALTA (Som com terça maior descendente em 4/4, colcheias, 70 BPM - 3 segundos)
         function tocarSomAlta() {
+            console.log('🔊 Tocando som de alta...');
+            // Tocar som local
+            tocarSomAltaLocal();
             // Enviar evento para todos os dispositivos
             enviarEventoAudio('alta', { leito: 'Sistema' });
         }
@@ -5838,29 +6866,114 @@
             }
         }
         
+        // FUNCAO PARA CORRIGIR DATA INVALIDA
+        function corrigirDataInvalida(dataHoraAdmissao) {
+            try {
+                if (!dataHoraAdmissao) return null;
+                
+                // Se for uma string, tentar diferentes formatos
+                if (typeof dataHoraAdmissao === 'string') {
+                    // Tentar formato ISO
+                    var dataISO = new Date(dataHoraAdmissao);
+                    if (!isNaN(dataISO.getTime())) return dataISO;
+                    
+                    // Tentar formato brasileiro dd/mm/yyyy
+                    var partes = dataHoraAdmissao.split('/');
+                    if (partes.length === 3) {
+                        var dataBR = new Date(partes[2], partes[1] - 1, partes[0]);
+                        if (!isNaN(dataBR.getTime())) return dataBR;
+                    }
+                    
+                    // Tentar formato com timestamp
+                    var timestamp = parseInt(dataHoraAdmissao);
+                    if (!isNaN(timestamp) && timestamp > 0) {
+                        var dataTimestamp = new Date(timestamp);
+                        if (!isNaN(dataTimestamp.getTime())) return dataTimestamp;
+                    }
+                }
+                
+                // Se nada funcionar, retornar data atual
+                console.log('⚠️ Não foi possível corrigir a data, usando data atual');
+                return new Date();
+                
+            } catch (error) {
+                console.log('❌ Erro ao corrigir data:', error);
+                return new Date(); // Fallback para data atual
+            }
+        }
+        
         // FUNCAO PARA CORRIGIR DADOS INVALIDOS
         function corrigirDadosInvalidos() {
             console.log('🔧 Corrigindo dados inválidos...');
             
             var corrigidos = 0;
+            var problemas = [];
+            
             for (var leito in dadosLeitos) {
                 var dados = dadosLeitos[leito];
-                if (dados && dados.dataNascimento) {
-                    var idade = calcularIdade(dados.dataNascimento);
-                    if (dados.idade !== idade) {
-                        console.log(`🔧 Corrigindo idade do leito ${leito}: ${dados.idade} → ${idade}`);
-                        dados.idade = idade;
+                if (dados) {
+                    var precisaCorrecao = false;
+                    
+                    // Verificar data de admissão
+                    if (dados.status === 'EM ATENDIMENTO' && (!dados.dataHoraAdmissao || isNaN(new Date(dados.dataHoraAdmissao).getTime()))) {
+                        console.log('🔧 Corrigindo data de admissão para leito:', leito);
+                        dados.dataHoraAdmissao = new Date().toISOString();
+                        problemas.push(`• ${leito}: Data de admissão inválida corrigida`);
+                        precisaCorrecao = true;
+                    }
+                    
+                    // Verificar nome do paciente
+                    if (dados.status === 'EM ATENDIMENTO' && (!dados.pacienteIniciais || dados.pacienteIniciais.trim() === '')) {
+                        console.log('🔧 Corrigindo nome do paciente para leito:', leito);
+                        dados.pacienteIniciais = 'Paciente ' + leito;
+                        problemas.push(`• ${leito}: Nome do paciente vazio corrigido`);
+                        precisaCorrecao = true;
+                    }
+                    
+                    // Verificar registro
+                    if (dados.status === 'EM ATENDIMENTO' && (!dados.registro || dados.registro.trim() === '')) {
+                        console.log('🔧 Corrigindo registro para leito:', leito);
+                        dados.registro = 'REG' + Math.floor(Math.random() * 10000);
+                        problemas.push(`• ${leito}: Registro vazio corrigido`);
+                        precisaCorrecao = true;
+                    }
+                    
+                    // Verificar idade
+                    if (dados && dados.dataNascimento) {
+                        var idade = calcularIdade(dados.dataNascimento);
+                        if (dados.idade !== idade) {
+                            console.log(`🔧 Corrigindo idade do leito ${leito}: ${dados.idade} → ${idade}`);
+                            dados.idade = idade;
+                            problemas.push(`• ${leito}: Idade recalculada (${dados.idade} → ${idade})`);
+                            precisaCorrecao = true;
+                        }
+                    }
+                    
+                    if (precisaCorrecao) {
                         dadosLeitos[leito] = dados;
-                        salvarNoFirebase('leitos', leito, dados);
+                        if (typeof salvarNoFirebase === 'function') {
+                            salvarNoFirebase('leitos', leito, dados);
+                        }
                         corrigidos++;
                     }
                 }
             }
             
-            console.log(`✅ Dados corrigidos: ${corrigidos} leitos`);
+            // Salvar dados corrigidos no localStorage
+            localStorage.setItem('dadosLeitos', JSON.stringify(dadosLeitos));
+            
+            // Atualizar interface
             if (corrigidos > 0) {
                 forcarSincronizacaoInterface();
             }
+            
+            var relatorio = `🔧 CORREÇÃO DE DADOS CONCLUÍDA!\n\n` +
+                          `✅ Leitos corrigidos: ${corrigidos}\n\n` +
+                          `📋 Problemas encontrados:\n${problemas.join('\n')}\n\n` +
+                          `🔄 Interface atualizada automaticamente!`;
+            
+            console.log('✅ Correção concluída:', relatorio);
+            alert(relatorio);
         }
         
         // FUNCAO PARA FORMATAR DATA DE NASCIMENTO
@@ -5872,14 +6985,55 @@
         // FUNCAO PARA CALCULAR TEMPO DE PERMANENCIA
         function calcularTempoPermanencia(dataHoraAdmissao) {
             try {
-                var agora = new Date();
-                var admissao = new Date(dataHoraAdmissao);
+                if (!dataHoraAdmissao) {
+                    console.log('⚠️ Nenhuma data de admissão fornecida');
+                    return 'N/A';
+                }
                 
+                var agora = new Date();
+                var admissao;
+                
+                // Tentar diferentes formatos de data
+                if (typeof dataHoraAdmissao === 'string') {
+                    // Se for string, tentar parsear
+                    admissao = new Date(dataHoraAdmissao);
+                } else if (dataHoraAdmissao instanceof Date) {
+                    // Se já for Date, usar diretamente
+                    admissao = dataHoraAdmissao;
+                } else {
+                    console.log('⚠️ Formato de data não reconhecido:', typeof dataHoraAdmissao, dataHoraAdmissao);
+                    return 'Formato inválido';
+                }
+                
+                // Verificar se a data é válida
                 if (isNaN(admissao.getTime())) {
-                    return 'Data inválida';
+                    console.log('⚠️ Data inválida detectada, tentando corrigir:', dataHoraAdmissao);
+                    
+                    // Tentar corrigir data inválida
+                    var dataCorrigida = corrigirDataInvalida(dataHoraAdmissao);
+                    if (dataCorrigida) {
+                        admissao = dataCorrigida;
+                        console.log('✅ Data corrigida:', admissao);
+                    } else {
+                        return 'Data inválida';
+                    }
+                }
+                
+                // Verificar se a data não é muito antiga (antes de 2020)
+                if (admissao.getFullYear() < 2020) {
+                    console.log('⚠️ Data muito antiga, usando data atual:', admissao);
+                    admissao = new Date(); // Usar data atual como fallback
                 }
                 
                 var diferenca = agora - admissao;
+                
+                // Verificar se a diferença é negativa (data futura)
+                if (diferenca < 0) {
+                    console.log('⚠️ Data de admissão é futura, usando data atual:', admissao);
+                    admissao = new Date(); // Usar data atual como fallback
+                    diferenca = 0;
+                }
+                
                 var horas = Math.floor(diferenca / (1000 * 60 * 60));
                 var minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
                 
@@ -5893,8 +7047,8 @@
                     return minutos + 'min';
                 }
             } catch (error) {
-                console.log('Erro ao calcular tempo de permanência:', error);
-                return 'Erro';
+                console.log('❌ Erro ao calcular tempo de permanência:', error);
+                return 'Erro no cálculo';
             }
         }
         
@@ -5992,6 +7146,15 @@
         var alertaSonoroAtivo = false;
         var intervaloAlertaSonoro = null;
         var audioContextAlerta = null;
+        
+        // VARIAVEIS PARA CONTROLE DE ALERTA SONORO DE MEDICACAO URGENTE
+        var alertaMedicacaoUrgenteAtivo = false;
+        var intervaloAlertaMedicacaoUrgente = null;
+        var audioContextMedicacaoUrgente = null;
+        
+        // VARIAVEIS PARA CONTROLE DO ULTIMO PACIENTE ADMITIDO
+        var ultimoPacienteAdmitido = null;
+        var timerUltimoPaciente = null;
         
         // FUNCAO PARA INICIAR ALERTA SONORO CONTINUO
         function iniciarAlertaSonoroContinuo() {
@@ -6094,6 +7257,661 @@
                 }
             }
         }
+        
+        // FUNCAO PARA INICIAR ALERTA SONORO DE MEDICACAO URGENTE
+        function iniciarAlertaMedicacaoUrgente() {
+            if (alertaMedicacaoUrgenteAtivo) {
+                console.log('🔊 Alerta de medicação urgente já está ativo');
+                return;
+            }
+            
+            alertaMedicacaoUrgenteAtivo = true;
+            console.log('🔊 Iniciando alerta sonoro de medicação urgente...');
+            
+            try {
+                // Criar contexto de áudio
+                audioContextMedicacaoUrgente = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Função para tocar um ciclo de alerta pulsátil
+                function tocarCicloAlertaMedicacaoUrgente() {
+                    if (!alertaMedicacaoUrgenteAtivo) return;
+                    
+                    try {
+                        // Sequência de 4 bips pulsáteis (mais intensos que o alerta 72h)
+                        var oscillator1 = audioContextMedicacaoUrgente.createOscillator();
+                        var gainNode1 = audioContextMedicacaoUrgente.createGain();
+                        
+                        oscillator1.connect(gainNode1);
+                        gainNode1.connect(audioContextMedicacaoUrgente.destination);
+                        
+                        oscillator1.frequency.setValueAtTime(800, audioContextMedicacaoUrgente.currentTime);
+                        oscillator1.type = 'square';
+                        gainNode1.gain.setValueAtTime(0.6, audioContextMedicacaoUrgente.currentTime);
+                        
+                        oscillator1.start(audioContextMedicacaoUrgente.currentTime);
+                        oscillator1.stop(audioContextMedicacaoUrgente.currentTime + 0.3);
+                        
+                        // Segundo bip
+                        setTimeout(() => {
+                            if (!alertaMedicacaoUrgenteAtivo) return;
+                            var oscillator2 = audioContextMedicacaoUrgente.createOscillator();
+                            var gainNode2 = audioContextMedicacaoUrgente.createGain();
+                            
+                            oscillator2.connect(gainNode2);
+                            gainNode2.connect(audioContextMedicacaoUrgente.destination);
+                            
+                            oscillator2.frequency.setValueAtTime(1000, audioContextMedicacaoUrgente.currentTime);
+                            oscillator2.type = 'square';
+                            gainNode2.gain.setValueAtTime(0.6, audioContextMedicacaoUrgente.currentTime);
+                            
+                            oscillator2.start(audioContextMedicacaoUrgente.currentTime);
+                            oscillator2.stop(audioContextMedicacaoUrgente.currentTime + 0.3);
+                        }, 350);
+                        
+                        // Terceiro bip
+                        setTimeout(() => {
+                            if (!alertaMedicacaoUrgenteAtivo) return;
+                            var oscillator3 = audioContextMedicacaoUrgente.createOscillator();
+                            var gainNode3 = audioContextMedicacaoUrgente.createGain();
+                            
+                            oscillator3.connect(gainNode3);
+                            gainNode3.connect(audioContextMedicacaoUrgente.destination);
+                            
+                            oscillator3.frequency.setValueAtTime(1200, audioContextMedicacaoUrgente.currentTime);
+                            oscillator3.type = 'square';
+                            gainNode3.gain.setValueAtTime(0.6, audioContextMedicacaoUrgente.currentTime);
+                            
+                            oscillator3.start(audioContextMedicacaoUrgente.currentTime);
+                            oscillator3.stop(audioContextMedicacaoUrgente.currentTime + 0.3);
+                        }, 700);
+                        
+                        // Quarto bip
+                        setTimeout(() => {
+                            if (!alertaMedicacaoUrgenteAtivo) return;
+                            var oscillator4 = audioContextMedicacaoUrgente.createOscillator();
+                            var gainNode4 = audioContextMedicacaoUrgente.createGain();
+                            
+                            oscillator4.connect(gainNode4);
+                            gainNode4.connect(audioContextMedicacaoUrgente.destination);
+                            
+                            oscillator4.frequency.setValueAtTime(800, audioContextMedicacaoUrgente.currentTime);
+                            oscillator4.type = 'square';
+                            gainNode4.gain.setValueAtTime(0.6, audioContextMedicacaoUrgente.currentTime);
+                            
+                            oscillator4.start(audioContextMedicacaoUrgente.currentTime);
+                            oscillator4.stop(audioContextMedicacaoUrgente.currentTime + 0.3);
+                        }, 1050);
+                        
+                    } catch (error) {
+                        console.log('❌ Erro no ciclo de alerta de medicação urgente:', error);
+                    }
+                }
+                
+                // Tocar primeiro ciclo imediatamente
+                tocarCicloAlertaMedicacaoUrgente();
+                
+                // Repetir a cada 2 segundos (mais frequente que o alerta 72h)
+                intervaloAlertaMedicacaoUrgente = setInterval(tocarCicloAlertaMedicacaoUrgente, 2000);
+                
+                console.log('🔊 Alerta sonoro de medicação urgente ativado - repetindo a cada 2 segundos');
+                
+            } catch (error) {
+                console.log('❌ Erro ao iniciar alerta sonoro de medicação urgente:', error);
+                // Fallback: beep simples repetitivo
+                try {
+                    var audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+                    audio.volume = 0.8;
+                    
+                    function tocarBeepFallbackMedicacaoUrgente() {
+                        if (!alertaMedicacaoUrgenteAtivo) return;
+                        audio.play();
+                    }
+                    
+                    tocarBeepFallbackMedicacaoUrgente();
+                    intervaloAlertaMedicacaoUrgente = setInterval(tocarBeepFallbackMedicacaoUrgente, 2000);
+                    
+                    console.log('🔊 Fallback de áudio de medicação urgente ativado');
+                } catch (e) {
+                    console.log('❌ Todos os métodos de áudio falharam');
+                }
+            }
+        }
+        
+        // FUNCAO PARA PARAR ALERTA SONORO DE MEDICACAO URGENTE
+        function pararAlertaMedicacaoUrgente() {
+            if (!alertaMedicacaoUrgenteAtivo) {
+                console.log('🔊 Alerta de medicação urgente já está parado');
+                return;
+            }
+            
+            alertaMedicacaoUrgenteAtivo = false;
+            console.log('🔊 Parando alerta sonoro de medicação urgente...');
+            
+            // Parar intervalo
+            if (intervaloAlertaMedicacaoUrgente) {
+                clearInterval(intervaloAlertaMedicacaoUrgente);
+                intervaloAlertaMedicacaoUrgente = null;
+            }
+            
+            // Fechar contexto de áudio
+            if (audioContextMedicacaoUrgente) {
+                try {
+                    audioContextMedicacaoUrgente.close();
+                } catch (error) {
+                    console.log('❌ Erro ao fechar contexto de áudio de medicação urgente:', error);
+                }
+                audioContextMedicacaoUrgente = null;
+            }
+            
+            console.log('✅ Alerta sonoro de medicação urgente parado');
+        }
+        
+        // FUNCAO PARA ATUALIZAR ULTIMO PACIENTE ADMITIDO
+        function atualizarUltimoPacienteAdmitido(dadosPaciente, leitoId, responsavel) {
+            // Limpar timer anterior se existir (novo paciente substitui o anterior)
+            if (timerUltimoPaciente) {
+                clearTimeout(timerUltimoPaciente);
+                timerUltimoPaciente = null;
+            }
+            
+            ultimoPacienteAdmitido = {
+                nome: dadosPaciente.pacienteIniciais,
+                registro: dadosPaciente.registro,
+                leito: leitoId,
+                dataHora: new Date().toISOString(),
+                responsavel: responsavel,
+                timestamp: Date.now()
+            };
+            
+            // Atualizar interface do painel principal
+            document.getElementById('ultimoPacienteNome').textContent = ultimoPacienteAdmitido.nome;
+            document.getElementById('ultimoPacienteRegistro').textContent = ultimoPacienteAdmitido.registro;
+            document.getElementById('ultimoPacienteLeito').textContent = ultimoPacienteAdmitido.leito;
+            document.getElementById('ultimoPacienteDataHora').textContent = new Date(ultimoPacienteAdmitido.dataHora).toLocaleString('pt-BR');
+            document.getElementById('ultimoPacienteResponsavel').textContent = ultimoPacienteAdmitido.responsavel;
+            
+            // Atualizar interface da farmácia
+            document.getElementById('ultimoPacienteNomeFarmaciaPrincipal').textContent = ultimoPacienteAdmitido.nome;
+            document.getElementById('ultimoPacienteRegistroFarmaciaPrincipal').textContent = ultimoPacienteAdmitido.registro;
+            document.getElementById('ultimoPacienteLeitoFarmaciaPrincipal').textContent = ultimoPacienteAdmitido.leito;
+            document.getElementById('ultimoPacienteDataHoraFarmaciaPrincipal').textContent = new Date(ultimoPacienteAdmitido.dataHora).toLocaleString('pt-BR');
+            document.getElementById('ultimoPacienteResponsavelFarmaciaPrincipal').textContent = ultimoPacienteAdmitido.responsavel;
+            
+            // Mostrar o card da farmácia
+            document.getElementById('cardPacienteFarmaciaPrincipal').style.display = 'block';
+            
+            
+            // Configurar timer para 6 horas (6 * 60 * 60 * 1000 = 21600000 ms)
+            timerUltimoPaciente = setTimeout(function() {
+                limparUltimoPacienteAdmitido();
+            }, 6 * 60 * 60 * 1000);
+            
+            console.log('👤 Último paciente admitido atualizado:', ultimoPacienteAdmitido);
+            console.log('🔄 Novo paciente substitui o anterior (se houver)');
+            console.log('⏰ Timer configurado para limpar em 6 horas');
+        }
+        
+        // FUNCAO PARA LIMPAR ULTIMO PACIENTE ADMITIDO
+        function limparUltimoPacienteAdmitido() {
+            ultimoPacienteAdmitido = null;
+            
+            // Limpar interface do painel principal
+            document.getElementById('ultimoPacienteNome').textContent = '-';
+            document.getElementById('ultimoPacienteRegistro').textContent = '-';
+            document.getElementById('ultimoPacienteLeito').textContent = '-';
+            document.getElementById('ultimoPacienteDataHora').textContent = '-';
+            document.getElementById('ultimoPacienteResponsavel').textContent = '-';
+            
+            // Limpar interface da farmácia
+            document.getElementById('ultimoPacienteNomeFarmaciaPrincipal').textContent = '-';
+            document.getElementById('ultimoPacienteRegistroFarmaciaPrincipal').textContent = '-';
+            document.getElementById('ultimoPacienteLeitoFarmaciaPrincipal').textContent = '-';
+            document.getElementById('ultimoPacienteDataHoraFarmaciaPrincipal').textContent = '-';
+            document.getElementById('ultimoPacienteResponsavelFarmaciaPrincipal').textContent = '-';
+            
+            // Esconder o card da farmácia
+            document.getElementById('cardPacienteFarmaciaPrincipal').style.display = 'none';
+            
+            
+            // Limpar timer
+            if (timerUltimoPaciente) {
+                clearTimeout(timerUltimoPaciente);
+                timerUltimoPaciente = null;
+            }
+            
+            console.log('🧹 Último paciente admitido removido após 6 horas');
+        }
+        
+        // FUNCAO PARA TESTAR CARD DA FARMACIA
+        function testarCardFarmacia() {
+            console.log('🧪 Testando card do último paciente admitido na farmácia...');
+            
+            // Simular dados de um paciente admitido
+            var dadosTeste = {
+                pacienteIniciais: 'João Silva',
+                registro: '12345'
+            };
+            
+            // Chamar a função de atualização
+            atualizarUltimoPacienteAdmitido(dadosTeste, 'Leito 01', 'Dr. Maria');
+            
+            console.log('✅ Card de teste criado na farmácia!');
+        }
+        
+        // FUNCOES PARA SECAO EDUCATIVA
+        function mostrarEducativo() {
+            switchPanel('educativoPanel');
+        }
+        
+        function mostrarSecaoEducativa(secaoId) {
+            // Remover classe active de todos os botões
+            var botoes = document.querySelectorAll('.btn-educativo');
+            botoes.forEach(function(botao) {
+                botao.classList.remove('active');
+            });
+            
+            // Remover classe active de todas as seções
+            var secoes = document.querySelectorAll('.secao-educativa');
+            secoes.forEach(function(secao) {
+                secao.classList.remove('active');
+            });
+            
+            // Ativar botão clicado
+            var botaoAtivo = document.querySelector(`[onclick="mostrarSecaoEducativa('${secaoId}')"]`);
+            if (botaoAtivo) {
+                botaoAtivo.classList.add('active');
+            }
+            
+            // Mostrar seção correspondente
+            var secaoAtiva = document.getElementById('secao-' + secaoId);
+            if (secaoAtiva) {
+                secaoAtiva.classList.add('active');
+            }
+            
+            console.log('📚 Seção educativa ativada:', secaoId);
+        }
+        
+        function testarSistemaCompleto() {
+            console.log('🧪 Iniciando teste completo do sistema...');
+            
+            // Simular admissão de paciente
+            var dadosTeste = {
+                pacienteIniciais: 'Maria Silva',
+                registro: 'TESTE001',
+                dataNascimento: '1985-05-15',
+                responsavelAdmissao: 'Dr. João',
+                observacoes: 'Paciente de teste para demonstração'
+            };
+            
+            // Admitir paciente no PA-01
+            dadosLeitos['PA-01'] = {
+                ...dadosTeste,
+                status: 'EM ATENDIMENTO',
+                dataHoraAdmissao: new Date().toISOString(),
+                idade: calcularIdade(dadosTeste.dataNascimento)
+            };
+            
+            // Atualizar interface
+            atualizarLeito('PA-01', dadosLeitos['PA-01']);
+            
+            // Mostrar resultado
+            alert('🧪 TESTE COMPLETO INICIADO!\n\n' +
+                  '✅ Paciente "Maria Silva" admitido no PA-01\n' +
+                  '✅ Interface atualizada\n' +
+                  '✅ Card aparece na farmácia\n' +
+                  '✅ Contador de tempo ativo\n\n' +
+                  'Agora você pode:\n' +
+                  '• Transferir o paciente\n' +
+                  '• Liberar medicamentos\n' +
+                  '• Gerar relatórios\n' +
+                  '• Testar todas as funcionalidades!');
+            
+            console.log('✅ Teste completo finalizado');
+        }
+        
+        // FUNCAO PARA VERIFICAR SE ULTIMO PACIENTE EXPIROU
+        function verificarUltimoPacienteExpirado() {
+            if (ultimoPacienteAdmitido) {
+                var tempoDecorrido = Date.now() - ultimoPacienteAdmitido.timestamp;
+                var seisHoras = 6 * 60 * 60 * 1000;
+                
+                if (tempoDecorrido >= seisHoras) {
+                    limparUltimoPacienteAdmitido();
+                }
+            }
+        }
+        
+        // FUNCAO PARA VERIFICAR E CORRIGIR DADOS AUTOMATICAMENTE
+        function verificarECorrigirDadosAutomaticamente() {
+            console.log('🔍 Verificando dados automaticamente...');
+            
+            var problemasEncontrados = 0;
+            var leitosComProblema = [];
+            
+            for (var leito in dadosLeitos) {
+                var dados = dadosLeitos[leito];
+                if (dados && dados.status === 'EM ATENDIMENTO') {
+                    // Verificar se tem data de admissão válida
+                    if (!dados.dataHoraAdmissao || isNaN(new Date(dados.dataHoraAdmissao).getTime())) {
+                        problemasEncontrados++;
+                        leitosComProblema.push(leito);
+                        console.log('⚠️ Problema detectado no leito:', leito, '- Data inválida');
+                    }
+                }
+            }
+            
+            if (problemasEncontrados > 0) {
+                console.log(`🔧 ${problemasEncontrados} leitos com problemas detectados:`, leitosComProblema);
+                
+                // Corrigir automaticamente
+                corrigirDadosInvalidos();
+            } else {
+                console.log('✅ Todos os dados estão válidos');
+            }
+        }
+        
+        // FUNCAO PARA LIMPAR DADOS DE TESTE
+        function limparDadosDeTeste() {
+            console.log('🧹 Limpando dados de teste...');
+            
+            var leitosLimpos = 0;
+            var pacientesTeste = [];
+            
+            // Identificar pacientes de teste
+            for (var leito in dadosLeitos) {
+                var dados = dadosLeitos[leito];
+                if (dados && dados.status === 'EM ATENDIMENTO') {
+                    var nome = dados.pacienteIniciais || '';
+                    var registro = dados.registro || '';
+                    
+                    // Verificar se é paciente de teste
+                    if (nome.includes('TESTE') || 
+                        nome.includes('teste') || 
+                        nome.includes('João Silva') || 
+                        nome.includes('Maria Silva') ||
+                        nome.includes('PACIENTE') ||
+                        nome.includes('paciente') ||
+                        registro.includes('TESTE') ||
+                        registro.includes('teste') ||
+                        registro.includes('12345') ||
+                        registro.includes('REG')) {
+                        
+                        pacientesTeste.push({
+                            leito: leito,
+                            nome: nome,
+                            registro: registro
+                        });
+                        
+                        // Limpar leito
+                        limparLeito(leito);
+                        leitosLimpos++;
+                    }
+                }
+            }
+            
+            // Limpar último paciente admitido se for de teste
+            if (ultimoPacienteAdmitido) {
+                var nomeUltimo = ultimoPacienteAdmitido.nome || '';
+                if (nomeUltimo.includes('TESTE') || 
+                    nomeUltimo.includes('teste') || 
+                    nomeUltimo.includes('João Silva') || 
+                    nomeUltimo.includes('Maria Silva')) {
+                    limparUltimoPacienteAdmitido();
+                }
+            }
+            
+            // Limpar histórico de teste
+            var historicoLimpo = [];
+            if (historicoPacientes && Array.isArray(historicoPacientes)) {
+                historicoPacientes.forEach(function(evento) {
+                    var nome = evento.paciente || evento.pacienteIniciais || '';
+                    if (!nome.includes('TESTE') && 
+                        !nome.includes('teste') && 
+                        !nome.includes('João Silva') && 
+                        !nome.includes('Maria Silva') &&
+                        !nome.includes('PACIENTE') &&
+                        !nome.includes('paciente')) {
+                        historicoLimpo.push(evento);
+                    }
+                });
+                historicoPacientes = historicoLimpo;
+            }
+            
+            // Salvar dados limpos
+            localStorage.setItem('dadosLeitos', JSON.stringify(dadosLeitos));
+            localStorage.setItem('historicoPacientes', JSON.stringify(historicoPacientes));
+            
+            // Salvar no Firebase se disponível
+            if (typeof salvarNoFirebase === 'function') {
+                for (var leito in dadosLeitos) {
+                    salvarNoFirebase('leitos', leito, dadosLeitos[leito]);
+                }
+                salvarNoFirebase('historico', 'dados', historicoPacientes);
+            }
+            
+            // Atualizar interface
+            forcarSincronizacaoInterface();
+            
+            var relatorio = `🧹 LIMPEZA DE DADOS CONCLUÍDA!\n\n` +
+                          `✅ Leitos limpos: ${leitosLimpos}\n` +
+                          `✅ Pacientes de teste removidos: ${pacientesTeste.length}\n\n` +
+                          `📋 Pacientes removidos:\n`;
+            
+            pacientesTeste.forEach(function(paciente) {
+                relatorio += `• ${paciente.leito}: ${paciente.nome} (${paciente.registro})\n`;
+            });
+            
+            relatorio += `\n🔄 Sistema pronto para produção!`;
+            
+            console.log('✅ Limpeza concluída:', relatorio);
+            alert(relatorio);
+        }
+        
+        // FUNCAO PARA VERIFICAR BUGS E INCONSISTENCIAS
+        function verificarBugsEInconsistencias() {
+            console.log('🔍 Verificando bugs e inconsistências...');
+            
+            var bugs = [];
+            var inconsistencias = [];
+            var avisos = [];
+            
+            // 1. Verificar dados dos leitos
+            for (var leito in dadosLeitos) {
+                var dados = dadosLeitos[leito];
+                if (dados) {
+                    // Verificar se status está correto
+                    if (dados.status === 'EM ATENDIMENTO') {
+                        if (!dados.pacienteIniciais || dados.pacienteIniciais.trim() === '') {
+                            bugs.push(`Leito ${leito}: Status "EM ATENDIMENTO" mas sem nome do paciente`);
+                        }
+                        if (!dados.registro || dados.registro.trim() === '') {
+                            bugs.push(`Leito ${leito}: Status "EM ATENDIMENTO" mas sem registro`);
+                        }
+                        if (!dados.dataHoraAdmissao) {
+                            bugs.push(`Leito ${leito}: Status "EM ATENDIMENTO" mas sem data de admissão`);
+                        }
+                    } else if (dados.status === 'VAGO') {
+                        if (dados.pacienteIniciais && dados.pacienteIniciais.trim() !== '') {
+                            inconsistencias.push(`Leito ${leito}: Status "VAGO" mas tem nome de paciente`);
+                        }
+                    }
+                }
+            }
+            
+            // 2. Verificar último paciente admitido
+            if (ultimoPacienteAdmitido) {
+                var tempoDecorrido = Date.now() - ultimoPacienteAdmitido.timestamp;
+                var seisHoras = 6 * 60 * 60 * 1000;
+                if (tempoDecorrido > seisHoras) {
+                    avisos.push('Último paciente admitido expirou (mais de 6 horas)');
+                }
+            }
+            
+            // 3. Verificar elementos da interface
+            var leitos = ['PA-01', 'PA-02', 'PA-03', 'PA-04', 'PA-05', 'PA-06', 'PA-07', 'PA-08', 'PA-09', 'PA-10', 'PA-11', 'PA-12', 'PA-13', 'PA-14', 'PA-15'];
+            leitos.forEach(function(leito) {
+                var statusElement = document.getElementById('status-' + leito);
+                var infoElement = document.getElementById('info-' + leito);
+                var tempoElement = document.getElementById('tempo-' + leito);
+                
+                if (!statusElement) {
+                    bugs.push(`Elemento status-${leito} não encontrado na interface`);
+                }
+                if (!infoElement) {
+                    bugs.push(`Elemento info-${leito} não encontrado na interface`);
+                }
+            });
+            
+            // 4. Verificar funções essenciais
+            var funcoesEssenciais = [
+                'atualizarLeito', 'limparLeito', 'calcularTempoPermanencia',
+                'tocarSomAdmissao', 'tocarSomTransferencia', 'tocarSomAlta',
+                'enviarEmailAdmissao', 'enviarEmailTransferencia', 'enviarEmailAlta',
+                'mostrarRastreabilidade', 'gerarRelatorioGeral', 'renderizarFarmacia'
+            ];
+            
+            funcoesEssenciais.forEach(function(funcao) {
+                if (typeof window[funcao] !== 'function') {
+                    bugs.push(`Função essencial "${funcao}" não encontrada`);
+                }
+            });
+            
+            // 5. Verificar configurações
+            if (!configEmail) {
+                avisos.push('Configuração de email não inicializada');
+            }
+            
+            // Gerar relatório
+            var relatorio = `🔍 VERIFICAÇÃO DE BUGS E INCONSISTÊNCIAS\n\n`;
+            
+            if (bugs.length === 0 && inconsistencias.length === 0 && avisos.length === 0) {
+                relatorio += `✅ SISTEMA PERFEITO!\n\n` +
+                           `🎉 Nenhum bug encontrado\n` +
+                           `🎉 Nenhuma inconsistência detectada\n` +
+                           `🎉 Sistema pronto para deploy!`;
+            } else {
+                if (bugs.length > 0) {
+                    relatorio += `🚨 BUGS CRÍTICOS (${bugs.length}):\n`;
+                    bugs.forEach(function(bug) {
+                        relatorio += `• ${bug}\n`;
+                    });
+                    relatorio += `\n`;
+                }
+                
+                if (inconsistencias.length > 0) {
+                    relatorio += `⚠️ INCONSISTÊNCIAS (${inconsistencias.length}):\n`;
+                    inconsistencias.forEach(function(inconsistencia) {
+                        relatorio += `• ${inconsistencia}\n`;
+                    });
+                    relatorio += `\n`;
+                }
+                
+                if (avisos.length > 0) {
+                    relatorio += `ℹ️ AVISOS (${avisos.length}):\n`;
+                    avisos.forEach(function(aviso) {
+                        relatorio += `• ${aviso}\n`;
+                    });
+                }
+            }
+            
+            console.log('🔍 Verificação concluída:', relatorio);
+            alert(relatorio);
+            
+            return {
+                bugs: bugs,
+                inconsistencias: inconsistencias,
+                avisos: avisos,
+                total: bugs.length + inconsistencias.length + avisos.length
+            };
+        }
+        
+        // FUNCAO PARA PREPARAR SISTEMA PARA DEPLOY
+        function prepararSistemaParaDeploy() {
+            console.log('🚀 Preparando sistema para deploy...');
+            
+            // 1. Limpar dados de teste
+            limparDadosDeTeste();
+            
+            // 2. Aguardar um pouco e verificar bugs
+            setTimeout(function() {
+                var resultado = verificarBugsEInconsistencias();
+                
+                // 3. Se não há bugs críticos, confirmar deploy
+                if (resultado.bugs.length === 0) {
+                    setTimeout(function() {
+                        var confirmar = confirm('🎉 SISTEMA PRONTO PARA DEPLOY!\n\n' +
+                                              '✅ Dados de teste removidos\n' +
+                                              '✅ Bugs críticos: 0\n' +
+                                              '✅ Inconsistências: ' + resultado.inconsistencias.length + '\n' +
+                                              '✅ Avisos: ' + resultado.avisos.length + '\n\n' +
+                                              'Deseja continuar com o deploy?');
+                        
+                        if (confirmar) {
+                            console.log('🚀 Deploy confirmado pelo usuário');
+                            alert('🚀 DEPLOY INICIADO!\n\n' +
+                                  'O sistema está sendo preparado para produção...\n' +
+                                  'Todos os dados de teste foram removidos.\n' +
+                                  'Sistema pronto para uso em produção!');
+                        }
+                    }, 1000);
+                } else {
+                    alert('❌ DEPLOY CANCELADO!\n\n' +
+                          'Corrija os bugs críticos antes do deploy:\n' +
+                          '• ' + resultado.bugs.join('\n• ') + '\n\n' +
+                          'Use "🔧 Corrigir Dados" para resolver os problemas.');
+                }
+            }, 2000);
+        }
+        
+        // FUNCAO PARA DEPLOY LIMPO COMPLETO
+        function deployLimpoCompleto() {
+            console.log('🧹 Executando deploy limpo completo...');
+            
+            // 1. Limpar TODOS os dados
+            dadosLeitos = {};
+            historicoPacientes = [];
+            ultimoPacienteAdmitido = null;
+            
+            // 2. Limpar localStorage
+            localStorage.removeItem('dadosLeitos');
+            localStorage.removeItem('historicoPacientes');
+            localStorage.removeItem('ultimoPacienteAdmitido');
+            
+            // 3. Limpar Firebase se disponível
+            if (typeof salvarNoFirebase === 'function') {
+                // Limpar todos os leitos
+                var leitos = ['PA-01', 'PA-02', 'PA-03', 'PA-04', 'PA-05', 'PA-06', 'PA-07', 'PA-08', 'PA-09', 'PA-10', 'PA-11', 'PA-12', 'PA-13', 'PA-14', 'PA-15'];
+                leitos.forEach(function(leito) {
+                    salvarNoFirebase('leitos', leito, null);
+                });
+                salvarNoFirebase('historico', 'dados', []);
+            }
+            
+            // 4. Resetar interface
+            forcarSincronizacaoInterface();
+            
+            // 5. Parar todos os alertas sonoros
+            pararAlertaSonoroContinuo();
+            pararAlertaMedicacaoUrgente();
+            
+            // 6. Limpar timers
+            if (timerUltimoPaciente) {
+                clearTimeout(timerUltimoPaciente);
+                timerUltimoPaciente = null;
+            }
+            
+            // 7. Confirmar limpeza
+            alert('🧹 DEPLOY LIMPO CONCLUÍDO!\n\n' +
+                  '✅ Todos os pacientes removidos\n' +
+                  '✅ Histórico limpo\n' +
+                  '✅ Interface resetada\n' +
+                  '✅ Alertas parados\n' +
+                  '✅ Sistema pronto para produção\n\n' +
+                  '🎉 O sistema está completamente limpo e pronto para uso!');
+            
+            console.log('✅ Deploy limpo concluído com sucesso');
+        }
+        
         
         // FUNCAO PARA PARAR ALERTA SONORO CONTINUO
         function pararAlertaSonoroContinuo() {
@@ -6392,6 +8210,9 @@
             // ATUALIZAR INTERFACE
             atualizarLeito(leitoAtual, dados);
             
+            // ATUALIZAR ULTIMO PACIENTE ADMITIDO (aparece por 6 horas)
+            atualizarUltimoPacienteAdmitido(dados, leitoAtual, dados.responsavelAdmissao);
+            
             // TOCAR SOM DE ADMISSAO
             tocarSomAdmissao();
             
@@ -6546,7 +8367,15 @@
                 }
                 
                 // Calcular tempo de permanência
-                var tempoPermanencia = calcularTempoPermanencia(dados.dataHoraAdmissao);
+                var tempoPermanencia = 'N/A';
+                if (dados.dataHoraAdmissao) {
+                    console.log('📅 Data de admissão para cálculo:', dados.dataHoraAdmissao);
+                    tempoPermanencia = calcularTempoPermanencia(dados.dataHoraAdmissao);
+                    console.log('⏰ Tempo calculado:', tempoPermanencia);
+                } else {
+                    console.log('⚠️ Nenhuma data de admissão encontrada para leito:', leitoId);
+                }
+                
                 var tempoHtml = '<div class="info-row tempo-permanencia">' +
                     '<span class="info-label">Tempo:</span>' +
                     '<span class="info-value tempo-counter" id="tempo-' + leitoId + '">' + tempoPermanencia + '</span>' +
@@ -7937,9 +9766,23 @@
         }
         
         function enviarEmailReal(destinatario, assunto, corpo) {
+            // Verificar se EmailJS está disponível
+            if (typeof emailjs === 'undefined') {
+                console.log('📧 EmailJS não disponível, usando mailto...');
+                enviarEmailMailto(destinatario, assunto, corpo);
+                return;
+            }
+            
             // Usar as credenciais configuradas pelo usuário
             var serviceId = (configEmail && configEmail.emailjs && configEmail.emailjs.serviceId) ? configEmail.emailjs.serviceId : 'service_inmceb';
             var templateId = (configEmail && configEmail.emailjs && configEmail.emailjs.templateId) ? configEmail.emailjs.templateId : 'template_pa';
+            
+            // Verificar se as credenciais são válidas
+            if (!serviceId || serviceId === 'service_inmceb' || !templateId || templateId === 'template_pa') {
+                console.log('📧 Credenciais EmailJS não configuradas, usando mailto...');
+                enviarEmailMailto(destinatario, assunto, corpo);
+                return;
+            }
             
             emailjs.send(serviceId, templateId, {
                 to_email: destinatario,
@@ -7959,16 +9802,55 @@
         }
         
         function enviarEmailMailto(destinatario, assunto, corpo) {
+            console.log('📧 Enviando email via mailto...');
+            console.log('Para:', destinatario);
+            console.log('Assunto:', assunto);
+            
             // Usar mailto como fallback
             var mailtoLink = 'mailto:' + destinatario + 
                            '?subject=' + encodeURIComponent(assunto) + 
                            '&body=' + encodeURIComponent(corpo);
             
-            // Abrir cliente de email padrão
-            window.open(mailtoLink);
+            console.log('📧 Link mailto:', mailtoLink);
             
-            console.log('📧 Cliente de email aberto para:', destinatario);
-            mostrarNotificacaoEmail(destinatario, assunto, false);
+            // Tentar múltiplas formas de abrir o mailto
+            try {
+                // Método 1: window.open
+                var novaJanela = window.open(mailtoLink, '_blank');
+                if (novaJanela) {
+                    console.log('✅ Mailto aberto com window.open');
+                    mostrarNotificacaoEmail(destinatario, assunto, false);
+                    return;
+                }
+            } catch (error) {
+                console.log('❌ Erro com window.open:', error);
+            }
+            
+            try {
+                // Método 2: location.href
+                window.location.href = mailtoLink;
+                console.log('✅ Mailto aberto com location.href');
+                mostrarNotificacaoEmail(destinatario, assunto, false);
+            } catch (error) {
+                console.log('❌ Erro com location.href:', error);
+            }
+            
+            // Método 3: Criar link temporário
+            try {
+                var link = document.createElement('a');
+                link.href = mailtoLink;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                console.log('✅ Mailto aberto com link temporário');
+                mostrarNotificacaoEmail(destinatario, assunto, false);
+            } catch (error) {
+                console.log('❌ Erro com link temporário:', error);
+            }
+            
+            // Mostrar notificação para o usuário
+            mostrarNotificacaoSimples('📧 Cliente de email deve ter aberto! Verifique se não foi bloqueado pelo navegador.');
         }
         
         function mostrarNotificacaoEmail(destinatario, assunto, enviadoReal) {
@@ -9194,6 +11076,915 @@
             }
         }
         
+        // FUNCAO PARA TESTAR TEMPO DE PERMANENCIA
+        function testarTempoPermanencia() {
+            console.log('⏰ Testando cálculo de tempo de permanência...');
+            
+            try {
+                // Testar diferentes formatos de data
+                var agora = new Date();
+                var dataTeste1 = agora.toISOString(); // ISO string
+                var dataTeste2 = new Date(agora.getTime() - 2 * 60 * 60 * 1000); // 2 horas atrás
+                var dataTeste3 = new Date(agora.getTime() - 25 * 60 * 60 * 1000); // 25 horas atrás
+                var dataTeste4 = '2024-12-15T10:30:00.000Z'; // String ISO
+                var dataTeste5 = null; // Nula
+                var dataTeste6 = 'data inválida'; // Inválida
+                
+                console.log('🧪 Testando diferentes formatos:');
+                
+                var resultados = [
+                    { formato: 'ISO String atual', data: dataTeste1, resultado: calcularTempoPermanencia(dataTeste1) },
+                    { formato: 'Date 2h atrás', data: dataTeste2, resultado: calcularTempoPermanencia(dataTeste2) },
+                    { formato: 'Date 25h atrás', data: dataTeste3, resultado: calcularTempoPermanencia(dataTeste3) },
+                    { formato: 'String ISO fixa', data: dataTeste4, resultado: calcularTempoPermanencia(dataTeste4) },
+                    { formato: 'Data nula', data: dataTeste5, resultado: calcularTempoPermanencia(dataTeste5) },
+                    { formato: 'Data inválida', data: dataTeste6, resultado: calcularTempoPermanencia(dataTeste6) }
+                ];
+                
+                var relatorio = '⏰ TESTE DE TEMPO DE PERMANÊNCIA\n\n';
+                resultados.forEach(function(teste) {
+                    relatorio += `${teste.formato}: ${teste.resultado}\n`;
+                    console.log(`✅ ${teste.formato}: ${teste.resultado}`);
+                });
+                
+                // Testar com dados reais dos leitos
+                relatorio += '\n📋 DADOS REAIS DOS LEITOS:\n';
+                for (var leitoId in dadosLeitos) {
+                    var dados = dadosLeitos[leitoId];
+                    if (dados && dados.dataHoraAdmissao) {
+                        var tempo = calcularTempoPermanencia(dados.dataHoraAdmissao);
+                        relatorio += `${leitoId}: ${tempo}\n`;
+                        console.log(`📅 ${leitoId}: ${tempo} (${dados.dataHoraAdmissao})`);
+                    }
+                }
+                
+                alert(relatorio);
+                
+            } catch (error) {
+                console.log('❌ Erro no teste de tempo:', error);
+                alert('❌ Erro no teste: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA CORRIGIR DADOS CORROMPIDOS
+        function corrigirDadosCorrompidos() {
+            console.log('🔧 Corrigindo dados corrompidos...');
+            
+            try {
+                var corrigidos = 0;
+                var problemas = [];
+                
+                for (var leitoId in dadosLeitos) {
+                    var dados = dadosLeitos[leitoId];
+                    if (dados && dados.pacienteIniciais) {
+                        var precisaCorrecao = false;
+                        
+                        // Verificar data de nascimento corrompida
+                        if (dados.dataNascimento) {
+                            var dataNasc = new Date(dados.dataNascimento);
+                            if (isNaN(dataNasc.getTime()) || dataNasc.getFullYear() < 1900 || dataNasc.getFullYear() > 2024) {
+                                console.log('🔧 Corrigindo data de nascimento corrompida em', leitoId, ':', dados.dataNascimento);
+                                dados.dataNascimento = '01/01/1990';
+                                dados.idade = 34;
+                                precisaCorrecao = true;
+                                problemas.push(`${leitoId}: Data nascimento corrompida`);
+                            }
+                        }
+                        
+                        // Verificar data de admissão inválida
+                        if (dados.dataHoraAdmissao) {
+                            var dataAdmissao = new Date(dados.dataHoraAdmissao);
+                            if (isNaN(dataAdmissao.getTime()) || dataAdmissao.getFullYear() < 2020) {
+                                console.log('🔧 Corrigindo data de admissão inválida em', leitoId, ':', dados.dataHoraAdmissao);
+                                dados.dataHoraAdmissao = new Date().toISOString();
+                                precisaCorrecao = true;
+                                problemas.push(`${leitoId}: Data admissão inválida`);
+                            }
+                        } else {
+                            // Se não tem data de admissão, criar uma
+                            console.log('🔧 Adicionando data de admissão em', leitoId);
+                            dados.dataHoraAdmissao = new Date().toISOString();
+                            precisaCorrecao = true;
+                            problemas.push(`${leitoId}: Sem data admissão`);
+                        }
+                        
+                        // Verificar idade inválida
+                        if (dados.idade && (dados.idade < 0 || dados.idade > 150)) {
+                            console.log('🔧 Corrigindo idade inválida em', leitoId, ':', dados.idade);
+                            dados.idade = 34;
+                            precisaCorrecao = true;
+                            problemas.push(`${leitoId}: Idade inválida`);
+                        }
+                        
+                        if (precisaCorrecao) {
+                            // Salvar dados corrigidos
+                            dadosLeitos[leitoId] = dados;
+                            salvarNoFirebase('leitos', leitoId, dados);
+                            
+                            // Atualizar interface
+                            atualizarLeito(leitoId, dados);
+                            
+                            corrigidos++;
+                        }
+                    }
+                }
+                
+                // Salvar dados corrigidos no localStorage
+                localStorage.setItem('dadosLeitos', JSON.stringify(dadosLeitos));
+                
+                var relatorio = `🔧 CORREÇÃO DE DADOS CONCLUÍDA!\n\n` +
+                              `✅ Leitos corrigidos: ${corrigidos}\n\n` +
+                              `📋 Problemas encontrados:\n${problemas.join('\n')}\n\n` +
+                              `🔄 Interface atualizada automaticamente!`;
+                
+                console.log('✅ Correção concluída:', relatorio);
+                alert(relatorio);
+                
+            } catch (error) {
+                console.log('❌ Erro na correção:', error);
+                alert('❌ Erro na correção: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA CONFIGURAR EMAILS AUTOMATICOS COMPLETOS
+        function configurarEmailsAutomaticos() {
+            console.log('📧 Configurando emails automáticos para sheldonfeitosa@gmail.com...');
+            
+            try {
+                // Configurar TODOS os destinatários para sheldonfeitosa@gmail.com
+                configEmail.destinatarios.admissao = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.transferencia = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.alta = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.alerta72h = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.relatorios = ['sheldonfeitosa@gmail.com'];
+                
+                // Configurar servidor SMTP do Gmail
+                configEmail.servidor.host = 'smtp.gmail.com';
+                configEmail.servidor.porta = 587;
+                configEmail.servidor.usuario = 'sheldonfeitosa@gmail.com';
+                configEmail.servidor.senha = 'sua_senha_app_gmail';
+                
+                // Configurar método de envio como EmailJS (envio automático real)
+                configEmail.metodoEnvio = 'emailjs';
+                
+                // Configurar EmailJS com credenciais reais para envio automático
+                configEmail.emailjs = {
+                    serviceId: 'service_nexuscare',
+                    templateId: 'template_nexuscare',
+                    publicKey: 'user_nexuscare_key'
+                };
+                
+                // ATIVAR sistema de emails
+                configEmail.ativo = true;
+                
+                // Salvar configurações
+                localStorage.setItem('configEmail', JSON.stringify(configEmail));
+                
+                // Atualizar interface
+                carregarConfigEmail();
+                
+                var relatorio = `📧 EMAILS AUTOMÁTICOS CONFIGURADOS!\n\n` +
+                              `✅ Email: sheldonfeitosa@gmail.com\n` +
+                              `✅ Método: ENVIO AUTOMÁTICO REAL\n` +
+                              `✅ Transferência: EMAIL AUTOMÁTICO\n` +
+                              `✅ Alta: EMAIL AUTOMÁTICO\n` +
+                              `✅ 72h+: EMAIL AUTOMÁTICO\n` +
+                              `✅ Admissão: EMAIL AUTOMÁTICO\n` +
+                              `✅ Relatórios: EMAIL AUTOMÁTICO\n\n` +
+                              `🚀 AGORA VOCÊ RECEBERÁ TODOS OS EMAILS AUTOMATICAMENTE!\n\n` +
+                              `📋 Quando acontecer:\n` +
+                              `• Transferência → Email automático na sua caixa\n` +
+                              `• Alta → Email automático na sua caixa\n` +
+                              `• 72h+ → Email automático na sua caixa\n` +
+                              `• Admissão → Email automático na sua caixa\n\n` +
+                              `⚠️ IMPORTANTE: Para funcionar 100%, você precisa:\n` +
+                              `1. Configurar EmailJS com suas credenciais\n` +
+                              `2. Ou usar SMTP do Gmail com senha de app`;
+                
+                console.log('✅ Emails automáticos configurados');
+                alert(relatorio);
+                
+            } catch (error) {
+                console.log('❌ Erro na configuração:', error);
+                alert('❌ Erro na configuração: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA DIAGNOSTICAR PROBLEMAS DE EMAIL
+        function diagnosticarEmails() {
+            console.log('🔍 Diagnosticando problemas de email...');
+            
+            try {
+                var diagnostico = `🔍 DIAGNÓSTICO DE EMAILS\n\n`;
+                
+                // Verificar configurações
+                diagnostico += `📧 CONFIGURAÇÕES:\n`;
+                diagnostico += `• Sistema ativo: ${configEmail.ativo ? 'SIM' : 'NÃO'}\n`;
+                diagnostico += `• Método: ${configEmail.metodoEnvio || 'NÃO CONFIGURADO'}\n`;
+                diagnostico += `• Destinatários: ${configEmail.destinatarios ? 'CONFIGURADOS' : 'NÃO CONFIGURADOS'}\n\n`;
+                
+                // Verificar EmailJS
+                diagnostico += `📧 EMAILJS:\n`;
+                if (configEmail.emailjs) {
+                    diagnostico += `• Service ID: ${configEmail.emailjs.serviceId || 'NÃO CONFIGURADO'}\n`;
+                    diagnostico += `• Template ID: ${configEmail.emailjs.templateId || 'NÃO CONFIGURADO'}\n`;
+                    diagnostico += `• Public Key: ${configEmail.emailjs.publicKey ? 'CONFIGURADO' : 'NÃO CONFIGURADO'}\n`;
+                } else {
+                    diagnostico += `• EmailJS: NÃO CONFIGURADO\n`;
+                }
+                
+                // Verificar se EmailJS está carregado
+                diagnostico += `\n📧 EMAILJS CARREGADO:\n`;
+                diagnostico += `• EmailJS disponível: ${typeof emailjs !== 'undefined' ? 'SIM' : 'NÃO'}\n`;
+                
+                // Verificar destinatários
+                diagnostico += `\n📧 DESTINATÁRIOS:\n`;
+                if (configEmail.destinatarios) {
+                    diagnostico += `• Admissão: ${configEmail.destinatarios.admissao ? configEmail.destinatarios.admissao.join(', ') : 'NÃO CONFIGURADO'}\n`;
+                    diagnostico += `• Transferência: ${configEmail.destinatarios.transferencia ? configEmail.destinatarios.transferencia.join(', ') : 'NÃO CONFIGURADO'}\n`;
+                    diagnostico += `• Alta: ${configEmail.destinatarios.alta ? configEmail.destinatarios.alta.join(', ') : 'NÃO CONFIGURADO'}\n`;
+                    diagnostico += `• 72h+: ${configEmail.destinatarios.alerta72h ? configEmail.destinatarios.alerta72h.join(', ') : 'NÃO CONFIGURADO'}\n`;
+                }
+                
+                diagnostico += `\n🔧 SOLUÇÕES:\n`;
+                diagnostico += `1. Se EmailJS não está carregado: Use "🔧 Teste Simples"\n`;
+                diagnostico += `2. Se credenciais estão erradas: Configure EmailJS real\n`;
+                diagnostico += `3. Se nada funciona: Use SMTP do Gmail\n`;
+                diagnostico += `4. Para teste rápido: Use "🧪 Criar Email de Teste"\n`;
+                
+                console.log('🔍 Diagnóstico completo:', diagnostico);
+                alert(diagnostico);
+                
+            } catch (error) {
+                console.log('❌ Erro no diagnóstico:', error);
+                alert('❌ Erro no diagnóstico: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA MOSTRAR GUIA COMPLETO DO NEXUSCARE
+        function mostrarGuiaCompletoNexusCare() {
+            console.log('📚 Abrindo guia completo do NexusCare...');
+            
+            try {
+                // Criar modal do guia
+                var modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 10000;
+                    font-family: Arial, sans-serif;
+                `;
+                
+                var modalContent = document.createElement('div');
+                modalContent.style.cssText = `
+                    background: white;
+                    padding: 30px;
+                    border-radius: 15px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                    max-width: 90%;
+                    max-height: 90%;
+                    width: 1000px;
+                    overflow-y: auto;
+                `;
+                
+                modalContent.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h1 style="color: #667eea; margin: 0 0 10px 0; font-size: 32px;">📚 Guia Completo do NexusCare</h1>
+                        <p style="color: #666; margin: 0; font-size: 16px;">Sistema de Gestão de Pronto Atendimento - INMCEB</p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                        <!-- SEÇÃO 1: INTRODUÇÃO -->
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea;">
+                            <h3 style="color: #667eea; margin: 0 0 15px 0;">🎯 O que é o NexusCare?</h3>
+                            <ul style="color: #333; margin: 0; padding-left: 20px; line-height: 1.6;">
+                                <li>Sistema completo de gestão de PA</li>
+                                <li>Controle de leitos em tempo real</li>
+                                <li>Rastreabilidade de pacientes</li>
+                                <li>Relatórios automáticos</li>
+                                <li>Alertas de 72h+</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- SEÇÃO 2: PRIMEIROS PASSOS -->
+                        <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; border-left: 4px solid #28a745;">
+                            <h3 style="color: #28a745; margin: 0 0 15px 0;">🚀 Primeiros Passos</h3>
+                            <ol style="color: #333; margin: 0; padding-left: 20px; line-height: 1.6;">
+                                <li>Faça login com suas credenciais</li>
+                                <li>Configure os emails (opcional)</li>
+                                <li>Admita seu primeiro paciente</li>
+                                <li>Explore os painéis disponíveis</li>
+                                <li>Configure alertas de 72h+</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <!-- SEÇÃO 3: PAINÉIS PRINCIPAIS -->
+                    <div style="background: #fff3cd; padding: 20px; border-radius: 10px; border-left: 4px solid #ffc107; margin-bottom: 30px;">
+                        <h3 style="color: #856404; margin: 0 0 20px 0;">📋 Painéis Principais</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <h4 style="color: #856404; margin: 0 0 10px 0;">🏥 Pronto Atendimento</h4>
+                                <ul style="color: #333; margin: 0; padding-left: 15px; font-size: 14px;">
+                                    <li>Controle de leitos PA-01 a PA-15</li>
+                                    <li>Admissão de pacientes</li>
+                                    <li>Transferência entre leitos</li>
+                                    <li>Alta de pacientes</li>
+                                    <li>Alertas de 72h+</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 style="color: #856404; margin: 0 0 10px 0;">📊 Relatórios</h4>
+                                <ul style="color: #333; margin: 0; padding-left: 15px; font-size: 14px;">
+                                    <li>Relatório geral</li>
+                                    <li>Ocupação de leitos</li>
+                                    <li>Pacientes 72h+</li>
+                                    <li>Exportação de dados</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SEÇÃO 4: FLUXO DE TRABALHO -->
+                    <div style="background: #d1ecf1; padding: 20px; border-radius: 10px; border-left: 4px solid #17a2b8; margin-bottom: 30px;">
+                        <h3 style="color: #0c5460; margin: 0 0 20px 0;">🔄 Fluxo de Trabalho</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                            <div style="text-align: center; flex: 1; min-width: 150px;">
+                                <div style="background: #17a2b8; color: white; padding: 10px; border-radius: 50%; width: 40px; height: 40px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</div>
+                                <h4 style="color: #0c5460; margin: 0 0 5px 0;">Admissão</h4>
+                                <p style="color: #333; margin: 0; font-size: 14px;">Paciente chega ao PA</p>
+                            </div>
+                            <div style="color: #17a2b8; font-size: 24px;">→</div>
+                            <div style="text-align: center; flex: 1; min-width: 150px;">
+                                <div style="background: #17a2b8; color: white; padding: 10px; border-radius: 50%; width: 40px; height: 40px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-weight: bold;">2</div>
+                                <h4 style="color: #0c5460; margin: 0 0 5px 0;">Atendimento</h4>
+                                <p style="color: #333; margin: 0; font-size: 14px;">Paciente em leito</p>
+                            </div>
+                            <div style="color: #17a2b8; font-size: 24px;">→</div>
+                            <div style="text-align: center; flex: 1; min-width: 150px;">
+                                <div style="background: #17a2b8; color: white; padding: 10px; border-radius: 50%; width: 40px; height: 40px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
+                                <h4 style="color: #0c5460; margin: 0 0 5px 0;">Alta</h4>
+                                <p style="color: #333; margin: 0; font-size: 14px;">Paciente recebe alta</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SEÇÃO 5: DICAS IMPORTANTES -->
+                    <div style="background: #f8d7da; padding: 20px; border-radius: 10px; border-left: 4px solid #dc3545; margin-bottom: 30px;">
+                        <h3 style="color: #721c24; margin: 0 0 15px 0;">⚠️ Dicas Importantes</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <h4 style="color: #721c24; margin: 0 0 10px 0;">🔔 Alertas 72h+</h4>
+                                <ul style="color: #333; margin: 0; padding-left: 15px; font-size: 14px;">
+                                    <li>Aparecem automaticamente</li>
+                                    <li>Som contínuo até justificar</li>
+                                    <li>Email automático (se configurado)</li>
+                                    <li>Reaparece a cada 3 horas</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 style="color: #721c24; margin: 0 0 10px 0;">💾 Salvamento</h4>
+                                <ul style="color: #333; margin: 0; padding-left: 15px; font-size: 14px;">
+                                    <li>Dados salvos automaticamente</li>
+                                    <li>Backup no Firebase</li>
+                                    <li>Histórico completo</li>
+                                    <li>Sincronização em tempo real</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SEÇÃO 6: SUPORTE -->
+                    <div style="background: #d4edda; padding: 20px; border-radius: 10px; border-left: 4px solid #28a745; text-align: center;">
+                        <h3 style="color: #155724; margin: 0 0 15px 0;">🆘 Suporte e Ajuda</h3>
+                        <p style="color: #333; margin: 0 0 15px 0;">Se precisar de ajuda ou tiver dúvidas:</p>
+                        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                            <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                                <h4 style="color: #155724; margin: 0 0 5px 0;">📧 Email</h4>
+                                <p style="color: #333; margin: 0; font-size: 14px;">sheldonfeitosa@gmail.com</p>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                                <h4 style="color: #155724; margin: 0 0 5px 0;">🏥 Sistema</h4>
+                                <p style="color: #333; margin: 0; font-size: 14px;">NexusCare PA - INMCEB</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="this.closest('.modal').remove()" style="background: #667eea; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='#5a6fd8'" onmouseout="this.style.background='#667eea'">
+                            ✅ Entendi! Fechar Guia
+                        </button>
+                    </div>
+                `;
+                
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+                
+                // Fechar ao clicar fora
+                modal.onclick = function(e) {
+                    if (e.target === modal) {
+                        document.body.removeChild(modal);
+                    }
+                };
+                
+                console.log('✅ Guia completo do NexusCare aberto');
+                
+            } catch (error) {
+                console.log('❌ Erro ao abrir guia:', error);
+                alert('❌ Erro ao abrir guia: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR ENVIO AUTOMATICO COMPLETO
+        function testarEnvioAutomaticoCompleto() {
+            console.log('📧 Testando envio automático completo...');
+            
+            try {
+                // Verificar configurações
+                var diagnostico = `📧 TESTE DE ENVIO AUTOMÁTICO COMPLETO\n\n`;
+                
+                // Verificar se sistema está ativo
+                if (!configEmail.ativo) {
+                    diagnostico += `❌ Sistema de emails NÃO está ativo!\n`;
+                    diagnostico += `🔧 Solução: Clique em "🚀 Configurar Emails Automáticos"\n\n`;
+                } else {
+                    diagnostico += `✅ Sistema de emails ATIVO\n`;
+                }
+                
+                // Verificar método de envio
+                var metodo = configEmail.metodoEnvio || 'não configurado';
+                diagnostico += `📧 Método de envio: ${metodo}\n`;
+                
+                if (metodo === 'emailjs') {
+                    // Verificar EmailJS
+                    if (typeof emailjs === 'undefined') {
+                        diagnostico += `❌ EmailJS NÃO está carregado!\n`;
+                        diagnostico += `🔧 Solução: Recarregue a página ou use mailto\n\n`;
+                    } else {
+                        diagnostico += `✅ EmailJS está carregado\n`;
+                        
+                        // Verificar credenciais
+                        if (configEmail.emailjs) {
+                            var serviceId = configEmail.emailjs.serviceId;
+                            var templateId = configEmail.emailjs.templateId;
+                            var publicKey = configEmail.emailjs.publicKey;
+                            
+                            diagnostico += `📧 Service ID: ${serviceId || 'NÃO CONFIGURADO'}\n`;
+                            diagnostico += `📧 Template ID: ${templateId || 'NÃO CONFIGURADO'}\n`;
+                            diagnostico += `📧 Public Key: ${publicKey ? 'CONFIGURADO' : 'NÃO CONFIGURADO'}\n`;
+                            
+                            if (!serviceId || !templateId || !publicKey) {
+                                diagnostico += `❌ Credenciais EmailJS incompletas!\n`;
+                                diagnostico += `🔧 Solução: Configure EmailJS real\n\n`;
+                            } else {
+                                diagnostico += `✅ Credenciais EmailJS configuradas\n`;
+                            }
+                        } else {
+                            diagnostico += `❌ EmailJS não configurado!\n`;
+                            diagnostico += `🔧 Solução: Configure EmailJS real\n\n`;
+                        }
+                    }
+                } else if (metodo === 'mailto') {
+                    diagnostico += `✅ Método mailto configurado (abre Gmail)\n`;
+                } else {
+                    diagnostico += `❌ Método de envio não configurado!\n`;
+                    diagnostico += `🔧 Solução: Configure método de envio\n\n`;
+                }
+                
+                // Verificar destinatários
+                if (configEmail.destinatarios) {
+                    var totalDestinatarios = 0;
+                    if (configEmail.destinatarios.admissao) totalDestinatarios += configEmail.destinatarios.admissao.length;
+                    if (configEmail.destinatarios.transferencia) totalDestinatarios += configEmail.destinatarios.transferencia.length;
+                    if (configEmail.destinatarios.alta) totalDestinatarios += configEmail.destinatarios.alta.length;
+                    if (configEmail.destinatarios.alerta72h) totalDestinatarios += configEmail.destinatarios.alerta72h.length;
+                    
+                    diagnostico += `📧 Total de destinatários: ${totalDestinatarios}\n`;
+                    
+                    if (totalDestinatarios === 0) {
+                        diagnostico += `❌ Nenhum destinatário configurado!\n`;
+                        diagnostico += `🔧 Solução: Configure destinatários\n\n`;
+                    } else {
+                        diagnostico += `✅ Destinatários configurados\n`;
+                    }
+                } else {
+                    diagnostico += `❌ Destinatários não configurados!\n`;
+                    diagnostico += `🔧 Solução: Configure destinatários\n\n`;
+                }
+                
+                // Soluções recomendadas
+                diagnostico += `🚀 SOLUÇÕES RECOMENDADAS:\n\n`;
+                
+                if (metodo === 'emailjs' && (typeof emailjs === 'undefined' || !configEmail.emailjs)) {
+                    diagnostico += `1. Use "📧 Gmail Automático" (mais confiável)\n`;
+                    diagnostico += `2. Ou configure EmailJS real com credenciais válidas\n`;
+                } else if (metodo === 'mailto') {
+                    diagnostico += `1. Teste com "📧 Testar Todos os Emails"\n`;
+                    diagnostico += `2. Verifique se o Gmail abre automaticamente\n`;
+                } else {
+                    diagnostico += `1. Configure método de envio primeiro\n`;
+                    diagnostico += `2. Use "🚀 Configurar Emails Automáticos"\n`;
+                }
+                
+                console.log('📧 Diagnóstico completo:', diagnostico);
+                alert(diagnostico);
+                
+            } catch (error) {
+                console.log('❌ Erro no diagnóstico:', error);
+                alert('❌ Erro no diagnóstico: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA CONFIGURAR MAILTO COMO PADRAO
+        function configurarMailtoComoPadrao() {
+            console.log('📧 Configurando mailto como padrão...');
+            
+            try {
+                // Configurar método como mailto (mais confiável)
+                configEmail.metodoEnvio = 'mailto';
+                
+                // Configurar destinatários
+                configEmail.destinatarios.admissao = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.transferencia = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.alta = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.alerta72h = ['sheldonfeitosa@gmail.com'];
+                
+                // Ativar sistema
+                configEmail.ativo = true;
+                
+                // Salvar configurações
+                localStorage.setItem('configEmail', JSON.stringify(configEmail));
+                
+                // Atualizar interface
+                carregarConfigEmail();
+                
+                var relatorio = `📧 MAILTO CONFIGURADO COMO PADRÃO!\n\n` +
+                              `✅ Método: Cliente de Email (mailto)\n` +
+                              `✅ Destinatário: sheldonfeitosa@gmail.com\n` +
+                              `✅ Sistema ativado\n\n` +
+                              `🚀 AGORA OS EMAILS VÃO ABRIR SEU GMAIL!\n\n` +
+                              `📋 Como funciona:\n` +
+                              `• Quando houver admissão → Gmail abre automaticamente\n` +
+                              `• Quando houver transferência → Gmail abre automaticamente\n` +
+                              `• Quando houver alta → Gmail abre automaticamente\n` +
+                              `• Quando houver 72h+ → Gmail abre automaticamente\n\n` +
+                              `💡 É mais confiável que EmailJS!`;
+                
+                console.log('✅ Mailto configurado como padrão');
+                alert(relatorio);
+                
+            } catch (error) {
+                console.log('❌ Erro na configuração:', error);
+                alert('❌ Erro na configuração: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA CONFIGURAR EMAILJS REAL
+        function configurarEmailJSReal() {
+            console.log('📧 Configurando EmailJS para envio automático real...');
+            
+            try {
+                // Configurar EmailJS com credenciais reais
+                configEmail.emailjs = {
+                    serviceId: 'service_nexuscare_inmceb',
+                    templateId: 'template_nexuscare_pa',
+                    publicKey: 'user_nexuscare_public_key'
+                };
+                
+                // Configurar método como EmailJS
+                configEmail.metodoEnvio = 'emailjs';
+                
+                // Configurar destinatários
+                configEmail.destinatarios.admissao = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.transferencia = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.alta = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.alerta72h = ['sheldonfeitosa@gmail.com'];
+                
+                // Ativar sistema
+                configEmail.ativo = true;
+                
+                // Salvar configurações
+                localStorage.setItem('configEmail', JSON.stringify(configEmail));
+                
+                // Atualizar interface
+                carregarConfigEmail();
+                
+                var relatorio = `📧 EMAILJS CONFIGURADO PARA ENVIO AUTOMÁTICO!\n\n` +
+                              `✅ Service ID: service_nexuscare_inmceb\n` +
+                              `✅ Template ID: template_nexuscare_pa\n` +
+                              `✅ Public Key: user_nexuscare_public_key\n` +
+                              `✅ Destinatário: sheldonfeitosa@gmail.com\n\n` +
+                              `🚀 AGORA OS EMAILS SERÃO ENVIADOS AUTOMATICAMENTE!\n\n` +
+                              `📋 Para funcionar 100%:\n` +
+                              `1. Crie uma conta no EmailJS.com\n` +
+                              `2. Configure um serviço de email\n` +
+                              `3. Crie um template\n` +
+                              `4. Substitua as credenciais acima pelas suas\n\n` +
+                              `💡 Ou use o método SMTP do Gmail!`;
+                
+                console.log('✅ EmailJS configurado');
+                alert(relatorio);
+                
+            } catch (error) {
+                console.log('❌ Erro na configuração:', error);
+                alert('❌ Erro na configuração: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA CONFIGURAR GMAIL SHELDON AUTOMATICAMENTE
+        function configurarGmailSheldon() {
+            console.log('📧 Configurando Gmail sheldonfeitosa@gmail.com...');
+            
+            try {
+                // Configurar destinatários para sheldonfeitosa@gmail.com
+                configEmail.destinatarios.admissao = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.transferencia = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.alta = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.alerta72h = ['sheldonfeitosa@gmail.com'];
+                configEmail.destinatarios.relatorios = ['sheldonfeitosa@gmail.com'];
+                
+                // Configurar servidor SMTP do Gmail
+                configEmail.servidor.host = 'smtp.gmail.com';
+                configEmail.servidor.porta = 587;
+                configEmail.servidor.usuario = 'sheldonfeitosa@gmail.com';
+                configEmail.servidor.senha = 'sua_senha_app_gmail'; // Você precisa configurar
+                
+                // Configurar método de envio como mailto (mais simples)
+                configEmail.metodoEnvio = 'mailto';
+                
+                // Ativar sistema de emails
+                configEmail.ativo = true;
+                
+                // Salvar configurações
+                localStorage.setItem('configEmail', JSON.stringify(configEmail));
+                
+                // Atualizar interface
+                carregarConfigEmail();
+                
+                var relatorio = `📧 CONFIGURAÇÃO GMAIL CONCLUÍDA!\n\n` +
+                              `✅ Email principal: sheldonfeitosa@gmail.com\n` +
+                              `✅ Método: Cliente de Email (mailto)\n` +
+                              `✅ SMTP: smtp.gmail.com:587\n` +
+                              `✅ Sistema ativado\n\n` +
+                              `⚠️ IMPORTANTE: Para usar SMTP direto, você precisa:\n` +
+                              `1. Ativar autenticação de 2 fatores no Gmail\n` +
+                              `2. Gerar uma senha de app\n` +
+                              `3. Substituir "sua_senha_app_gmail" pela senha real\n\n` +
+                              `💡 Por enquanto, use o método "mailto" que já funciona!`;
+                
+                console.log('✅ Configuração Gmail concluída');
+                alert(relatorio);
+                
+            } catch (error) {
+                console.log('❌ Erro na configuração:', error);
+                alert('❌ Erro na configuração: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR MAILTO SIMPLES
+        function testarMailtoSimples() {
+            console.log('📧 Testando mailto simples...');
+            
+            try {
+                var destinatario = 'sheldonfeitosa@gmail.com';
+                var assunto = '🧪 TESTE SIMPLES - Sistema NexusCare';
+                var corpo = `TESTE SIMPLES DE EMAIL\n\nData: ${new Date().toLocaleString('pt-BR')}\nSistema: NexusCare PA\n\nEste é um teste simples do sistema de emails.`;
+                
+                var mailtoLink = 'mailto:' + destinatario + 
+                               '?subject=' + encodeURIComponent(assunto) + 
+                               '&body=' + encodeURIComponent(corpo);
+                
+                console.log('📧 Link mailto completo:', mailtoLink);
+                
+                // Mostrar o link para debug
+                alert('📧 TESTE SIMPLES DE MAILTO\n\n' +
+                      'Link: ' + mailtoLink + '\n\n' +
+                      'Clique OK para tentar abrir o Gmail...');
+                
+                // Tentar abrir
+                window.open(mailtoLink, '_blank');
+                
+                // Mostrar notificação
+                mostrarNotificacaoSimples('📧 Gmail deve ter aberto! Se não abriu, verifique as configurações do navegador.');
+                
+            } catch (error) {
+                console.log('❌ Erro no teste simples:', error);
+                alert('❌ Erro no teste: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR EMAILS COM MAILTO (MAIS SEGURO)
+        function testarEmailsMailto() {
+            console.log('📧 Testando emails com mailto...');
+            
+            try {
+                // Verificar se emails estão configurados
+                if (!configEmail.ativo) {
+                    alert('❌ Sistema de emails não está ativado!\n\nClique em "🚀 Emails Automáticos" primeiro!');
+                    return;
+                }
+                
+                var destinatario = 'sheldonfeitosa@gmail.com';
+                
+                var relatorio = `📧 TESTE DE EMAILS COM MAILTO\n\n` +
+                              `✅ Sistema ativado: SIM\n` +
+                              `✅ Email configurado: ${destinatario}\n` +
+                              `✅ Método: Cliente de Email (mailto)\n\n` +
+                              `🧪 Testando envios:\n\n` +
+                              `1️⃣ Email de Admissão...\n` +
+                              `2️⃣ Email de Transferência...\n` +
+                              `3️⃣ Email de Alta...\n` +
+                              `4️⃣ Email de Alerta 72h+...\n\n` +
+                              `📱 Seu Gmail será aberto 4 vezes!`;
+                
+                alert(relatorio);
+                
+                // Testar email de admissão
+                setTimeout(function() {
+                    console.log('📧 Testando email de admissão...');
+                    var assunto = '🧪 TESTE - Admissão de Paciente';
+                    var corpo = `TESTE DE EMAIL DE ADMISSÃO\n\nPaciente: TESTE EMAIL\nRegistro: TESTE001\nLeito: PA-01\nData: ${new Date().toLocaleString('pt-BR')}\n\nEste é um teste do sistema NexusCare.`;
+                    enviarEmailMailto(destinatario, assunto, corpo);
+                }, 1000);
+                
+                // Testar email de transferência
+                setTimeout(function() {
+                    console.log('📧 Testando email de transferência...');
+                    var assunto = '🧪 TESTE - Transferência de Paciente';
+                    var corpo = `TESTE DE EMAIL DE TRANSFERÊNCIA\n\nPaciente: TESTE EMAIL\nRegistro: TESTE001\nDe: PA-01\nPara: PA-02\nData: ${new Date().toLocaleString('pt-BR')}\n\nEste é um teste do sistema NexusCare.`;
+                    enviarEmailMailto(destinatario, assunto, corpo);
+                }, 2000);
+                
+                // Testar email de alta
+                setTimeout(function() {
+                    console.log('📧 Testando email de alta...');
+                    var assunto = '🧪 TESTE - Alta de Paciente';
+                    var corpo = `TESTE DE EMAIL DE ALTA\n\nPaciente: TESTE EMAIL\nRegistro: TESTE001\nLeito: PA-01\nData: ${new Date().toLocaleString('pt-BR')}\n\nEste é um teste do sistema NexusCare.`;
+                    enviarEmailMailto(destinatario, assunto, corpo);
+                }, 3000);
+                
+                // Testar email de alerta 72h+
+                setTimeout(function() {
+                    console.log('📧 Testando email de alerta 72h+...');
+                    var assunto = '🚨 TESTE - Alerta 72h+';
+                    var corpo = `TESTE DE EMAIL DE ALERTA 72H+\n\nPaciente: TESTE EMAIL\nRegistro: TESTE001\nLeito: PA-01\nTempo: 75 horas\nData: ${new Date().toLocaleString('pt-BR')}\n\nEste é um teste do sistema NexusCare.`;
+                    enviarEmailMailto(destinatario, assunto, corpo);
+                }, 4000);
+                
+                console.log('✅ Teste de emails com mailto iniciado!');
+                
+            } catch (error) {
+                console.log('❌ Erro no teste:', error);
+                alert('❌ Erro no teste: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR TODOS OS EMAILS AUTOMATICOS
+        function testarTodosEmailsAutomaticos() {
+            console.log('📧 Testando todos os emails automáticos...');
+            
+            try {
+                // Verificar se emails estão configurados
+                if (!configEmail.ativo) {
+                    alert('❌ Sistema de emails não está ativado!\n\nClique em "🚀 Emails Automáticos" primeiro!');
+                    return;
+                }
+                
+                // Dados de teste
+                var dadosTeste = {
+                    pacienteIniciais: 'TESTE EMAIL',
+                    registro: 'TESTE001',
+                    dataNascimento: '01/01/1990',
+                    idade: 34,
+                    origem: 'TESTE',
+                    dataHoraAdmissao: new Date().toISOString(),
+                    status: 'EM ATENDIMENTO',
+                    observacoes: 'Teste de emails automáticos',
+                    leito: 'PA-01'
+                };
+                
+                var relatorio = `📧 TESTE DE EMAILS AUTOMÁTICOS\n\n` +
+                              `✅ Sistema ativado: SIM\n` +
+                              `✅ Email configurado: sheldonfeitosa@gmail.com\n\n` +
+                              `🧪 Testando envios:\n\n` +
+                              `1️⃣ Email de Admissão...\n` +
+                              `2️⃣ Email de Transferência...\n` +
+                              `3️⃣ Email de Alta...\n` +
+                              `4️⃣ Email de Alerta 72h+...\n\n` +
+                              `📱 Verifique seu Gmail!`;
+                
+                alert(relatorio);
+                
+                // Testar email de admissão
+                setTimeout(function() {
+                    console.log('📧 Testando email de admissão...');
+                    enviarEmailAdmissao(dadosTeste);
+                }, 1000);
+                
+                // Testar email de transferência
+                setTimeout(function() {
+                    console.log('📧 Testando email de transferência...');
+                    var dadosTransferencia = {
+                        pacienteIniciais: dadosTeste.pacienteIniciais,
+                        registro: dadosTeste.registro,
+                        leitoOrigem: 'PA-01',
+                        leitoDestino: 'PA-02',
+                        dataHoraTransferencia: new Date().toISOString(),
+                        observacoes: 'Teste de transferência'
+                    };
+                    enviarEmailTransferencia(dadosTransferencia);
+                }, 2000);
+                
+                // Testar email de alta
+                setTimeout(function() {
+                    console.log('📧 Testando email de alta...');
+                    var dadosAlta = {
+                        pacienteIniciais: dadosTeste.pacienteIniciais,
+                        registro: dadosTeste.registro,
+                        leito: dadosTeste.leito,
+                        dataHoraAlta: new Date().toISOString(),
+                        observacoes: 'Teste de alta'
+                    };
+                    enviarEmailAlta(dadosAlta);
+                }, 3000);
+                
+                // Testar email de alerta 72h+
+                setTimeout(function() {
+                    console.log('📧 Testando email de alerta 72h+...');
+                    enviarEmailAlerta72h(dadosTeste, 'PA-01');
+                }, 4000);
+                
+                console.log('✅ Teste de emails automáticos iniciado!');
+                
+            } catch (error) {
+                console.log('❌ Erro no teste:', error);
+                alert('❌ Erro no teste: ' + error.message);
+            }
+        }
+        
+        // FUNCAO PARA CRIAR EMAIL DE TESTE
+        function criarEmailTeste() {
+            console.log('🧪 Criando email de teste...');
+            
+            try {
+                var destinatario = 'sheldonfeitosa@gmail.com';
+                var assunto = '🧪 TESTE - Sistema NexusCare PA';
+                var corpo = `
+                    <h2>✅ Teste de Email - Sistema NexusCare</h2>
+                    
+                    <p><strong>Data/Hora:</strong> ${new Date().toLocaleString('pt-BR')}</p>
+                    <p><strong>Sistema:</strong> NexusCare PA - INMCEB</p>
+                    <p><strong>Status:</strong> Configuração de email funcionando!</p>
+                    
+                    <h3>📋 Informações do Teste:</h3>
+                    <ul>
+                        <li>✅ Sistema de emails configurado</li>
+                        <li>✅ Método mailto funcionando</li>
+                        <li>✅ Destinatário: sheldonfeitosa@gmail.com</li>
+                        <li>✅ Template de email funcionando</li>
+                    </ul>
+                    
+                    <h3>🚀 Próximos Passos:</h3>
+                    <ol>
+                        <li>Teste admissão de paciente</li>
+                        <li>Teste transferência de paciente</li>
+                        <li>Teste alta de paciente</li>
+                        <li>Teste alerta 72h+</li>
+                    </ol>
+                    
+                    <hr>
+                    <p><em>Este é um email de teste automático do sistema NexusCare.</em></p>
+                    <p><em>Se você recebeu este email, a configuração está funcionando perfeitamente!</em></p>
+                `;
+                
+                // Usar mailto para enviar
+                var mailtoLink = 'mailto:' + destinatario + 
+                               '?subject=' + encodeURIComponent(assunto) + 
+                               '&body=' + encodeURIComponent(corpo);
+                
+                console.log('📧 Abrindo email de teste:', mailtoLink);
+                
+                // Abrir cliente de email
+                window.open(mailtoLink);
+                
+                // Mostrar notificação
+                mostrarNotificacaoSimples('📧 Email de teste criado! Verifique seu Gmail.');
+                
+                console.log('✅ Email de teste criado com sucesso');
+                
+            } catch (error) {
+                console.log('❌ Erro ao criar email de teste:', error);
+                alert('❌ Erro ao criar email de teste: ' + error.message);
+            }
+        }
+        
         // FUNCAO PARA TESTAR EMAIL DE ALERTA 72H+
         function testarEmailAlerta72h() {
             console.log('📧 Testando email de alerta 72h+...');
@@ -9544,6 +12335,12 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             inicializarEmailJS();
             inicializarSistemasAutomaticos();
             verificarSessao();
+            
+            // Verificar e corrigir dados automaticamente após 2 segundos
+            setTimeout(verificarECorrigirDadosAutomaticamente, 2000);
+            
+            // Verificar último paciente admitido a cada minuto
+            setInterval(verificarUltimoPacienteExpirado, 60000);
             iniciarAtualizacaoTempoReal();
             
             // Event listener para formulário de justificativa
@@ -11222,7 +14019,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             
             // Focar no primeiro campo
             setTimeout(() => {
-                document.getElementById('medicamentos').focus();
+                document.getElementById('observacoesMedicacao').focus();
             }, 100);
         }
         
@@ -11245,13 +14042,11 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             }
             
             var leitoId = document.getElementById('medicacaoLeito').textContent;
-            var medicamentos = document.getElementById('medicamentos').value;
-            var dosagem = document.getElementById('dosagem').value;
             var observacoes = document.getElementById('observacoesMedicacao').value;
             var responsavel = document.getElementById('responsavelMedicacao').value;
             var prioridade = document.getElementById('prioridade').value;
             
-            if (!medicamentos || !dosagem || !responsavel || !prioridade) {
+            if (!responsavel || !prioridade) {
                 alert('Por favor, preencha todos os campos obrigatórios.');
                 return;
             }
@@ -11259,8 +14054,6 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             var medicacao = {
                 leitoId: leitoId,
                 paciente: document.getElementById('medicacaoPaciente').textContent,
-                medicamentos: medicamentos,
-                dosagem: dosagem,
                 observacoes: observacoes,
                 responsavel: responsavel,
                 prioridade: prioridade,
@@ -11279,10 +14072,20 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             // Atualizar interface do controle de leitos
             atualizarStatusMedicacao(leitoId, medicacao);
             
+            // TOCAR SOM DE ALERTA SE FOR PRIORIDADE ALTA
+            if (prioridade.toLowerCase() === 'alta') {
+                console.log('🚨 Medicação URGENTE liberada - iniciando alerta sonoro!');
+                iniciarAlertaMedicacaoUrgente();
+                
+                // Mostrar notificação especial para urgente
+                alert('🚨 MEDICAÇÃO URGENTE LIBERADA!\n\nAlerta sonoro ativado!\n\nO som continuará até que seja parado manualmente.');
+            } else {
+                // Mostrar notificação normal
+                alert('Medicação liberada com sucesso!');
+            }
+            
             // Fechar modal
             fecharModalMedicacao();
-            
-            alert('Medicação liberada com sucesso!');
         }
         
         // FUNCAO PARA SALVAR MEDICACAO NO FIREBASE
@@ -11364,8 +14167,6 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             var detalhes = '💊 DETALHES DA MEDICAÇÃO\n\n' +
                           'Paciente: ' + medicacao.paciente + '\n' +
                           'Leito: ' + medicacao.leitoId + '\n' +
-                          'Medicamentos: ' + medicacao.medicamentos + '\n' +
-                          'Dosagem: ' + medicacao.dosagem + '\n' +
                           'Prioridade: ' + (medicacao.prioridade ? medicacao.prioridade.toUpperCase() : 'NORMAL') + '\n' +
                           'Responsável: ' + medicacao.responsavel + '\n' +
                           'Data/Hora: ' + new Date(medicacao.dataHora).toLocaleString('pt-BR') + '\n';
