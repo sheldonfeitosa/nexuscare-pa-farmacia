@@ -16,6 +16,9 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Sistema de Testes Automatizados -->
+    <script src="testes_automatizados.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -107,10 +110,10 @@
             border: 1px solid rgba(220, 53, 69, 0.2);
         }
 
-        .view-btn[onclick*="mostrarDashboard"] {
-            background: linear-gradient(145deg, rgba(111, 66, 193, 0.1), rgba(111, 66, 193, 0.05));
-            color: #6f42c1;
-            border: 1px solid rgba(111, 66, 193, 0.2);
+        .view-btn[onclick*="gerarRelatorioPlantao"] {
+            background: linear-gradient(145deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05));
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.2);
         }
 
         .view-btn[onclick*="mostrarEducativo"] {
@@ -183,10 +186,10 @@
             box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
         }
 
-        .view-btn[onclick*="mostrarDashboard"].active {
-            background: linear-gradient(145deg, #6f42c1, #5a32a3);
-            color: white;
-            box-shadow: 0 6px 20px rgba(111, 66, 193, 0.4);
+        .view-btn[onclick*="gerarRelatorioPlantao"].active {
+            background: linear-gradient(145deg, #ffc107, #e0a800);
+            color: #212529;
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
         }
 
         .view-btn[onclick*="mostrarEducativo"].active {
@@ -314,6 +317,81 @@
 
         #rastreabilidadePanel h2 i {
             color: #ffc107;
+        }
+
+        #configuracoesPanel {
+            background: linear-gradient(135deg, rgba(108, 117, 125, 0.02), rgba(108, 117, 125, 0.01));
+            border-left: 4px solid rgba(108, 117, 125, 0.3);
+        }
+
+        #configuracoesPanel h2 {
+            color: #6c757d;
+        }
+
+        #configuracoesPanel h2 i {
+            color: #6c757d;
+        }
+
+        .config-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #6c757d;
+        }
+
+        .config-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .config-section h3 i {
+            color: #6c757d;
+        }
+
+        .config-item {
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .config-item:last-child {
+            border-bottom: none;
+        }
+
+        .config-item label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .config-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #6c757d;
+        }
+
+        .config-item input[type="range"] {
+            width: 150px;
+            margin: 0 10px;
+        }
+
+        .config-item button {
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+
+        .config-item p {
+            margin: 5px 0;
+            color: #6c757d;
         }
 
         #relatoriosPanel h2 {
@@ -4155,6 +4233,10 @@
                     <i class="fas fa-chart-bar"></i>
                     Relatorios
                 </button>
+                <button class="view-btn" onclick="mostrarConfiguracoes()">
+                    <i class="fas fa-cog"></i>
+                    Configurações
+                </button>
                 <button class="view-btn" onclick="mostrarEducativo()">
                     <i class="fas fa-graduation-cap"></i>
                     Centro Educativo
@@ -4171,9 +4253,33 @@
                     <i class="fas fa-users-cog"></i>
                     Administração
                 </button>
-                <button class="view-btn" onclick="mostrarDashboard()">
-                    <i class="fas fa-tachometer-alt"></i>
-                    Dashboard
+                <button class="view-btn" onclick="gerarRelatorioPlantao()">
+                    <i class="fas fa-file-medical-alt"></i>
+                    Relatório do Plantão
+                </button>
+            </div>
+            
+            <!-- BOTÕES DE ÁUDIO EM LINHA SEPARADA -->
+            <div class="user-selector" style="margin-top: 15px; gap: 10px;">
+                <button class="view-btn" onclick="testarSom()" style="background: linear-gradient(145deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05)); color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.2); padding: 10px 15px; font-size: 0.9rem;">
+                    <i class="fas fa-volume-up"></i>
+                    Testar Som
+                </button>
+                <button class="view-btn" onclick="forcarAtivacaoAudio()" style="background: linear-gradient(145deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05)); color: #dc3545; border: 1px solid rgba(220, 53, 69, 0.2); padding: 10px 15px; font-size: 0.9rem;">
+                    <i class="fas fa-unlock"></i>
+                    Ativar Áudio
+                </button>
+                <button class="view-btn" onclick="testarSomSimples()" style="background: linear-gradient(145deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.05)); color: #28a745; border: 1px solid rgba(40, 167, 69, 0.2); padding: 10px 15px; font-size: 0.9rem;">
+                    <i class="fas fa-play"></i>
+                    Som Simples
+                </button>
+                <button class="view-btn" onclick="testarSomAdmissaoDireto()" style="background: linear-gradient(145deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.05)); color: #007bff; border: 1px solid rgba(0, 123, 255, 0.2); padding: 10px 15px; font-size: 0.9rem;">
+                    <i class="fas fa-hospital"></i>
+                    Teste Admissão
+                </button>
+                <button class="view-btn" onclick="testarSomAdmissaoUltraSimples()" style="background: linear-gradient(145deg, rgba(108, 117, 125, 0.1), rgba(108, 117, 125, 0.05)); color: #6c757d; border: 1px solid rgba(108, 117, 125, 0.2); padding: 10px 15px; font-size: 0.9rem;">
+                    <i class="fas fa-bolt"></i>
+                    Ultra Simples
                 </button>
             </div>
             
@@ -5378,6 +5484,86 @@
                 </div>
                 <div id="relatorioContent" class="table-container">
                     <p>Selecione os filtros e clique em "Gerar Relatorio"</p>
+                </div>
+            </div>
+
+            <!-- PAINEL CONFIGURAÇÕES -->
+            <div id="configuracoesPanel" class="panel">
+                <h2><i class="fas fa-cog"></i> NexusCare - Configurações do Sistema</h2>
+                
+                <div class="config-section">
+                    <h3><i class="fas fa-bell"></i> Notificações</h3>
+                    <div class="config-item">
+                        <label>
+                            <input type="checkbox" id="notificacoesVisuais" checked onchange="atualizarConfigNotificacoes()">
+                            Notificações Visuais
+                        </label>
+                    </div>
+                    <div class="config-item">
+                        <label>
+                            <input type="checkbox" id="notificacoesSonoras" checked onchange="atualizarConfigNotificacoes()">
+                            Notificações Sonoras
+                        </label>
+                    </div>
+                    <div class="config-item">
+                        <label>
+                            Volume: <input type="range" id="volumeNotificacoes" min="0" max="1" step="0.1" value="0.8" onchange="atualizarConfigNotificacoes()">
+                            <span id="volumeValue">80%</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h3><i class="fas fa-database"></i> Backup e Dados</h3>
+                    <div class="config-item">
+                        <button class="btn btn-primary" onclick="fazerBackupManual()">
+                            <i class="fas fa-save"></i> Fazer Backup Manual
+                        </button>
+                        <button class="btn" onclick="restaurarBackup()">
+                            <i class="fas fa-undo"></i> Restaurar Backup
+                        </button>
+                    </div>
+                    <div class="config-item">
+                        <label>
+                            <input type="checkbox" id="backupAutomatico" checked onchange="atualizarConfigBackup()">
+                            Backup Automático (a cada 5 minutos)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h3><i class="fas fa-chart-line"></i> Alertas Inteligentes</h3>
+                    <div class="config-item">
+                        <label>
+                            <input type="checkbox" id="alertaOcupacao" checked onchange="atualizarConfigAlertas()">
+                            Alerta de Alta Ocupação (>80%)
+                        </label>
+                    </div>
+                    <div class="config-item">
+                        <label>
+                            <input type="checkbox" id="alertaTempoPermanencia" checked onchange="atualizarConfigAlertas()">
+                            Alerta de Longa Permanência (>4h)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h3><i class="fas fa-keyboard"></i> Atalhos de Teclado</h3>
+                    <div class="config-item">
+                        <p><strong>Ctrl + S:</strong> Fazer backup dos dados</p>
+                        <p><strong>Ctrl + R:</strong> Atualizar estatísticas</p>
+                        <p><strong>F1:</strong> Mostrar ajuda</p>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h3><i class="fas fa-info-circle"></i> Informações do Sistema</h3>
+                    <div class="config-item">
+                        <p><strong>Versão:</strong> 1.0.0</p>
+                        <p><strong>Última Atualização:</strong> <span id="ultimaAtualizacao"></span></p>
+                        <p><strong>Dados Locais:</strong> <span id="statusDadosLocais"></span></p>
+                        <p><strong>Firebase:</strong> <span id="statusFirebase"></span></p>
+                    </div>
                 </div>
             </div>
             
@@ -6722,7 +6908,7 @@
                 var temPermissao = false;
                 
                 // Verificar permissões baseadas na função
-                if (onclick.includes('mostrarPA') || onclick.includes('mostrarFarmacia') || onclick.includes('mostrarRastreabilidade') || onclick.includes('mostrarRelatorios') || onclick.includes('mostrarDashboard') || onclick.includes('mostrarEducativo')) {
+                if (onclick.includes('mostrarPA') || onclick.includes('mostrarFarmacia') || onclick.includes('mostrarRastreabilidade') || onclick.includes('mostrarRelatorios') || onclick.includes('gerarRelatorioPlantao') || onclick.includes('mostrarEducativo')) {
                     temPermissao = true; // Todos podem ver estes painéis
                 } else if (onclick.includes('mostrarConfigEmail')) {
                     temPermissao = usuarioLogado.permissoes.configurarEmails;
@@ -7414,19 +7600,36 @@
             var tempoMedioElement = document.getElementById('tempoMedioPermanencia');
             var rotatividadeElement = document.getElementById('rotatividadeDiaria');
             
-            taxaOcupacaoElement.textContent = taxaOcupacaoMedia.toFixed(1) + '%';
-            picoOcupacaoElement.textContent = picoOcupacao + '%';
-            tempoMedioElement.textContent = formatarTempo(tempoMedio);
-            rotatividadeElement.textContent = rotatividadeDiaria;
+            if (taxaOcupacaoElement) {
+                taxaOcupacaoElement.textContent = taxaOcupacaoMedia.toFixed(1) + '%';
+            }
+            if (picoOcupacaoElement) {
+                picoOcupacaoElement.textContent = picoOcupacao + '%';
+            }
+            if (tempoMedioElement) {
+                tempoMedioElement.textContent = formatarTempo(tempoMedio);
+            }
+            if (rotatividadeElement) {
+                rotatividadeElement.textContent = rotatividadeDiaria;
+            }
             
-            // Aplicar classes de destaque
-            aplicarClassesDestaque(taxaOcupacaoElement, taxaOcupacaoMedia, [50, 80]);
-            aplicarClassesDestaque(picoOcupacaoElement, picoOcupacao, [60, 90]);
-            aplicarClassesDestaque(rotatividadeElement, rotatividadeDiaria, [10, 20]);
+            // Aplicar classes de destaque (com verificação de segurança)
+            if (taxaOcupacaoElement) {
+                aplicarClassesDestaque(taxaOcupacaoElement, taxaOcupacaoMedia, [50, 80]);
+            }
+            if (picoOcupacaoElement) {
+                aplicarClassesDestaque(picoOcupacaoElement, picoOcupacao, [60, 90]);
+            }
+            if (rotatividadeElement) {
+                aplicarClassesDestaque(rotatividadeElement, rotatividadeDiaria, [10, 20]);
+            }
             
             // Atualizar tendência
             var tendencia = taxaOcupacaoMedia > 50 ? '↗️' : '↘️';
-            document.getElementById('ocupacaoTrend').textContent = tendencia;
+            var ocupacaoTrendElement = document.getElementById('ocupacaoTrend');
+            if (ocupacaoTrendElement) {
+                ocupacaoTrendElement.textContent = tendencia;
+            }
         }
 
         function calcularEstatisticasPerformance(eventos) {
@@ -7852,44 +8055,67 @@
                 }
             });
             
-            // Atualizar cards
-            document.getElementById('totalLeitos').textContent = totalLeitos;
-            document.getElementById('leitosOcupados').textContent = leitosOcupados;
-            document.getElementById('leitosDisponiveis').textContent = leitosDisponiveis;
-            document.getElementById('totalAdmissoes').textContent = admissoes;
-            document.getElementById('totalTransferencias').textContent = transferencias;
-            document.getElementById('totalAltas').textContent = altas;
+            // Atualizar cards (com verificação de segurança)
+            const totalLeitosEl = document.getElementById('totalLeitos');
+            if (totalLeitosEl) totalLeitosEl.textContent = totalLeitos;
             
-            // Atualizar percentuais
+            const leitosOcupadosEl = document.getElementById('leitosOcupados');
+            if (leitosOcupadosEl) leitosOcupadosEl.textContent = leitosOcupados;
+            
+            const leitosDisponiveisEl = document.getElementById('leitosDisponiveis');
+            if (leitosDisponiveisEl) leitosDisponiveisEl.textContent = leitosDisponiveis;
+            
+            const totalAdmissoesEl = document.getElementById('totalAdmissoes');
+            if (totalAdmissoesEl) totalAdmissoesEl.textContent = admissoes;
+            
+            const totalTransferenciasEl = document.getElementById('totalTransferencias');
+            if (totalTransferenciasEl) totalTransferenciasEl.textContent = transferencias;
+            
+            const totalAltasEl = document.getElementById('totalAltas');
+            if (totalAltasEl) totalAltasEl.textContent = altas;
+            
+            // Atualizar percentuais (com verificação de segurança)
             var percentualOcupacao = totalLeitos > 0 ? Math.round((leitosOcupados / totalLeitos) * 100) : 0;
             var percentualDisponivel = totalLeitos > 0 ? Math.round((leitosDisponiveis / totalLeitos) * 100) : 0;
             
-            document.getElementById('ocupacaoChange').textContent = percentualOcupacao + '%';
-            document.getElementById('ocupacaoChange').className = 'stat-change ' + (percentualOcupacao > 80 ? 'negative' : 'positive');
+            const ocupacaoChangeEl = document.getElementById('ocupacaoChange');
+            if (ocupacaoChangeEl) {
+                ocupacaoChangeEl.textContent = percentualOcupacao + '%';
+                ocupacaoChangeEl.className = 'stat-change ' + (percentualOcupacao > 80 ? 'negative' : 'positive');
+            }
             
             // Atualizar percentual de disponibilidade
-            document.getElementById('disponivelChange').textContent = percentualDisponivel + '%';
-            document.getElementById('disponivelChange').className = 'stat-change ' + (percentualDisponivel > 50 ? 'positive' : 'negative');
+            const disponivelChangeEl = document.getElementById('disponivelChange');
+            if (disponivelChangeEl) {
+                disponivelChangeEl.textContent = percentualDisponivel + '%';
+                disponivelChangeEl.className = 'stat-change ' + (percentualDisponivel > 50 ? 'positive' : 'negative');
+            }
             
             // Atualizar mudanças com classes apropriadas
             var admissoesElement = document.getElementById('admissoesChange');
             var transferenciasElement = document.getElementById('transferenciasChange');
             var altasElement = document.getElementById('altasChange');
             
-            admissoesElement.textContent = '+' + admissoes;
-            admissoesElement.className = 'stat-change ' + (admissoes > 0 ? 'positive' : 'neutral') + ' updated';
+            if (admissoesElement) {
+                admissoesElement.textContent = '+' + admissoes;
+                admissoesElement.className = 'stat-change ' + (admissoes > 0 ? 'positive' : 'neutral') + ' updated';
+            }
             
-            transferenciasElement.textContent = '+' + transferencias;
-            transferenciasElement.className = 'stat-change ' + (transferencias > 0 ? 'positive' : 'neutral') + ' updated';
+            if (transferenciasElement) {
+                transferenciasElement.textContent = '+' + transferencias;
+                transferenciasElement.className = 'stat-change ' + (transferencias > 0 ? 'positive' : 'neutral') + ' updated';
+            }
             
-            altasElement.textContent = '+' + altas;
-            altasElement.className = 'stat-change ' + (altas > 0 ? 'positive' : 'neutral') + ' updated';
+            if (altasElement) {
+                altasElement.textContent = '+' + altas;
+                altasElement.className = 'stat-change ' + (altas > 0 ? 'positive' : 'neutral') + ' updated';
+            }
             
             // Remover classe de animação após a animação
             setTimeout(function() {
-                admissoesElement.classList.remove('updated');
-                transferenciasElement.classList.remove('updated');
-                altasElement.classList.remove('updated');
+                if (admissoesElement) admissoesElement.classList.remove('updated');
+                if (transferenciasElement) transferenciasElement.classList.remove('updated');
+                if (altasElement) altasElement.classList.remove('updated');
             }, 600);
         }
         
@@ -9054,6 +9280,12 @@
             try {
                 console.log('🔊 === INICIANDO SOM DE ADMISSÃO ===');
                 
+                // Verificar se o usuário já interagiu com a página
+                if (!window.usuarioInteragiu) {
+                    console.log('⚠️ Usuário ainda não interagiu com a página - som pode ser bloqueado');
+                    console.log('💡 Dica: Clique em qualquer lugar da página para ativar o áudio');
+                }
+                
                 // Tocar som localmente primeiro
                 tocarSomAdmissaoLocal();
                 
@@ -9073,6 +9305,12 @@
             try {
                 console.log('🔊 Tentando reproduzir som de admissão...');
                 
+                // Verificar se o usuário já interagiu
+                if (!window.usuarioInteragiu) {
+                    console.log('⚠️ Usuário não interagiu ainda - ativando áudio...');
+                    ativarAudioAposInteracao();
+                }
+                
                 // Verificar se o navegador suporta Web Audio API
                 if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
                     try {
@@ -9089,6 +9327,7 @@
                                 tocarSomAdmissaoFallback();
                             });
                         } else {
+                            console.log('✅ Contexto de áudio ativo, reproduzindo som...');
                             tocarSomAdmissaoSimples(audioContext);
                         }
                     } catch (error) {
@@ -9105,10 +9344,148 @@
             }
         }
         
-        // FUNCAO SIMPLIFICADA PARA TOCAR SOM DE ADMISSAO (Som tipo aeroporto suave)
+        // FUNCAO PARA ATIVAR AUDIO APOS INTERACAO DO USUARIO
+        function ativarAudioAposInteracao() {
+            if (!window.usuarioInteragiu) {
+                console.log('🔊 Ativando áudio após interação do usuário...');
+                window.usuarioInteragiu = true;
+                
+                // Tentar criar e retomar o contexto de áudio
+                try {
+                    if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                        var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                        if (audioContext.state === 'suspended') {
+                            audioContext.resume().then(function() {
+                                console.log('✅ Áudio ativado com sucesso');
+                            }).catch(function(error) {
+                                console.log('❌ Erro ao ativar áudio:', error);
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.log('❌ Erro ao ativar áudio:', error);
+                }
+            }
+        }
+        
+        // FUNCAO PARA FORCAR ATIVACAO DE AUDIO (simula interação do usuário)
+        function forcarAtivacaoAudio() {
+            console.log('🔊 Forçando ativação de áudio...');
+            
+            // Simular interação do usuário
+            window.usuarioInteragiu = true;
+            
+            // Criar um contexto de áudio silencioso para ativar
+            try {
+                if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                    var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    if (audioContext.state === 'suspended') {
+                        audioContext.resume().then(function() {
+                            console.log('✅ Áudio forçadamente ativado');
+                            
+                            // Tocar um som silencioso para garantir que está funcionando
+                            var oscillator = audioContext.createOscillator();
+                            var gainNode = audioContext.createGain();
+                            
+                            oscillator.connect(gainNode);
+                            gainNode.connect(audioContext.destination);
+                            
+                            oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
+                            gainNode.gain.setValueAtTime(0.01, audioContext.currentTime); // Volume muito baixo
+                            
+                            oscillator.start(audioContext.currentTime);
+                            oscillator.stop(audioContext.currentTime + 0.1);
+                            
+                            console.log('✅ Teste de áudio silencioso executado');
+                        }).catch(function(error) {
+                            console.log('❌ Erro ao forçar ativação de áudio:', error);
+                        });
+                    } else {
+                        console.log('✅ Áudio já estava ativo');
+                    }
+                }
+            } catch (error) {
+                console.log('❌ Erro ao forçar ativação de áudio:', error);
+            }
+        }
+        
+        // FUNCAO DIRETA PARA TOCAR SOM DE ADMISSAO (versão simplificada)
+        function tocarSomAdmissaoDireto() {
+            console.log('🎵 TOCANDO SOM DE ADMISSÃO DIRETO...');
+            
+            try {
+                // Criar contexto de áudio
+                var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Verificar se está suspenso
+                if (audioContext.state === 'suspended') {
+                    console.log('⚠️ Contexto suspenso, tentando retomar...');
+                    audioContext.resume().then(function() {
+                        console.log('✅ Contexto retomado, tocando som...');
+                        tocarSomAdmissaoSimples(audioContext);
+                    }).catch(function(error) {
+                        console.log('❌ Erro ao retomar contexto:', error);
+                        tocarBeepSimples();
+                    });
+                } else {
+                    console.log('✅ Contexto ativo, tocando som...');
+                    tocarSomAdmissaoSimples(audioContext);
+                }
+            } catch (error) {
+                console.log('❌ Erro ao criar contexto de áudio:', error);
+                tocarBeepSimples();
+            }
+        }
+        
+        // FUNCAO ULTRA SIMPLES PARA SOM DE ADMISSÃO (sem dependências)
+        function tocarSomAdmissaoUltraSimples() {
+            console.log('🔊 SOM DE ADMISSÃO ULTRA SIMPLES...');
+            
+            try {
+                // Criar contexto de áudio
+                var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Som simples de 3 segundos
+                var oscillator = audioContext.createOscillator();
+                var gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Configurar som
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 3);
+                
+                // Volume
+                gainNode.gain.setValueAtTime(0.8, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 3);
+                
+                // Tocar
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 3);
+                
+                console.log('✅ Som de admissão ultra simples tocado (3 segundos)');
+                
+            } catch (error) {
+                console.log('❌ Erro no som ultra simples:', error);
+                // Fallback final
+                try {
+                    var audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+                    audio.volume = 0.8;
+                    audio.play();
+                    console.log('✅ Fallback de áudio executado');
+                } catch (fallbackError) {
+                    console.log('❌ Erro no fallback final:', fallbackError);
+                }
+            }
+        }
+        
+        // FUNCAO SIMPLIFICADA PARA TOCAR SOM DE ADMISSAO (Som longo de 7 segundos)
         function tocarSomAdmissaoSimples(audioContext) {
             try {
-                console.log('🎵 Reproduzindo som de admissão tipo aeroporto...');
+                console.log('🎵 Reproduzindo som de admissão longo (7 segundos)...');
                 
                 // Criar oscilador principal
                 var oscillator = audioContext.createOscillator();
@@ -9118,16 +9495,16 @@
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 
-                // Configurar som tipo aeroporto suave (notas musicais agradáveis)
+                // Configurar som de admissão longo e melodioso
                 oscillator.type = 'sine';
                 
-                // Sequência de notas tipo aeroporto: Dó - Sol - Dó (harmonioso)
-                var notas = [523.25, 783.99, 523.25]; // C5, G5, C5
-                var duracaoNota = 0.8; // 800ms por nota
+                // Sequência de notas musicais: Dó - Mi - Sol - Dó (acorde maior)
+                var notas = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                var duracaoNota = 1.75; // 1.75 segundos por nota (7 segundos total)
                 var tempoAtual = audioContext.currentTime;
                 
-                // Volume suave
-                var volume = 0.08;
+                // Volume mais alto
+                var volume = 0.8;
                 
                 // Tocar sequência de notas
                 notas.forEach(function(nota, index) {
@@ -9142,15 +9519,15 @@
                     
                     // Fade in e out suave para cada nota
                     gain.gain.setValueAtTime(0, tempoAtual + (index * duracaoNota));
-                    gain.gain.linearRampToValueAtTime(volume, tempoAtual + (index * duracaoNota) + 0.1);
-                    gain.gain.linearRampToValueAtTime(volume, tempoAtual + (index * duracaoNota) + duracaoNota - 0.2);
+                    gain.gain.linearRampToValueAtTime(volume, tempoAtual + (index * duracaoNota) + 0.2);
+                    gain.gain.linearRampToValueAtTime(volume, tempoAtual + (index * duracaoNota) + duracaoNota - 0.3);
                     gain.gain.linearRampToValueAtTime(0, tempoAtual + (index * duracaoNota) + duracaoNota);
                     
                     osc.start(tempoAtual + (index * duracaoNota));
                     osc.stop(tempoAtual + (index * duracaoNota) + duracaoNota);
                 });
                 
-                console.log('✅ Som de admissão tipo aeroporto reproduzido com sucesso');
+                console.log('✅ Som de admissão longo (7 segundos) reproduzido com sucesso');
                 
             } catch (error) {
                 console.log('❌ Erro no som simplificado:', error);
@@ -9161,13 +9538,33 @@
         // FUNCAO FALLBACK PARA SOM DE ADMISSAO
         function tocarSomAdmissaoFallback() {
             try {
-                console.log('🔊 Usando fallback de áudio...');
+                console.log('🔊 Usando fallback de áudio (7 segundos)...');
                 
                 // Tentar usar Web Audio API como fallback
                 if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
                     try {
                         var audioContext = new (window.AudioContext || webkitAudioContext)();
-                        tocarSomAdmissaoSimples(audioContext);
+                        
+                        // Som de fallback mais simples mas com volume alto
+                        var oscillator = audioContext.createOscillator();
+                        var gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        // Som ascendente longo e alto
+                        oscillator.type = 'sine';
+                        oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                        oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 7);
+                        
+                        // Volume bem alto
+                        gainNode.gain.setValueAtTime(0.9, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 7);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 7);
+                        
+                        console.log('✅ Som de fallback (7 segundos) reproduzido');
                         return;
                     } catch (e) {
                         console.log('⚠️ Web Audio API falhou no fallback:', e);
@@ -13499,8 +13896,40 @@
             // ATUALIZAR ULTIMO PACIENTE ADMITIDO (aparece por 6 horas)
             atualizarUltimoPacienteAdmitido(dados, leitoAtual, dados.responsavelAdmissao);
             
-            // TOCAR SOM DE ADMISSAO
-            tocarSomAdmissao();
+            // TOCAR SOM DE ADMISSAO - VERSÃO ULTRA SIMPLES
+            console.log('🔊 === INICIANDO SOM DE ADMISSÃO ===');
+            
+            // Forçar ativação imediata do áudio
+            window.usuarioInteragiu = true;
+            
+            // Tentar som ultra simples imediatamente
+            try {
+                console.log('🎵 Tentativa 1: Som ultra simples...');
+                tocarSomAdmissaoUltraSimples();
+            } catch (error) {
+                console.log('❌ Erro na tentativa 1:', error);
+                
+                // Tentar com ativação forçada
+                setTimeout(function() {
+                    try {
+                        console.log('🎵 Tentativa 2: Com ativação forçada...');
+                        forcarAtivacaoAudio();
+                        tocarSomAdmissaoUltraSimples();
+                    } catch (error2) {
+                        console.log('❌ Erro na tentativa 2:', error2);
+                        
+                        // Último recurso - beep simples
+                        setTimeout(function() {
+                            try {
+                                console.log('🎵 Tentativa 3: Beep simples...');
+                                tocarBeepSimples();
+                            } catch (error3) {
+                                console.log('❌ Erro na tentativa 3:', error3);
+                            }
+                        }, 200);
+                    }
+                }, 100);
+            }
             
             // ENVIAR EMAIL DE ADMISSAO
             enviarEmailAdmissao(dados);
@@ -15109,24 +15538,42 @@
         // FUNCAO PRINCIPAL PARA GERAR RELATÓRIO DO PLANTÃO
         function gerarRelatorioPlantao() {
             console.log('📋 Iniciando geração do relatório do plantão...');
-            
+
             // Verificar se há usuário logado
             if (!usuarioLogado) {
                 alert('❌ Você precisa estar logado para gerar o relatório do plantão!');
                 return;
             }
-            
-            // Coletar informações dos plantonistas
-            var informacoesPlantao = coletarInformacoesPlantao();
-            
-            // Gerar dados inteligentes para pacientes
-            var dadosInteligentes = gerarDadosInteligentesPacientes();
-            
-            // Criar relatório completo
-            var relatorio = criarRelatorioCompleto(informacoesPlantao, dadosInteligentes);
-            
-            // Exibir relatório
-            exibirRelatorioPlantao(relatorio);
+
+            // Mostrar loading
+            mostrarEfeitoCarregamento();
+
+            setTimeout(function() {
+                try {
+                    // Coletar informações dos plantonistas
+                    var informacoesPlantao = coletarInformacoesPlantao();
+
+                    // Gerar dados inteligentes para pacientes
+                    var dadosInteligentes = gerarDadosInteligentesPacientes();
+
+                    // Coletar estatísticas de movimentação
+                    var estatisticasMovimentacao = coletarEstatisticasMovimentacao();
+
+                    // Coletar medicações de urgência
+                    var medicacoesUrgencia = coletarMedicacoesUrgencia();
+
+                    // Criar relatório completo
+                    var relatorio = criarRelatorioCompleto(informacoesPlantao, dadosInteligentes, estatisticasMovimentacao, medicacoesUrgencia);
+
+                    // Exibir relatório
+                    exibirRelatorioPlantao(relatorio);
+                } catch (error) {
+                    console.error('Erro ao gerar relatório:', error);
+                    alert('❌ Erro ao gerar o relatório. Tente novamente.');
+                } finally {
+                    ocultarEfeitoCarregamento();
+                }
+            }, 1500);
         }
 
         // FUNCAO PARA COLETAR INFORMAÇÕES DOS PLANTONISTAS
@@ -15160,6 +15607,9 @@
         function gerarDadosInteligentesPacientes() {
             console.log('🤖 Gerando dados inteligentes para pacientes...');
             
+            var dadosLeitos = JSON.parse(localStorage.getItem('dadosLeitos') || '{}');
+            console.log('Dados dos leitos carregados:', dadosLeitos);
+            
             var dadosInteligentes = {
                 pacientes: [],
                 sinaisVitais: [],
@@ -15192,6 +15642,9 @@
             
             // Gerar estatísticas
             dadosInteligentes.estatisticas = gerarEstatisticasInteligentes(dadosInteligentes.pacientes);
+            
+            console.log('Dados inteligentes gerados:', dadosInteligentes);
+            console.log('Total de pacientes processados:', dadosInteligentes.pacientes.length);
             
             return dadosInteligentes;
         }
@@ -15349,26 +15802,135 @@
             return medicacoes;
         }
 
+        // FUNCAO PARA COLETAR ESTATÍSTICAS DE MOVIMENTAÇÃO
+        function coletarEstatisticasMovimentacao() {
+            console.log('📈 Coletando estatísticas de movimentação...');
+            
+            var agora = new Date();
+            var inicioPlantao = new Date(agora.getTime() - (12 * 60 * 60 * 1000)); // 12 horas atrás
+            
+            // Carregar histórico de pacientes do localStorage
+            var historicoPacientes = JSON.parse(localStorage.getItem('historicoPacientes') || '[]');
+            
+            var estatisticas = {
+                admissoes: 0,
+                altas: 0,
+                transferencias: 0,
+                totalMovimentacoes: 0,
+                detalhes: {
+                    admissoes: [],
+                    altas: [],
+                    transferencias: []
+                }
+            };
+            
+            // Filtrar movimentações das últimas 12 horas
+            historicoPacientes.forEach(function(paciente) {
+                var dataEvento = new Date(paciente.dataEvento);
+                
+                if (dataEvento >= inicioPlantao && dataEvento <= agora) {
+                    switch(paciente.tipoEvento) {
+                        case 'admissao':
+                            estatisticas.admissoes++;
+                            estatisticas.detalhes.admissoes.push({
+                                leito: paciente.leito,
+                                paciente: paciente.pacienteIniciais,
+                                horario: dataEvento.toLocaleTimeString('pt-BR'),
+                                responsavel: paciente.usuarioResponsavel
+                            });
+                            break;
+                        case 'alta':
+                            estatisticas.altas++;
+                            estatisticas.detalhes.altas.push({
+                                leito: paciente.leito,
+                                paciente: paciente.pacienteIniciais,
+                                horario: dataEvento.toLocaleTimeString('pt-BR'),
+                                responsavel: paciente.usuarioResponsavel
+                            });
+                            break;
+                        case 'transferencia':
+                            estatisticas.transferencias++;
+                            estatisticas.detalhes.transferencias.push({
+                                leitoOrigem: paciente.leito,
+                                leitoDestino: paciente.leitoDestino || 'N/A',
+                                paciente: paciente.pacienteIniciais,
+                                horario: dataEvento.toLocaleTimeString('pt-BR'),
+                                responsavel: paciente.usuarioResponsavel
+                            });
+                            break;
+                    }
+                }
+            });
+            
+            estatisticas.totalMovimentacoes = estatisticas.admissoes + estatisticas.altas + estatisticas.transferencias;
+            
+            return estatisticas;
+        }
+
+        // FUNCAO PARA COLETAR MEDICAÇÕES DE URGÊNCIA
+        function coletarMedicacoesUrgencia() {
+            console.log('💊 Coletando medicações de urgência...');
+            
+            var agora = new Date();
+            var inicioPlantao = new Date(agora.getTime() - (12 * 60 * 60 * 1000)); // 12 horas atrás
+            
+            // Carregar medicações de urgência do localStorage
+            var medicacoesUrgencia = JSON.parse(localStorage.getItem('medicacoesUrgencia') || '[]');
+            
+            var medicacoesPlantao = medicacoesUrgencia.filter(function(med) {
+                var dataMedicacao = new Date(med.timestamp);
+                return dataMedicacao >= inicioPlantao && dataMedicacao <= agora;
+            });
+            
+            return {
+                total: medicacoesPlantao.length,
+                detalhes: medicacoesPlantao.map(function(med) {
+                    return {
+                        leito: med.leito,
+                        paciente: med.paciente,
+                        medicacoes: med.medicacoes,
+                        horario: new Date(med.timestamp).toLocaleTimeString('pt-BR'),
+                        responsavel: med.usuarioResponsavel,
+                        status: med.validada ? 'DISPENSADO' : 'PENDENTE'
+                    };
+                })
+            };
+        }
+
         // FUNCAO PARA CRIAR RELATÓRIO COMPLETO
-        function criarRelatorioCompleto(informacoesPlantao, dadosInteligentes) {
+        function criarRelatorioCompleto(informacoesPlantao, dadosInteligentes, estatisticasMovimentacao, medicacoesUrgencia) {
+            var agora = new Date();
+            var inicioPlantao = new Date(agora.getTime() - (12 * 60 * 60 * 1000));
+            
             var relatorio = {
                 cabecalho: {
-                    titulo: 'RELATÓRIO INTELIGENTE DO PLANTÃO',
-                    dataHora: new Date().toLocaleString('pt-BR'),
+                    titulo: 'RELATÓRIO COMPLETO DO PLANTÃO - 12 HORAS',
+                    dataHora: agora.toLocaleString('pt-BR'),
+                    periodo: {
+                        inicio: inicioPlantao.toLocaleString('pt-BR'),
+                        fim: agora.toLocaleString('pt-BR'),
+                        duracao: '12 horas'
+                    },
                     plantonista: informacoesPlantao.plantonistaPrincipal,
                     setor: informacoesPlantao.setor
                 },
                 resumo: {
                     totalPacientes: dadosInteligentes.pacientes.length,
                     pacientesAltoRisco: dadosInteligentes.pacientes.filter(p => p.risco.nivel === 'ALTO').length,
-                    medicacoesUrgentes: dadosInteligentes.medicacoes.filter(m => m.prioridade === 'ALTA').length,
-                    observacoesImportantes: dadosInteligentes.observacoes.filter(o => o.prioridade === 'ALTA').length
+                    medicacoesUrgentes: medicacoesUrgencia.total,
+                    observacoesImportantes: dadosInteligentes.observacoes.filter(o => o.prioridade === 'ALTA').length,
+                    totalMovimentacoes: estatisticasMovimentacao.totalMovimentacoes,
+                    admissoes: estatisticasMovimentacao.admissoes,
+                    altas: estatisticasMovimentacao.altas,
+                    transferencias: estatisticasMovimentacao.transferencias
                 },
                 equipe: informacoesPlantao.equipe,
                 pacientes: dadosInteligentes.pacientes,
                 sinaisVitais: dadosInteligentes.sinaisVitais,
                 observacoes: dadosInteligentes.observacoes,
                 medicacoes: dadosInteligentes.medicacoes,
+                movimentacao: estatisticasMovimentacao,
+                medicacoesUrgencia: medicacoesUrgencia,
                 estatisticas: dadosInteligentes.estatisticas,
                 recomendacoes: gerarRecomendacoesGerais(dadosInteligentes)
             };
@@ -15379,6 +15941,13 @@
         // FUNCAO PARA EXIBIR RELATÓRIO DO PLANTÃO
         function exibirRelatorioPlantao(relatorio) {
             console.log('📊 Exibindo relatório do plantão...');
+            console.log('Relatório recebido:', relatorio);
+            
+            // Verificar se já existe um modal aberto
+            var modalExistente = document.getElementById('modalRelatorioPlantao');
+            if (modalExistente) {
+                modalExistente.remove();
+            }
             
             // Criar modal do relatório
             var modal = document.createElement('div');
@@ -15421,10 +15990,14 @@
                 </div>
             `;
             
+            console.log('Modal criado, adicionando ao body...');
             document.body.appendChild(modal);
             
-            // Preencher conteúdo do relatório
-            preencherConteudoRelatorio(relatorio);
+            // Aguardar um pouco para garantir que o DOM foi atualizado
+            setTimeout(function() {
+                console.log('Preenchendo conteúdo do relatório...');
+                preencherConteudoRelatorio(relatorio);
+            }, 100);
         }
 
         // FUNCAO PARA FECHAR MODAL DO RELATÓRIO
@@ -15705,18 +16278,38 @@
 
         // FUNCAO PARA PREENCHER CONTEÚDO DO RELATÓRIO
         function preencherConteudoRelatorio(relatorio) {
-            var conteudo = document.getElementById('conteudoRelatorioPlantao');
-            if (!conteudo) return;
+            console.log('🔧 Preenchendo conteúdo do relatório...');
+            console.log('Relatório para preenchimento:', relatorio);
             
+            var conteudo = document.getElementById('conteudoRelatorioPlantao');
+            console.log('Elemento conteudo encontrado:', conteudo);
+            
+            if (!conteudo) {
+                console.error('❌ Elemento conteudoRelatorioPlantao não encontrado!');
+                return;
+            }
+
             var html = `
+                <!-- CABEÇALHO DO RELATÓRIO -->
+                <div style="margin-bottom: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px;">
+                    <h2 style="margin: 0 0 10px 0; font-size: 1.8rem;">${relatorio.cabecalho.titulo}</h2>
+                    <p style="margin: 5px 0; font-size: 1.1rem; opacity: 0.9;">
+                        <strong>Período:</strong> ${relatorio.cabecalho.periodo.inicio} - ${relatorio.cabecalho.periodo.fim}
+                    </p>
+                    <p style="margin: 5px 0; font-size: 1rem; opacity: 0.8;">
+                        <strong>Plantonista:</strong> ${relatorio.cabecalho.plantonista} | <strong>Setor:</strong> ${relatorio.cabecalho.setor}
+                    </p>
+                </div>
+
+                <!-- RESUMO EXECUTIVO -->
                 <div style="margin-bottom: 30px;">
                     <h3 style="color: #2c3e50; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
-                        📊 Resumo Executivo
+                        📊 Resumo Executivo - 12 Horas
                     </h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 15px;">
                         <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; text-align: center;">
                             <h4 style="margin: 0; color: #1976d2; font-size: 2rem;">${relatorio.resumo.totalPacientes}</h4>
-                            <p style="margin: 5px 0 0 0; color: #666;">Total de Pacientes</p>
+                            <p style="margin: 5px 0 0 0; color: #666;">Pacientes Ativos</p>
                         </div>
                         <div style="background: #ffebee; padding: 15px; border-radius: 8px; text-align: center;">
                             <h4 style="margin: 0; color: #d32f2f; font-size: 2rem;">${relatorio.resumo.pacientesAltoRisco}</h4>
@@ -15727,12 +16320,25 @@
                             <p style="margin: 5px 0 0 0; color: #666;">Medicações Urgentes</p>
                         </div>
                         <div style="background: #f3e5f5; padding: 15px; border-radius: 8px; text-align: center;">
-                            <h4 style="margin: 0; color: #7b1fa2; font-size: 2rem;">${relatorio.resumo.observacoesImportantes}</h4>
-                            <p style="margin: 5px 0 0 0; color: #666;">Observações Importantes</p>
+                            <h4 style="margin: 0; color: #7b1fa2; font-size: 2rem;">${relatorio.resumo.totalMovimentacoes}</h4>
+                            <p style="margin: 5px 0 0 0; color: #666;">Total Movimentações</p>
+                        </div>
+                        <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4 style="margin: 0; color: #2e7d32; font-size: 2rem;">${relatorio.resumo.admissoes}</h4>
+                            <p style="margin: 5px 0 0 0; color: #666;">Admissões</p>
+                        </div>
+                        <div style="background: #fce4ec; padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4 style="margin: 0; color: #c2185b; font-size: 2rem;">${relatorio.resumo.altas}</h4>
+                            <p style="margin: 5px 0 0 0; color: #666;">Altas</p>
+                        </div>
+                        <div style="background: #e0f2f1; padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4 style="margin: 0; color: #00695c; font-size: 2rem;">${relatorio.resumo.transferencias}</h4>
+                            <p style="margin: 5px 0 0 0; color: #666;">Transferências</p>
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- EQUIPE DO PLANTÃO -->
                 <div style="margin-bottom: 30px;">
                     <h3 style="color: #2c3e50; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
                         👥 Equipe do Plantão
@@ -15749,10 +16355,11 @@
                         }).join('')}
                     </div>
                 </div>
-                
+
+                <!-- PACIENTES EM ATENDIMENTO COM SINAIS VITAIS -->
                 <div style="margin-bottom: 30px;">
                     <h3 style="color: #2c3e50; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
-                        🏥 Pacientes em Atendimento
+                        🏥 Pacientes em Atendimento - Sinais Vitais
                     </h3>
                     <div style="overflow-x: auto;">
                         <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
@@ -15761,25 +16368,32 @@
                                     <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Leito</th>
                                     <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Paciente</th>
                                     <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Idade</th>
+                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">PA</th>
+                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">FC</th>
+                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Temp</th>
+                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">FR</th>
+                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">HGT</th>
                                     <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Risco</th>
-                                    <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Prioridade</th>
                                     <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Tempo</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 ${relatorio.pacientes.map(function(paciente) {
-                                    var riscoColor = paciente.risco.nivel === 'ALTO' ? '#dc3545' : 
+                                    var riscoColor = paciente.risco.nivel === 'ALTO' ? '#dc3545' :
                                                     paciente.risco.nivel === 'MÉDIO' ? '#ffc107' : '#28a745';
-                                    var prioridadeColor = paciente.prioridade === 'ALTA' ? '#dc3545' : 
-                                                        paciente.prioridade === 'MÉDIA' ? '#ffc107' : '#6c757d';
-                                    
+                                    var sinaisVitais = paciente.sinaisVitais || {};
+
                                     return `
                                         <tr>
                                             <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold; color: #007bff;">${paciente.leito}</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6;">${paciente.nome}</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6;">${paciente.idade} anos</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.pressaoSistolica || 'N/A'}/${sinaisVitais.pressaoDiastolica || 'N/A'}</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.frequenciaCardiaca || 'N/A'} bpm</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.temperatura || 'N/A'}°C</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.respiracao || 'N/A'} rpm</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.hgt || 'N/A'} mg/dL</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6; color: ${riscoColor}; font-weight: bold;">${paciente.risco.nivel}</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: ${prioridadeColor}; font-weight: bold;">${paciente.prioridade}</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6;">${paciente.tempoPermanencia}</td>
                                         </tr>
                                     `;
@@ -15788,7 +16402,94 @@
                         </table>
                     </div>
                 </div>
-                
+
+                <!-- MEDICAÇÕES DE URGÊNCIA -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #2c3e50; border-bottom: 2px solid #dc3545; padding-bottom: 10px;">
+                        🚨 Medicações de Urgência Utilizadas
+                    </h3>
+                    ${relatorio.medicacoesUrgencia.total > 0 ? `
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                                <thead>
+                                    <tr style="background: #ffebee;">
+                                        <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Horário</th>
+                                        <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Leito</th>
+                                        <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Paciente</th>
+                                        <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Medicações</th>
+                                        <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Responsável</th>
+                                        <th style="padding: 12px; border: 1px solid #dee2e6; text-align: left;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${relatorio.medicacoesUrgencia.detalhes.map(function(med) {
+                                        var statusColor = med.status === 'DISPENSADO' ? '#28a745' : '#ffc107';
+                                        return `
+                                            <tr>
+                                                <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">${med.horario}</td>
+                                                <td style="padding: 12px; border: 1px solid #dee2e6; color: #007bff; font-weight: bold;">${med.leito}</td>
+                                                <td style="padding: 12px; border: 1px solid #dee2e6;">${med.paciente}</td>
+                                                <td style="padding: 12px; border: 1px solid #dee2e6;">${med.medicacoes}</td>
+                                                <td style="padding: 12px; border: 1px solid #dee2e6;">${med.responsavel}</td>
+                                                <td style="padding: 12px; border: 1px solid #dee2e6; color: ${statusColor}; font-weight: bold;">${med.status}</td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    ` : `
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; margin-top: 15px;">
+                            <p style="margin: 0; color: #6c757d; font-size: 1.1rem;">Nenhuma medicação de urgência foi utilizada nas últimas 12 horas</p>
+                        </div>
+                    `}
+                </div>
+
+                <!-- MOVIMENTAÇÕES DO PLANTÃO -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #2c3e50; border-bottom: 2px solid #28a745; padding-bottom: 10px;">
+                        📈 Movimentações do Plantão (12h)
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 15px;">
+                        <!-- ADMISSÕES -->
+                        <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+                            <h4 style="margin: 0 0 10px 0; color: #2e7d32;">📥 Admissões (${relatorio.movimentacao.admissoes})</h4>
+                            ${relatorio.movimentacao.detalhes.admissoes.length > 0 ? `
+                                <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem;">
+                                    ${relatorio.movimentacao.detalhes.admissoes.map(function(adm) {
+                                        return `<li style="margin-bottom: 5px;">${adm.horario} - ${adm.leito}: ${adm.paciente}</li>`;
+                                    }).join('')}
+                                </ul>
+                            ` : '<p style="margin: 0; color: #666; font-style: italic;">Nenhuma admissão</p>'}
+                        </div>
+
+                        <!-- ALTAS -->
+                        <div style="background: #fce4ec; padding: 15px; border-radius: 8px; border-left: 4px solid #c2185b;">
+                            <h4 style="margin: 0 0 10px 0; color: #c2185b;">📤 Altas (${relatorio.movimentacao.altas})</h4>
+                            ${relatorio.movimentacao.detalhes.altas.length > 0 ? `
+                                <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem;">
+                                    ${relatorio.movimentacao.detalhes.altas.map(function(alta) {
+                                        return `<li style="margin-bottom: 5px;">${alta.horario} - ${alta.leito}: ${alta.paciente}</li>`;
+                                    }).join('')}
+                                </ul>
+                            ` : '<p style="margin: 0; color: #666; font-style: italic;">Nenhuma alta</p>'}
+                        </div>
+
+                        <!-- TRANSFERÊNCIAS -->
+                        <div style="background: #e0f2f1; padding: 15px; border-radius: 8px; border-left: 4px solid #00695c;">
+                            <h4 style="margin: 0 0 10px 0; color: #00695c;">🔄 Transferências (${relatorio.movimentacao.transferencias})</h4>
+                            ${relatorio.movimentacao.detalhes.transferencias.length > 0 ? `
+                                <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem;">
+                                    ${relatorio.movimentacao.detalhes.transferencias.map(function(transf) {
+                                        return `<li style="margin-bottom: 5px;">${transf.horario} - ${transf.leitoOrigem} → ${transf.leitoDestino}: ${transf.paciente}</li>`;
+                                    }).join('')}
+                                </ul>
+                            ` : '<p style="margin: 0; color: #666; font-style: italic;">Nenhuma transferência</p>'}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECOMENDAÇÕES INTELIGENTES -->
                 <div style="margin-bottom: 30px;">
                     <h3 style="color: #2c3e50; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
                         💡 Recomendações Inteligentes
@@ -15802,8 +16503,16 @@
                     </div>
                 </div>
             `;
+
+            console.log('HTML gerado, inserindo no elemento...');
+            console.log('Tamanho do HTML:', html.length);
             
-            conteudo.innerHTML = html;
+            try {
+                conteudo.innerHTML = html;
+                console.log('✅ HTML inserido com sucesso!');
+            } catch (error) {
+                console.error('❌ Erro ao inserir HTML:', error);
+            }
         }
 
         // FUNCAO PARA EXPORTAR RELATÓRIO
@@ -15825,14 +16534,27 @@
             
             // Verificar se estamos no painel de controle de leitos (PA)
             var paPanel = document.getElementById('paPanel');
+            var farmaciaPanel = document.getElementById('farmaciaPanel');
+            
             console.log('🔄 PA Panel encontrado:', paPanel ? 'SIM' : 'NÃO');
+            console.log('🔄 Farmácia Panel encontrado:', farmaciaPanel ? 'SIM' : 'NÃO');
+            
             if (paPanel) {
                 console.log('🔄 PA Panel display:', paPanel.style.display);
                 console.log('🔄 PA Panel offsetParent:', paPanel.offsetParent ? 'VISÍVEL' : 'OCULTO');
             }
             
-            if (!paPanel || paPanel.style.display === 'none' || paPanel.offsetParent === null) {
-                console.log('🔄 Resumo de pacientes não atualizado - não estamos no painel PA');
+            if (farmaciaPanel) {
+                console.log('🔄 Farmácia Panel display:', farmaciaPanel.style.display);
+                console.log('🔄 Farmácia Panel offsetParent:', farmaciaPanel.offsetParent ? 'VISÍVEL' : 'OCULTO');
+            }
+            
+            // Verificar se estamos no painel PA (não na farmácia)
+            var isPainelPA = paPanel && (paPanel.style.display !== 'none' && paPanel.offsetParent !== null);
+            var isPainelFarmacia = farmaciaPanel && (farmaciaPanel.style.display !== 'none' && farmaciaPanel.offsetParent !== null);
+            
+            if (!isPainelPA || isPainelFarmacia) {
+                console.log('🔄 Resumo de pacientes não atualizado - não estamos no painel PA (estamos na farmácia ou em outro painel)');
                 return;
             }
             
@@ -17190,8 +17912,146 @@
         
         // FUNCAO PARA TESTAR SOM (para debug)
         function testarSom() {
-            console.log('🔊 === TESTANDO SOM DE ADMISSÃO ===');
-            tocarSomAdmissao();
+            console.log('🔊 === TESTANDO SOM DE ADMISSÃO (7 SEGUNDOS) ===');
+            
+            // Forçar ativação do áudio
+            forcarAtivacaoAudio();
+            
+            // Aguardar um pouco e tentar tocar
+            setTimeout(function() {
+                try {
+                    tocarSomAdmissao();
+                    console.log('✅ Teste de som executado');
+                } catch (error) {
+                    console.log('❌ Erro no teste de som:', error);
+                    // Tentar fallback
+                    try {
+                        tocarSomAdmissaoLocal();
+                    } catch (fallbackError) {
+                        console.log('❌ Erro no fallback:', fallbackError);
+                        tocarBeepSimples();
+                    }
+                }
+            }, 500);
+        }
+        
+        // FUNCAO PARA TESTAR SOM SIMPLES (beep rápido)
+        function testarSomSimples() {
+            console.log('🔊 === TESTANDO SOM SIMPLES (BEEP) ===');
+            
+            // Forçar ativação do áudio
+            forcarAtivacaoAudio();
+            
+            // Aguardar e tocar beep simples
+            setTimeout(function() {
+                try {
+                    tocarBeepSimples();
+                    console.log('✅ Beep simples executado');
+                } catch (error) {
+                    console.log('❌ Erro no beep simples:', error);
+                }
+            }, 300);
+        }
+        
+        // FUNCAO PARA TESTAR SOM DE ADMISSÃO DIRETO
+        function testarSomAdmissaoDireto() {
+            console.log('🔊 === TESTANDO SOM DE ADMISSÃO DIRETO ===');
+            
+            // Forçar ativação do áudio
+            window.usuarioInteragiu = true;
+            
+            // Tocar som direto
+            try {
+                tocarSomAdmissaoDireto();
+                console.log('✅ Teste de admissão executado');
+            } catch (error) {
+                console.log('❌ Erro no teste de admissão:', error);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR SOM ULTRA SIMPLES
+        function testarSomAdmissaoUltraSimples() {
+            console.log('🔊 === TESTANDO SOM ULTRA SIMPLES ===');
+            
+            // Forçar ativação do áudio
+            window.usuarioInteragiu = true;
+            
+            // Tocar som ultra simples
+            try {
+                tocarSomAdmissaoUltraSimples();
+                console.log('✅ Teste ultra simples executado');
+            } catch (error) {
+                console.log('❌ Erro no teste ultra simples:', error);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR SOM DE ADMISSAO RAPIDO (7 segundos)
+        function testarSomAdmissaoRapido() {
+            console.log('🔊 === TESTE RAPIDO DO SOM DE ADMISSAO (7 SEGUNDOS) ===');
+            console.log('🎵 Reproduzindo som de admissão com volume alto...');
+            
+            try {
+                tocarSomAdmissao();
+                console.log('✅ Som de admissão iniciado - duração: 7 segundos');
+                console.log('🔊 Volume: ALTO (0.8)');
+                console.log('🎵 Notas: Dó - Mi - Sol - Dó (acorde maior)');
+            } catch (error) {
+                console.log('❌ Erro ao reproduzir som:', error);
+            }
+        }
+        
+        // FUNCAO PARA TESTAR SOM DE ADMISSAO MELHORADA
+        function testarSomAdmissaoMelhorado() {
+            console.log('🔊 === TESTE MELHORADO DO SOM DE ADMISSÃO ===');
+            
+            // Verificar se as funções existem
+            if (typeof tocarSomAdmissao !== 'function') {
+                console.log('❌ Função tocarSomAdmissao não encontrada!');
+                return;
+            }
+            
+            if (typeof tocarSomAdmissaoLocal !== 'function') {
+                console.log('❌ Função tocarSomAdmissaoLocal não encontrada!');
+                return;
+            }
+            
+            console.log('✅ Funções de som encontradas');
+            
+            // Testar som principal
+            console.log('🎵 Testando som principal...');
+            try {
+                tocarSomAdmissao();
+                console.log('✅ Som principal executado');
+            } catch (error) {
+                console.log('❌ Erro no som principal:', error);
+            }
+            
+            // Aguardar e testar som local
+            setTimeout(function() {
+                console.log('🎵 Testando som local...');
+                try {
+                    tocarSomAdmissaoLocal();
+                    console.log('✅ Som local executado');
+                } catch (error) {
+                    console.log('❌ Erro no som local:', error);
+                }
+            }, 2000);
+            
+            // Aguardar e testar som simples
+            setTimeout(function() {
+                console.log('🎵 Testando som simples...');
+                try {
+                    if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                        var audioContext = new (window.AudioContext || webkitAudioContext)();
+                        tocarSomAdmissaoSimples(audioContext);
+                        console.log('✅ Som simples executado');
+                    } else {
+                        console.log('⚠️ Web Audio API não suportada');
+                    }
+                } catch (error) {
+                    console.log('❌ Erro no som simples:', error);
+                }
+            }, 4000);
         }
         
         // FUNCAO PARA TESTAR SOM DE ADMISSÃO COMPLETO
@@ -20122,6 +20982,20 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             setTimeout(verificarHorarioRelatorio, 60000);
         }
         
+        // FUNCAO PARA ADICIONAR EVENT LISTENERS PARA ATIVAR AUDIO
+        function adicionarEventListenersAudio() {
+            // Detectar qualquer interação do usuário
+            const eventos = ['click', 'keydown', 'touchstart', 'mousedown'];
+            
+            eventos.forEach(function(evento) {
+                document.addEventListener(evento, function() {
+                    ativarAudioAposInteracao();
+                }, { once: true }); // Executar apenas uma vez
+            });
+            
+            console.log('🔊 Event listeners de áudio adicionados');
+        }
+        
         // CARREGAR CONFIGURACOES DE EMAIL
         document.addEventListener('DOMContentLoaded', function() {
             inicializarFirebase();
@@ -20129,6 +21003,9 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             inicializarEmailJS();
             inicializarSistemasAutomaticos();
             verificarSessao();
+            
+            // Adicionar event listeners para ativar áudio
+            adicionarEventListenersAudio();
             
             // SEMPRE carregar dados do localStorage na inicialização
             carregarDadosLocalStorage();
@@ -22517,106 +23394,108 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                 `;
                 
                 modal.innerHTML = `
-                    <div style="background: white; border-radius: 12px; padding: 15px; max-width: 338px; width: 68%; box-shadow: 0 15px 40px rgba(0,0,0,0.3); transform: scale(0.75);">
-                        <div style="text-align: center; margin-bottom: 15px;">
-                            <span style="font-size: 1.9rem; color: #dc3545;">🚨</span>
-                            <h2 style="color: #dc3545; margin: 6px 0; font-size: 1rem;">
+                    <div style="background: white; border-radius: 12px; padding: 20px; max-width: 550px; width: 85%; max-height: 90vh; overflow-y: auto; box-shadow: 0 15px 40px rgba(0,0,0,0.3);">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <span style="font-size: 2rem; color: #dc3545;">🚨</span>
+                            <h2 style="color: #dc3545; margin: 5px 0; font-size: 1.2rem; font-weight: bold;">
                                 Medicação de Urgência
                             </h2>
                         </div>
                         
-                        <div style="background: #f8f9fa; border-radius: 8px; padding: 11px; margin-bottom: 11px;">
-                            <h3 style="color: #495057; margin-bottom: 8px; font-size: 0.8rem;">📋 Dados do Paciente</h3>
+                        <div style="background: #f8f9fa; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #007bff;">
+                            <h3 style="color: #495057; margin-bottom: 12px; font-size: 0.9rem; font-weight: bold;">📋 Dados do Paciente</h3>
                             
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 12px;">
                                 <div>
-                                    <strong style="color: #6c757d; font-size: 0.6rem;">Leito:</strong>
-                                    <div style="color: #495057; font-weight: bold; font-size: 0.7rem;">${leitoId}</div>
+                                    <strong style="color: #6c757d; font-size: 0.8rem; display: block; margin-bottom: 3px;">Leito:</strong>
+                                    <div style="color: #007bff; font-weight: bold; font-size: 1rem;">${leitoId}</div>
                                 </div>
                                 <div>
-                                    <strong style="color: #6c757d; font-size: 0.6rem;">Registro:</strong>
-                                    <div style="color: #495057; font-weight: bold; font-size: 0.7rem;">${dados.registro || 'N/A'}</div>
+                                    <strong style="color: #6c757d; font-size: 0.8rem; display: block; margin-bottom: 3px;">Registro:</strong>
+                                    <div style="color: #495057; font-weight: bold; font-size: 1rem;">${dados.registro || 'N/A'}</div>
                                 </div>
                             </div>
                             
-                            <div style="margin-bottom: 8px;">
-                                <strong style="color: #6c757d; font-size: 0.6rem;">Paciente:</strong>
-                                <div style="color: #495057; font-weight: bold; font-size: 0.75rem;">${dados.pacienteIniciais}</div>
+                            <div style="margin-bottom: 12px;">
+                                <strong style="color: #6c757d; font-size: 0.8rem; display: block; margin-bottom: 3px;">Paciente:</strong>
+                                <div style="color: #2c3e50; font-weight: bold; font-size: 1.1rem;">${dados.pacienteIniciais}</div>
                             </div>
                             
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                                 <div>
-                                    <strong style="color: #6c757d; font-size: 0.6rem;">Idade:</strong>
-                                    <div style="color: #495057; font-weight: bold; font-size: 0.7rem;">${dados.idade || 'N/A'} anos</div>
+                                    <strong style="color: #6c757d; font-size: 0.8rem; display: block; margin-bottom: 3px;">Idade:</strong>
+                                    <div style="color: #495057; font-weight: bold; font-size: 0.9rem;">${dados.idade || 'N/A'} anos</div>
                                 </div>
                                 <div>
-                                    <strong style="color: #6c757d; font-size: 0.6rem;">Origem:</strong>
-                                    <div style="color: #495057; font-weight: bold; font-size: 0.7rem;">${dados.origem || 'N/A'}</div>
+                                    <strong style="color: #6c757d; font-size: 0.8rem; display: block; margin-bottom: 3px;">Origem:</strong>
+                                    <div style="color: #495057; font-weight: bold; font-size: 0.9rem;">${dados.origem || 'N/A'}</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div style="margin-bottom: 11px;">
-                            <label style="display: block; color: #495057; font-weight: bold; margin-bottom: 5px; font-size: 0.7rem;">
-                                👤 Usuário Responsável:
-                            </label>
-                            <select id="usuarioMedicacaoUrgencia" required 
-                                style="width: 100%; padding: 8px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 0.7rem; background: white;">
-                                <option value="">Selecione um usuário...</option>
-                            </select>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div>
+                                <label style="display: block; color: #495057; font-weight: bold; margin-bottom: 6px; font-size: 0.85rem;">
+                                    👤 Usuário Responsável:
+                                </label>
+                                <select id="usuarioMedicacaoUrgencia" required 
+                                    style="width: 100%; padding: 10px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 0.85rem; background: white; transition: border-color 0.3s ease;">
+                                    <option value="">Selecione um usuário...</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label style="display: block; color: #495057; font-weight: bold; margin-bottom: 6px; font-size: 0.85rem;">
+                                    🔐 Senha do Usuário:
+                                </label>
+                                <input type="password" id="senhaMedicacaoUrgencia" required 
+                                    placeholder="Digite a senha do usuário selecionado"
+                                    style="width: 100%; padding: 10px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 0.85rem; background: white; transition: border-color 0.3s ease;">
+                            </div>
                         </div>
                         
-                        <div style="margin-bottom: 11px;">
-                            <label style="display: block; color: #495057; font-weight: bold; margin-bottom: 5px; font-size: 0.7rem;">
-                                🔐 Senha do Usuário:
-                            </label>
-                            <input type="password" id="senhaMedicacaoUrgencia" required 
-                                placeholder="Digite a senha do usuário selecionado"
-                                style="width: 100%; padding: 8px; border: 2px solid #dee2e6; border-radius: 6px; font-size: 0.7rem; background: white;">
-                        </div>
-                        
-                        <div style="margin-bottom: 11px;">
-                            <label style="display: block; color: #495057; font-weight: bold; margin-bottom: 6px; font-size: 0.7rem;">
+                        <div style="background: #f8f9fa; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #28a745;">
+                            <label style="display: block; color: #495057; font-weight: bold; margin-bottom: 12px; font-size: 0.9rem;">
                                 💊 Medicações:
                             </label>
                             
                             <!-- Campo de entrada rápida -->
-                            <div style="margin-bottom: 8px;">
+                            <div style="margin-bottom: 12px;">
                                 <input type="text" id="medicacaoInput" placeholder="Digite: Nome + Dosagem + Via (ex: HALDOL 5mg EV)" 
-                                    style="width: 100%; padding: 9px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 0.7rem; background: #f8f9fa; transition: all 0.3s ease;"
+                                    style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 6px; font-size: 0.85rem; background: white; transition: all 0.3s ease;"
                                     onkeypress="if(event.key==='Enter') adicionarMedicacao()">
                                 <button type="button" class="btn-adicionar" onclick="adicionarMedicacao()" 
-                                    style="margin-top: 6px; background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.6rem; cursor: pointer; transition: all 0.3s ease; display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                    style="margin-top: 8px; background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; display: inline-block !important; visibility: visible !important; opacity: 1 !important; font-weight: bold;">
                                     ➕ Adicionar
                                 </button>
                             </div>
                             
                             <!-- Medicações rápidas -->
-                            <div style="margin-bottom: 8px;">
-                                <div style="font-size: 0.6rem; color: #6c757d; margin-bottom: 5px;">⚡ Medicações Rápidas:</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 0.8rem; color: #6c757d; margin-bottom: 8px; font-weight: bold;">⚡ Medicações Rápidas:</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                                     <button type="button" class="btn-rapido" onclick="adicionarMedicacaoRapida('HALDOL 5mg EV')" 
-                                        style="background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.5rem; cursor: pointer; transition: all 0.3s ease; display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                        style="background: #17a2b8; color: white; border: none; padding: 6px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; display: inline-block !important; visibility: visible !important; opacity: 1 !important; font-weight: bold;">
                                         HALDOL 5mg EV
                                     </button>
                                     <button type="button" class="btn-rapido" onclick="adicionarMedicacaoRapida('DIPIRONA 1g VO')" 
-                                        style="background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.5rem; cursor: pointer; transition: all 0.3s ease; display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                        style="background: #17a2b8; color: white; border: none; padding: 6px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; display: inline-block !important; visibility: visible !important; opacity: 1 !important; font-weight: bold;">
                                         DIPIRONA 1g VO
                                     </button>
                                     <button type="button" class="btn-rapido" onclick="adicionarMedicacaoRapida('DEXAMETASONA 4mg EV')" 
-                                        style="background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.5rem; cursor: pointer; transition: all 0.3s ease; display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                        style="background: #17a2b8; color: white; border: none; padding: 6px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; display: inline-block !important; visibility: visible !important; opacity: 1 !important; font-weight: bold;">
                                         DEXAMETASONA 4mg EV
                                     </button>
                                     <button type="button" class="btn-rapido" onclick="adicionarMedicacaoRapida('LORAZEPAM 2mg EV')" 
-                                        style="background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.5rem; cursor: pointer; transition: all 0.3s ease; display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                        style="background: #17a2b8; color: white; border: none; padding: 6px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; display: inline-block !important; visibility: visible !important; opacity: 1 !important; font-weight: bold;">
                                         LORAZEPAM 2mg EV
                                     </button>
                                 </div>
                             </div>
                             
                             <!-- Lista de medicações adicionadas -->
-                            <div id="listaMedicacoes" style="min-height: 60px; max-height: 120px; overflow-y: auto; border: 2px solid #e9ecef; border-radius: 8px; padding: 10px; background: #f8f9fa;">
-                                <div style="text-align: center; color: #6c757d; font-size: 0.8rem; padding: 20px;">
+                            <div id="listaMedicacoes" style="min-height: 60px; max-height: 100px; overflow-y: auto; border: 2px solid #e9ecef; border-radius: 6px; padding: 10px; background: white;">
+                                <div style="text-align: center; color: #6c757d; font-size: 0.8rem; padding: 15px;">
                                     Nenhuma medicação adicionada ainda
                                 </div>
                             </div>
@@ -22624,18 +23503,18 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                             <!-- Campo oculto para armazenar as medicações -->
                             <textarea id="medicacaoUrgencia" style="display: none;"></textarea>
                             
-                            <div style="font-size: 0.8rem; color: #6c757d; margin-top: 8px; display: flex; align-items: center; gap: 5px;">
+                            <div style="font-size: 0.8rem; color: #6c757d; margin-top: 8px; display: flex; align-items: center; gap: 6px; background: #e8f4fd; padding: 8px; border-radius: 4px;">
                                 💡 <strong>Dica:</strong> Digite uma medicação e pressione Enter ou clique em "Adicionar"
                             </div>
                         </div>
                         
-                        <div style="display: flex; gap: 8px; justify-content: center;">
+                        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 15px;">
                             <button class="btn-confirmar" onclick="confirmarMedicacaoUrgencia('${leitoId}')" 
-                                style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; flex: 1; font-size: 0.9rem; display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                style="background: #dc3545; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; flex: 1; font-size: 0.9rem; display: inline-block !important; visibility: visible !important; opacity: 1 !important; transition: all 0.3s ease; box-shadow: 0 3px 6px rgba(220, 53, 69, 0.3);">
                                 🚨 Solicitar Urgência
                             </button>
                             <button class="btn-cancelar" onclick="fecharModalMedicacaoUrgencia()" 
-                                style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; flex: 1; font-size: 0.9rem; display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                style="background: #6c757d; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; flex: 1; font-size: 0.9rem; display: inline-block !important; visibility: visible !important; opacity: 1 !important; transition: all 0.3s ease; box-shadow: 0 3px 6px rgba(108, 117, 125, 0.3);">
                                 ❌ Cancelar
                             </button>
                         </div>
@@ -28439,7 +29318,441 @@ fetch('https://api.twilio.com/2010-04-01/Accounts/ACxxx/Messages.json', {
                   'Clique em "Ver Sinais Vitais" nos outros cards!');
         }
         
-        console.log('=== APLICACAO INICIADA ===');
+        // ===== SISTEMA DE NOTIFICAÇÕES AVANÇADO =====
+        
+        // Configuração de notificações
+        const NOTIFICACOES_CONFIG = {
+            somAtivo: true,
+            notificacoesVisuais: true,
+            notificacoesPush: false,
+            volume: 0.8  // Volume mais alto por padrão
+        };
+        
+        // Função para mostrar notificação visual
+        function mostrarNotificacao(titulo, mensagem, tipo = 'info', duracao = 5000) {
+            if (!NOTIFICACOES_CONFIG.notificacoesVisuais) return;
+            
+            // Criar elemento de notificação
+            const notificacao = document.createElement('div');
+            notificacao.className = `notificacao notificacao-${tipo}`;
+            notificacao.innerHTML = `
+                <div class="notificacao-conteudo">
+                    <div class="notificacao-titulo">${titulo}</div>
+                    <div class="notificacao-mensagem">${mensagem}</div>
+                </div>
+                <button class="notificacao-fechar" onclick="fecharNotificacao(this)">&times;</button>
+            `;
+            
+            // Adicionar estilos se não existirem
+            if (!document.getElementById('notificacao-styles')) {
+                const styles = document.createElement('style');
+                styles.id = 'notificacao-styles';
+                styles.textContent = `
+                    .notificacao {
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: white;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                        padding: 15px 20px;
+                        margin-bottom: 10px;
+                        max-width: 350px;
+                        z-index: 10000;
+                        animation: slideIn 0.3s ease-out;
+                        border-left: 4px solid #3498db;
+                    }
+                    .notificacao-sucesso { border-left-color: #27ae60; }
+                    .notificacao-erro { border-left-color: #e74c3c; }
+                    .notificacao-aviso { border-left-color: #f39c12; }
+                    .notificacao-conteudo { flex: 1; }
+                    .notificacao-titulo { font-weight: bold; margin-bottom: 5px; color: #2c3e50; }
+                    .notificacao-mensagem { color: #7f8c8d; font-size: 0.9rem; }
+                    .notificacao-fechar { 
+                        background: none; 
+                        border: none; 
+                        font-size: 18px; 
+                        cursor: pointer; 
+                        color: #aaa;
+                        margin-left: 10px;
+                    }
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(styles);
+            }
+            
+            // Adicionar ao DOM
+            document.body.appendChild(notificacao);
+            
+            // Remover automaticamente
+            setTimeout(() => {
+                if (notificacao.parentNode) {
+                    notificacao.style.animation = 'slideIn 0.3s ease-out reverse';
+                    setTimeout(() => notificacao.remove(), 300);
+                }
+            }, duracao);
+        }
+        
+        // Função para fechar notificação
+        function fecharNotificacao(botao) {
+            const notificacao = botao.parentNode;
+            notificacao.style.animation = 'slideIn 0.3s ease-out reverse';
+            setTimeout(() => notificacao.remove(), 300);
+        }
+        
+        // Função para tocar som de notificação
+        function tocarSomNotificacao(tipo = 'info') {
+            if (!NOTIFICACOES_CONFIG.somAtivo) return;
+            
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Diferentes tons para diferentes tipos
+                let frequencia, duracao;
+                switch(tipo) {
+                    case 'sucesso':
+                        frequencia = 800;
+                        duracao = 0.3;
+                        break;
+                    case 'erro':
+                        frequencia = 400;
+                        duracao = 0.5;
+                        break;
+                    case 'aviso':
+                        frequencia = 600;
+                        duracao = 0.4;
+                        break;
+                    default:
+                        frequencia = 500;
+                        duracao = 0.3;
+                }
+                
+                oscillator.frequency.setValueAtTime(frequencia, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(NOTIFICACOES_CONFIG.volume, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duracao);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duracao);
+            } catch (e) {
+                console.log('Erro ao reproduzir som:', e);
+            }
+        }
+        
+        // Função para notificação completa (visual + som)
+        function notificar(titulo, mensagem, tipo = 'info', duracao = 5000) {
+            mostrarNotificacao(titulo, mensagem, tipo, duracao);
+            tocarSomNotificacao(tipo);
+        }
+        
+        // ===== SISTEMA DE BACKUP AUTOMÁTICO =====
+        
+        // Função para fazer backup dos dados
+        function fazerBackupAutomatico() {
+            try {
+                const dados = {
+                    leitos: dadosLeitos,
+                    historico: historicoPacientes,
+                    timestamp: new Date().toISOString(),
+                    versao: '1.0.0'
+                };
+                
+                // Salvar no localStorage
+                localStorage.setItem('backup_nexuscare', JSON.stringify(dados));
+                
+                // Salvar no Firebase se disponível
+                if (typeof db !== 'undefined' && db) {
+                    db.collection('backups').add(dados)
+                        .then(() => console.log('✅ Backup salvo no Firebase'))
+                        .catch(err => console.log('⚠️ Erro ao salvar backup no Firebase:', err));
+                }
+                
+                console.log('✅ Backup automático realizado');
+            } catch (error) {
+                console.error('❌ Erro no backup automático:', error);
+            }
+        }
+        
+        // Fazer backup a cada 5 minutos
+        setInterval(fazerBackupAutomatico, 5 * 60 * 1000);
+        
+        // ===== SISTEMA DE ESTATÍSTICAS AVANÇADAS =====
+        
+        // Função para calcular estatísticas detalhadas
+        function calcularEstatisticasAvancadas() {
+            const agora = new Date();
+            const hoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+            
+            // Estatísticas do dia
+            const pacientesHoje = historicoPacientes.filter(p => {
+                const dataAdmissao = new Date(p.dataHoraAdmissao);
+                return dataAdmissao >= hoje;
+            });
+            
+            // Estatísticas por hora
+            const ocupacaoPorHora = {};
+            for (let i = 0; i < 24; i++) {
+                ocupacaoPorHora[i] = 0;
+            }
+            
+            pacientesHoje.forEach(paciente => {
+                const horaAdmissao = new Date(paciente.dataHoraAdmissao).getHours();
+                ocupacaoPorHora[horaAdmissao]++;
+            });
+            
+            // Tempo médio de permanência
+            const pacientesComSaida = historicoPacientes.filter(p => p.dataHoraSaida);
+            const tempoMedio = pacientesComSaida.reduce((acc, p) => {
+                const entrada = new Date(p.dataHoraAdmissao);
+                const saida = new Date(p.dataHoraSaida);
+                return acc + (saida - entrada);
+            }, 0) / pacientesComSaida.length || 0;
+            
+            return {
+                pacientesHoje: pacientesHoje.length,
+                ocupacaoPorHora,
+                tempoMedioMinutos: Math.round(tempoMedio / (1000 * 60)),
+                leitosOcupados: Object.keys(dadosLeitos).length,
+                leitosDisponiveis: 15 - Object.keys(dadosLeitos).length,
+                taxaOcupacao: (Object.keys(dadosLeitos).length / 15 * 100).toFixed(1)
+            };
+        }
+        
+        // ===== SISTEMA DE ALERTAS INTELIGENTES =====
+        
+        // Função para verificar alertas
+        function verificarAlertas() {
+            const stats = calcularEstatisticasAvancadas();
+            
+            // Alerta de alta ocupação
+            if (stats.taxaOcupacao > 80) {
+                notificar('⚠️ Alta Ocupação', 
+                    `Taxa de ocupação: ${stats.taxaOcupacao}% (${stats.leitosOcupados}/15 leitos)`, 
+                    'aviso');
+            }
+            
+            // Alerta de tempo de permanência alto
+            const pacientesLongos = Object.values(dadosLeitos).filter(p => {
+                const tempo = new Date() - new Date(p.dataHoraAdmissao);
+                return tempo > 4 * 60 * 60 * 1000; // 4 horas
+            });
+            
+            if (pacientesLongos.length > 0) {
+                notificar('⏰ Pacientes com Longa Permanência', 
+                    `${pacientesLongos.length} paciente(s) há mais de 4 horas no PA`, 
+                    'aviso');
+            }
+        }
+        
+        // Verificar alertas a cada 10 minutos
+        setInterval(verificarAlertas, 10 * 60 * 1000);
+        
+        // ===== MELHORIAS NA INTERFACE =====
+        
+        // Função para adicionar atalhos de teclado
+        function configurarAtalhosTeclado() {
+            document.addEventListener('keydown', function(e) {
+                // Ctrl + S = Salvar/Backup
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    fazerBackupAutomatico();
+                    notificar('💾 Backup', 'Backup realizado com sucesso!', 'sucesso');
+                }
+                
+                // Ctrl + R = Atualizar estatísticas
+                if (e.ctrlKey && e.key === 'r') {
+                    e.preventDefault();
+                    if (typeof renderizarFarmacia === 'function') {
+                        renderizarFarmacia();
+                        notificar('🔄 Atualizado', 'Estatísticas atualizadas!', 'info');
+                    }
+                }
+                
+                // F1 = Ajuda
+                if (e.key === 'F1') {
+                    e.preventDefault();
+                    mostrarAjuda();
+                }
+            });
+        }
+        
+        // Função para mostrar ajuda
+        function mostrarAjuda() {
+            const ajuda = `
+                <div style="text-align: left; line-height: 1.6;">
+                    <h3>🎯 Atalhos de Teclado</h3>
+                    <p><strong>Ctrl + S:</strong> Fazer backup dos dados</p>
+                    <p><strong>Ctrl + R:</strong> Atualizar estatísticas</p>
+                    <p><strong>F1:</strong> Mostrar esta ajuda</p>
+                    
+                    <h3>🔧 Funcionalidades</h3>
+                    <p><strong>Notificações:</strong> Sistema de alertas visuais e sonoros</p>
+                    <p><strong>Backup:</strong> Automático a cada 5 minutos</p>
+                    <p><strong>Estatísticas:</strong> Análise avançada de ocupação</p>
+                    <p><strong>Alertas:</strong> Monitoramento inteligente</p>
+                </div>
+            `;
+            
+            notificar('❓ Ajuda do Sistema', ajuda, 'info', 10000);
+        }
+        
+        // ===== FUNÇÕES DO PAINEL DE CONFIGURAÇÕES =====
+        
+        // Função para mostrar painel de configurações
+        function mostrarConfiguracoes() {
+            switchPanel('configuracoes');
+            atualizarStatusSistema();
+        }
+        
+        // Função para atualizar configurações de notificações
+        function atualizarConfigNotificacoes() {
+            const visuais = document.getElementById('notificacoesVisuais').checked;
+            const sonoras = document.getElementById('notificacoesSonoras').checked;
+            const volume = parseFloat(document.getElementById('volumeNotificacoes').value);
+            
+            NOTIFICACOES_CONFIG.notificacoesVisuais = visuais;
+            NOTIFICACOES_CONFIG.somAtivo = sonoras;
+            NOTIFICACOES_CONFIG.volume = volume;
+            
+            // Atualizar display do volume
+            document.getElementById('volumeValue').textContent = Math.round(volume * 100) + '%';
+            
+            // Salvar no localStorage
+            localStorage.setItem('config_nexuscare', JSON.stringify(NOTIFICACOES_CONFIG));
+            
+            notificar('⚙️ Configurações', 'Configurações de notificações atualizadas!', 'sucesso');
+        }
+        
+        // Função para atualizar configurações de backup
+        function atualizarConfigBackup() {
+            const backupAuto = document.getElementById('backupAutomatico').checked;
+            
+            if (backupAuto) {
+                // Reiniciar intervalo de backup
+                setInterval(fazerBackupAutomatico, 5 * 60 * 1000);
+                notificar('💾 Backup', 'Backup automático ativado!', 'sucesso');
+            } else {
+                notificar('💾 Backup', 'Backup automático desativado!', 'aviso');
+            }
+            
+            // Salvar configuração
+            const config = JSON.parse(localStorage.getItem('config_nexuscare') || '{}');
+            config.backupAutomatico = backupAuto;
+            localStorage.setItem('config_nexuscare', JSON.stringify(config));
+        }
+        
+        // Função para atualizar configurações de alertas
+        function atualizarConfigAlertas() {
+            const alertaOcupacao = document.getElementById('alertaOcupacao').checked;
+            const alertaTempo = document.getElementById('alertaTempoPermanencia').checked;
+            
+            // Salvar configurações
+            const config = JSON.parse(localStorage.getItem('config_nexuscare') || '{}');
+            config.alertaOcupacao = alertaOcupacao;
+            config.alertaTempoPermanencia = alertaTempo;
+            localStorage.setItem('config_nexuscare', JSON.stringify(config));
+            
+            notificar('🔔 Alertas', 'Configurações de alertas atualizadas!', 'sucesso');
+        }
+        
+        // Função para fazer backup manual
+        function fazerBackupManual() {
+            fazerBackupAutomatico();
+            notificar('💾 Backup Manual', 'Backup realizado com sucesso!', 'sucesso');
+        }
+        
+        // Função para restaurar backup
+        function restaurarBackup() {
+            if (confirm('⚠️ ATENÇÃO: Restaurar backup irá substituir todos os dados atuais. Continuar?')) {
+                try {
+                    const backup = localStorage.getItem('backup_nexuscare');
+                    if (backup) {
+                        const dados = JSON.parse(backup);
+                        dadosLeitos = dados.leitos || {};
+                        historicoPacientes = dados.historico || [];
+                        
+                        // Atualizar interface
+                        if (typeof renderizarFarmacia === 'function') {
+                            renderizarFarmacia();
+                        }
+                        
+                        notificar('🔄 Restauração', 'Backup restaurado com sucesso!', 'sucesso');
+                    } else {
+                        notificar('❌ Erro', 'Nenhum backup encontrado!', 'erro');
+                    }
+                } catch (error) {
+                    notificar('❌ Erro', 'Erro ao restaurar backup: ' + error.message, 'erro');
+                }
+            }
+        }
+        
+        // Função para atualizar status do sistema
+        function atualizarStatusSistema() {
+            // Data da última atualização
+            document.getElementById('ultimaAtualizacao').textContent = new Date().toLocaleString('pt-BR');
+            
+            // Status dos dados locais
+            const dadosLocais = Object.keys(dadosLeitos).length + historicoPacientes.length;
+            document.getElementById('statusDadosLocais').textContent = `${dadosLocais} registros`;
+            
+            // Status do Firebase
+            const firebaseStatus = (typeof db !== 'undefined' && db) ? 'Conectado' : 'Desconectado';
+            document.getElementById('statusFirebase').textContent = firebaseStatus;
+        }
+        
+        // ===== INICIALIZAÇÃO DAS MELHORIAS =====
+        
+        // Configurar atalhos quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            configurarAtalhosTeclado();
+            
+            // Carregar configurações salvas
+            carregarConfiguracoes();
+            
+            // Mostrar notificação de boas-vindas
+            setTimeout(() => {
+                notificar('🚀 NexusCare Atualizado', 
+                    'Sistema com melhorias implementadas! Pressione F1 para ajuda.', 
+                    'sucesso', 8000);
+            }, 2000);
+        });
+        
+        // Função para carregar configurações salvas
+        function carregarConfiguracoes() {
+            try {
+                const config = JSON.parse(localStorage.getItem('config_nexuscare') || '{}');
+                
+                // Aplicar configurações de notificações
+                if (config.notificacoesVisuais !== undefined) {
+                    NOTIFICACOES_CONFIG.notificacoesVisuais = config.notificacoesVisuais;
+                }
+                if (config.somAtivo !== undefined) {
+                    NOTIFICACOES_CONFIG.somAtivo = config.somAtivo;
+                }
+                if (config.volume !== undefined) {
+                    NOTIFICACOES_CONFIG.volume = config.volume;
+                }
+                
+                console.log('✅ Configurações carregadas:', config);
+            } catch (error) {
+                console.log('⚠️ Erro ao carregar configurações:', error);
+            }
+        }
+        
+        console.log('=== APLICACAO INICIADA COM MELHORIAS ===');
+        console.log('🎯 Novas funcionalidades:');
+        console.log('   - Sistema de notificações avançado');
+        console.log('   - Backup automático a cada 5 minutos');
+        console.log('   - Estatísticas inteligentes');
+        console.log('   - Alertas automáticos');
+        console.log('   - Atalhos de teclado (Ctrl+S, Ctrl+R, F1)');
         console.log('Para testar o som, digite: testarSom() no console');
         console.log('Para diagnosticar sinais vitais, digite: diagnosticarSinaisVitais() no console');
         console.log('Para forçar sinais vitais (com F5), digite: forcarSinaisVitaisTodosPacientes() no console');
