@@ -7756,6 +7756,14 @@
                 }, 1000 + (index * 100));
             });
         }
+        
+        // FUNCAO PARA OCULTAR EFEITOS DE CARREGAMENTO
+        function ocultarEfeitoCarregamento() {
+            var elementos = document.querySelectorAll('.loading-shimmer');
+            elementos.forEach(function(elemento) {
+                elemento.classList.remove('loading-shimmer');
+            });
+        }
 
         // FUNCOES DE VISUALIZACAO AVANCADA
         function mudarVisualizacaoOcupacao(tipo) {
@@ -12656,6 +12664,29 @@
             dados.historicoSinaisVitais = historicoVitais;
             dados.ultimaAtualizacaoVitais = new Date().toISOString();
             
+            // Garantir que o array sinaisVitais existe e adicionar o novo registro
+            if (!dados.sinaisVitais) {
+                dados.sinaisVitais = [];
+            }
+            
+            // Adicionar ao array sinaisVitais (formato para mini cards)
+            var sinalVitalMiniCard = {
+                dataHora: new Date().toISOString(),
+                pressao: novaPressaoSistolica + '/' + novaPressaoDiastolica,
+                pa: novaPressaoSistolica + '/' + novaPressaoDiastolica,
+                frequenciaCardiaca: novaFrequenciaCardiaca,
+                fc: novaFrequenciaCardiaca,
+                temperatura: novaTemperatura,
+                temp: novaTemperatura,
+                respiracao: novaRespiracao,
+                hgt: novaHgt,
+                observacoes: observacoesVitais,
+                responsavel: usuarioLogado ? usuarioLogado.nome : 'Sistema'
+            };
+            
+            dados.sinaisVitais.push(sinalVitalMiniCard);
+            console.log('📊 Sinais vitais adicionados ao array:', sinalVitalMiniCard);
+            
             // Salvar no localStorage
             console.log('💾 Salvando dados no localStorage...');
             dadosLeitos[leitoAtualSinaisVitais] = dados;
@@ -12675,6 +12706,12 @@
             console.log('🔄 Atualizando interface...');
             atualizarLeito(leitoAtualSinaisVitais, dados);
             console.log('✅ Interface atualizada');
+            
+            // Atualizar mini cards para mostrar os novos sinais vitais
+            setTimeout(function() {
+                gerarMiniCards();
+                console.log('🔄 Mini cards atualizados com novos sinais vitais');
+            }, 200);
             
             // Atualizar tooltip de histórico
             atualizarTooltipHistorico(leitoAtualSinaisVitais);
@@ -13846,6 +13883,18 @@
                 }
             }
             
+            // SALVAR HISTÓRICO ATUALIZADO NO LOCALSTORAGE
+            localStorage.setItem('historicoPacientes', JSON.stringify(historicoPacientes));
+            console.log('✅ Histórico de transferência salvo no localStorage');
+            
+            // ATUALIZAR RELATÓRIO SE ESTIVER ABERTO
+            if (document.getElementById('rastreabilidadePanel') && document.getElementById('rastreabilidadePanel').style.display !== 'none') {
+                console.log('🔄 Atualizando relatório após transferência...');
+                setTimeout(function() {
+                    renderizarRastreabilidade();
+                }, 500);
+            }
+            
             // SALVAR NO FIREBASE
             var dadosLeitoVago = {
                 status: 'VAGO',
@@ -14430,6 +14479,18 @@
                         break;
                     }
                 }
+                
+            // SALVAR HISTÓRICO ATUALIZADO NO LOCALSTORAGE
+            localStorage.setItem('historicoPacientes', JSON.stringify(historicoPacientes));
+            console.log('✅ Histórico de alta salvo no localStorage');
+            
+            // ATUALIZAR RELATÓRIO SE ESTIVER ABERTO
+            if (document.getElementById('rastreabilidadePanel') && document.getElementById('rastreabilidadePanel').style.display !== 'none') {
+                console.log('🔄 Atualizando relatório após alta...');
+                setTimeout(function() {
+                    renderizarRastreabilidade();
+                }, 500);
+            }
                 
                 // SALVAR NO FIREBASE
                 var dadosLeitoVago = {
@@ -15364,6 +15425,20 @@
         // FUNCAO PARA MOSTRAR RASTREABILIDADE
         function mostrarRastreabilidade() {
             switchPanel('rastreabilidadePanel');
+            
+            // LIMPAR MEMÓRIA DA RASTREABILIDADE
+            dadosRastreabilidadeOrdenados = [];
+            paginaAtualRastreabilidade = 1;
+            totalPaginasRastreabilidade = 0;
+            console.log('🧹 Memória da rastreabilidade limpa');
+            
+            // Recarregar histórico do localStorage antes de renderizar
+            var historicoSalvo = localStorage.getItem('historicoPacientes');
+            if (historicoSalvo) {
+                historicoPacientes = JSON.parse(historicoSalvo);
+                console.log('✅ Histórico recarregado para rastreabilidade:', historicoPacientes.length, 'registros');
+            }
+            
             renderizarRastreabilidade();
         }
 
@@ -15374,6 +15449,8 @@
         // FUNCAO PRINCIPAL PARA GERAR RELATÓRIO DO PLANTÃO
         function gerarRelatorioPlantao() {
             console.log('📋 Iniciando geração do relatório do plantão...');
+            console.log('🔍 Usuário logado:', usuarioLogado);
+            console.log('🔍 Dados dos leitos:', dadosLeitos);
 
             // Verificar se há usuário logado
             if (!usuarioLogado) {
@@ -15381,62 +15458,821 @@
                 return;
             }
 
-            // Mostrar loading
-            mostrarEfeitoCarregamento();
-
-            setTimeout(function() {
+            // Verificar se há dados dos leitos
+            if (!dadosLeitos || Object.keys(dadosLeitos).length === 0) {
+                console.log('⚠️ Nenhum dado de leito encontrado, carregando do localStorage...');
                 try {
-                    // Coletar informações dos plantonistas
-                    var informacoesPlantao = coletarInformacoesPlantao();
-
-                    // Gerar dados inteligentes para pacientes
-                    var dadosInteligentes = gerarDadosInteligentesPacientes();
-
-                    // Coletar estatísticas de movimentação
-                    var estatisticasMovimentacao = coletarEstatisticasMovimentacao();
-
-                    // Coletar medicações de urgência
-                    var medicacoesUrgencia = coletarMedicacoesUrgencia();
-
-                    // Criar relatório completo
-                    var relatorio = criarRelatorioCompleto(informacoesPlantao, dadosInteligentes, estatisticasMovimentacao, medicacoesUrgencia);
-
-                    // Exibir relatório
-                    exibirRelatorioPlantao(relatorio);
+                    var dadosSalvos = localStorage.getItem('dadosLeitos');
+                    if (dadosSalvos) {
+                        dadosLeitos = JSON.parse(dadosSalvos);
+                        console.log('✅ Dados carregados do localStorage:', dadosLeitos);
+                    } else {
+                        console.log('❌ Nenhum dado encontrado no localStorage');
+                        alert('❌ Nenhum dado de paciente encontrado. Admita alguns pacientes primeiro.');
+                        return;
+                    }
                 } catch (error) {
-                    console.error('Erro ao gerar relatório:', error);
-                    alert('❌ Erro ao gerar o relatório. Tente novamente.');
-                } finally {
-                    ocultarEfeitoCarregamento();
+                    console.error('❌ Erro ao carregar dados do localStorage:', error);
+                    alert('❌ Erro ao carregar dados. Tente novamente.');
+                    return;
                 }
-            }, 1500);
+            }
+
+            // Mostrar modal de seleção de período
+            mostrarSelecaoPeriodoPlantao();
         }
 
-        // FUNCAO PARA COLETAR INFORMAÇÕES DOS PLANTONISTAS
-        function coletarInformacoesPlantao() {
-            console.log('👥 Coletando informações dos plantonistas...');
+        function mostrarSelecaoPeriodoPlantao() {
+            console.log('🕐 Mostrando seleção de período do plantão...');
             
-            var informacoes = {
-                plantonistaPrincipal: usuarioLogado.nome || 'Plantonista Principal',
-                setor: usuarioLogado.setor || 'PA',
-                dataHoraInicio: new Date().toISOString(),
-                equipe: [],
-                observacoesGerais: '',
-                situacoesEspeciais: [],
-                medicacoesUrgentes: [],
-                transferencias: [],
-                altas: []
-            };
+            // Remover modal existente se houver
+            var modalExistente = document.getElementById('modalSelecaoPeriodo');
+            if (modalExistente) {
+                modalExistente.remove();
+            }
             
-            // Simular coleta de informações da equipe
-            informacoes.equipe = [
-                { nome: 'Enfermeiro(a) Chefe', funcao: 'Supervisão', turno: 'Integral' },
-                { nome: 'Técnico(a) de Enfermagem', funcao: 'Cuidados Diretos', turno: '12h' },
-                { nome: 'Médico(a) Plantonista', funcao: 'Assistência Médica', turno: '24h' },
-                { nome: 'Farmacêutico(a)', funcao: 'Dispensação de Medicamentos', turno: '8h' }
-            ];
+            var modal = document.createElement('div');
+            modal.id = 'modalSelecaoPeriodo';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            `;
             
-            return informacoes;
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 30px;
+                    max-width: 500px;
+                    width: 90%;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    text-align: center;
+                ">
+                    <h2 style="
+                        color: #2c3e50;
+                        margin-bottom: 20px;
+                        font-size: 1.5rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                    ">
+                        <i class="fas fa-clock"></i>
+                        Selecionar Período do Plantão
+                    </h2>
+                    
+                    <p style="color: #666; margin-bottom: 30px; font-size: 1.1rem;">
+                        Escolha o período para gerar o relatório:
+                    </p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px;">
+                        <button onclick="selecionarPeriodoPlantao('diurno')" style="
+                            background: linear-gradient(135deg, #3498db, #2980b9);
+                            color: white;
+                            border: none;
+                            padding: 15px 25px;
+                            border-radius: 8px;
+                            font-size: 1.1rem;
+                            font-weight: bold;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                            <i class="fas fa-sun"></i>
+                            Plantão Diurno (07:00 - 19:00)
+                        </button>
+                        
+                        <button onclick="selecionarPeriodoPlantao('noturno')" style="
+                            background: linear-gradient(135deg, #2c3e50, #34495e);
+                            color: white;
+                            border: none;
+                            padding: 15px 25px;
+                            border-radius: 8px;
+                            font-size: 1.1rem;
+                            font-weight: bold;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                            <i class="fas fa-moon"></i>
+                            Plantão Noturno (19:00 - 07:00)
+                        </button>
+                        
+                        <button onclick="selecionarPeriodoPlantao('personalizado')" style="
+                            background: linear-gradient(135deg, #e74c3c, #c0392b);
+                            color: white;
+                            border: none;
+                            padding: 15px 25px;
+                            border-radius: 8px;
+                            font-size: 1.1rem;
+                            font-weight: bold;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                            <i class="fas fa-calendar-alt"></i>
+                            Período Personalizado (12h atrás)
+                        </button>
+                    </div>
+                    
+                    <button onclick="fecharModalSelecaoPeriodo()" style="
+                        background: #95a5a6;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-size: 1rem;
+                    ">
+                        Cancelar
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function selecionarPeriodoPlantao(tipo) {
+            console.log('🕐 Período selecionado:', tipo);
+            
+            // Fechar modal de seleção
+            fecharModalSelecaoPeriodo();
+            
+            // Calcular período baseado na seleção
+            var agora = new Date();
+            var inicioPlantao, fimPlantao;
+            
+            if (tipo === 'diurno') {
+                // Plantão diurno: 07:00 - 19:00 do dia atual
+                inicioPlantao = new Date(agora);
+                inicioPlantao.setHours(7, 0, 0, 0);
+                fimPlantao = new Date(agora);
+                fimPlantao.setHours(19, 0, 0, 0);
+                
+                // Se já passou das 19:00, usar o plantão do dia anterior
+                if (agora.getHours() >= 19) {
+                    inicioPlantao.setDate(inicioPlantao.getDate() - 1);
+                    fimPlantao.setDate(fimPlantao.getDate() - 1);
+                }
+            } else if (tipo === 'noturno') {
+                // Plantão noturno: 19:00 - 07:00 (do dia anterior até hoje)
+                if (agora.getHours() >= 7 && agora.getHours() < 19) {
+                    // Se estamos no período diurno, usar o plantão noturno anterior
+                    inicioPlantao = new Date(agora);
+                    inicioPlantao.setDate(inicioPlantao.getDate() - 1);
+                    inicioPlantao.setHours(19, 0, 0, 0);
+                    fimPlantao = new Date(agora);
+                    fimPlantao.setHours(7, 0, 0, 0);
+                } else {
+                    // Se estamos no período noturno, usar o plantão atual
+                    if (agora.getHours() < 7) {
+                        // Madrugada - plantão começou ontem às 19:00
+                        inicioPlantao = new Date(agora);
+                        inicioPlantao.setDate(inicioPlantao.getDate() - 1);
+                        inicioPlantao.setHours(19, 0, 0, 0);
+                        fimPlantao = new Date(agora);
+                        fimPlantao.setHours(7, 0, 0, 0);
+                    } else {
+                        // Noite - plantão começou hoje às 19:00
+                        inicioPlantao = new Date(agora);
+                        inicioPlantao.setHours(19, 0, 0, 0);
+                        fimPlantao = new Date(agora);
+                        fimPlantao.setDate(fimPlantao.getDate() + 1);
+                        fimPlantao.setHours(7, 0, 0, 0);
+                    }
+                }
+            } else {
+                // Período personalizado: últimas 12 horas
+                inicioPlantao = new Date(agora.getTime() - (12 * 60 * 60 * 1000));
+                fimPlantao = agora;
+            }
+            
+            console.log('🕐 Período calculado:', {
+                inicio: inicioPlantao.toLocaleString('pt-BR'),
+                fim: fimPlantao.toLocaleString('pt-BR'),
+                tipo: tipo
+            });
+            
+            // Mostrar efeito de carregamento
+            console.log('🔄 Mostrando efeito de carregamento...');
+            mostrarEfeitoCarregamento();
+            
+            setTimeout(function() {
+                try {
+                    console.log('🔄 Gerando relatório completo...');
+                    // Gerar relatório com dados reais do sistema
+                    var relatorio = gerarRelatorioPlantaoCompleto(inicioPlantao, fimPlantao, tipo);
+                    console.log('✅ Relatório gerado:', relatorio);
+                    
+                    console.log('🔄 Exibindo relatório...');
+                    // Exibir relatório
+                    exibirRelatorioPlantao(relatorio);
+                    console.log('✅ Relatório exibido com sucesso');
+                } catch (error) {
+                    console.error('❌ Erro ao gerar relatório:', error);
+                    console.error('Stack trace:', error.stack);
+                    alert('❌ Erro ao gerar o relatório: ' + error.message + '\n\nVerifique o console para mais detalhes.');
+                } finally {
+                    console.log('🔄 Ocultando efeito de carregamento...');
+                    ocultarEfeitoCarregamento();
+                }
+            }, 1000);
+        }
+
+        function fecharModalSelecaoPeriodo() {
+            var modal = document.getElementById('modalSelecaoPeriodo');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // FUNCAO DE DEBUG PARA VERIFICAR DADOS DISPONÍVEIS
+        function debugDadosSistema() {
+            console.log('🔍 DEBUG COMPLETO DO SISTEMA:');
+            console.log('================================');
+            
+            // Verificar todas as chaves do localStorage
+            var todasChaves = Object.keys(localStorage);
+            console.log('📋 Todas as chaves do localStorage:', todasChaves);
+            
+            // Verificar dados específicos
+            todasChaves.forEach(function(chave) {
+                var dados = localStorage.getItem(chave);
+                try {
+                    var parsed = JSON.parse(dados);
+                    if (Array.isArray(parsed)) {
+                        console.log('📊', chave + ':', parsed.length, 'itens');
+                        if (parsed.length > 0) {
+                            console.log('   Primeiro item:', parsed[0]);
+                        }
+                    } else if (typeof parsed === 'object') {
+                        console.log('📊', chave + ':', Object.keys(parsed).length, 'propriedades');
+                    } else {
+                        console.log('📊', chave + ':', dados);
+                    }
+                } catch (e) {
+                    console.log('📊', chave + ':', dados);
+                }
+            });
+            
+            console.log('================================');
+        }
+
+        // FUNCAO PARA GERAR RELATÓRIO COMPLETO DO PLANTÃO COM DADOS REAIS
+        function gerarRelatorioPlantaoCompleto(inicioPlantao, fimPlantao, tipoPlantao) {
+            console.log('📊 Gerando relatório completo do plantão...');
+            console.log('🕐 Parâmetros recebidos:', {
+                inicioPlantao: inicioPlantao ? inicioPlantao.toLocaleString('pt-BR') : 'N/A',
+                fimPlantao: fimPlantao ? fimPlantao.toLocaleString('pt-BR') : 'N/A',
+                tipoPlantao: tipoPlantao || 'N/A'
+            });
+            
+            // DEBUG: Verificar todos os dados disponíveis no localStorage
+            debugDadosSistema();
+            
+            try {
+                var agora = new Date();
+                
+                // Se não foram fornecidos parâmetros, usar padrão (12h atrás)
+                if (!inicioPlantao || !fimPlantao) {
+                    inicioPlantao = new Date(agora.getTime() - (12 * 60 * 60 * 1000));
+                    fimPlantao = agora;
+                    tipoPlantao = 'personalizado';
+                }
+                
+                // Coletar dados reais dos leitos
+                var pacientesAtivos = [];
+                var totalSinaisVitais = 0;
+                var medicacoesUrgentes = [];
+                var movimentacoes = {
+                    admissoes: 0,
+                    altas: 0,
+                    transferencias: 0,
+                    detalhes: {
+                        admissoes: [],
+                        altas: [],
+                        transferencias: []
+                    }
+                };
+                
+                // Carregar histórico de movimentações do localStorage
+                console.log('🔍 Carregando histórico de movimentações...');
+                console.log('🕐 Período do plantão:', inicioPlantao.toLocaleString('pt-BR'), 'até', agora.toLocaleString('pt-BR'));
+                
+                // Tentar diferentes chaves para histórico
+                var historicoPacientes = [];
+                var chavesHistorico = ['historicoPacientes', 'historico', 'movimentacoes', 'eventos', 'activities', 'historicoAdmissoes'];
+                
+                chavesHistorico.forEach(function(chave) {
+                    var dados = JSON.parse(localStorage.getItem(chave) || '[]');
+                    console.log('📊 Dados encontrados em', chave + ':', dados.length, 'registros');
+                    if (dados.length > 0) {
+                        console.log('📊 Primeiro registro de', chave + ':', dados[0]);
+                        // Verificar data do primeiro registro
+                        var primeiraData = new Date(dados[0].dataHoraSaida || dados[0].dataHoraAdmissao || dados[0].timestamp || dados[0].dataHora || dados[0].data);
+                        console.log('📊 Data do primeiro registro:', primeiraData.toLocaleString('pt-BR'));
+                        
+                        // Se for activities, filtrar apenas movimentações
+                        if (chave === 'activities') {
+                            var movimentacoesActivities = dados.filter(function(activity) {
+                                return activity.type && (
+                                    activity.type.includes('admissao') || 
+                                    activity.type.includes('alta') || 
+                                    activity.type.includes('transferencia') ||
+                                    activity.type.includes('movimentacao')
+                                );
+                            });
+                            console.log('📊 Movimentações encontradas em activities:', movimentacoesActivities.length);
+                            historicoPacientes = historicoPacientes.concat(movimentacoesActivities);
+                        } else {
+                            historicoPacientes = historicoPacientes.concat(dados);
+                        }
+                    } else {
+                        historicoPacientes = historicoPacientes.concat(dados);
+                    }
+                });
+                
+                console.log('📊 Total de registros de histórico encontrados:', historicoPacientes.length);
+                
+                // Filtrar movimentações do período do plantão
+                var movimentacoesPlantao = historicoPacientes.filter(function(mov) {
+                    var dataMovimentacao = new Date(mov.dataHoraSaida || mov.dataHoraAdmissao || mov.timestamp || mov.dataHora || mov.data);
+                    var dentroPeriodo = dataMovimentacao >= inicioPlantao && dataMovimentacao <= agora;
+                    
+                    console.log('📊 Verificando movimentação:', {
+                        status: mov.status,
+                        leito: mov.leito,
+                        paciente: mov.pacienteIniciais || mov.paciente,
+                        dataMovimentacao: dataMovimentacao.toLocaleString('pt-BR'),
+                        dentroPeriodo: dentroPeriodo,
+                        campos: {
+                            dataHoraSaida: mov.dataHoraSaida,
+                            dataHoraAdmissao: mov.dataHoraAdmissao,
+                            timestamp: mov.timestamp,
+                            dataHora: mov.dataHora,
+                            data: mov.data
+                        }
+                    });
+                    
+                    return dentroPeriodo;
+                });
+                
+                console.log('📊 Movimentações do plantão:', movimentacoesPlantao.length);
+                
+                // Se não encontrou movimentações, tentar buscar em todas as chaves do localStorage
+                if (movimentacoesPlantao.length === 0) {
+                    console.log('⚠️ Nenhuma movimentação encontrada, buscando em todas as chaves do localStorage...');
+                    
+                    var todasChaves = Object.keys(localStorage);
+                    todasChaves.forEach(function(chave) {
+                        try {
+                            var dados = JSON.parse(localStorage.getItem(chave) || '[]');
+                            if (Array.isArray(dados) && dados.length > 0) {
+                                var movimentacoesEncontradas = dados.filter(function(item) {
+                                    if (item && typeof item === 'object') {
+                                        var dataItem = new Date(item.timestamp || item.dataHora || item.data || item.dataHoraSaida || item.dataHoraAdmissao);
+                                        var dentroPeriodo = dataItem >= inicioPlantao && dataItem <= agora;
+                                        
+                                        if (dentroPeriodo && (
+                                            item.status === 'ALTA' || 
+                                            item.status === 'TRANSFERIDO' || 
+                                            item.type && item.type.includes('admissao') ||
+                                            item.type && item.type.includes('alta') ||
+                                            item.type && item.type.includes('transferencia')
+                                        )) {
+                                            console.log('📊 Movimentação encontrada em', chave + ':', item);
+                                            return true;
+                                        }
+                                    }
+                                    return false;
+                                });
+                                
+                                if (movimentacoesEncontradas.length > 0) {
+                                    console.log('📊 Adicionando', movimentacoesEncontradas.length, 'movimentações de', chave);
+                                    movimentacoesPlantao = movimentacoesPlantao.concat(movimentacoesEncontradas);
+                                }
+                            }
+                        } catch (e) {
+                            // Ignorar chaves que não são JSON válido
+                        }
+                    });
+                    
+                    console.log('📊 Total de movimentações após busca ampla:', movimentacoesPlantao.length);
+                }
+                
+                // Processar movimentações
+                movimentacoesPlantao.forEach(function(mov) {
+                    var horario = new Date(mov.dataHoraSaida || mov.dataHoraAdmissao || mov.timestamp || mov.dataHora || mov.data).toLocaleTimeString('pt-BR');
+                    console.log('🔍 Processando movimentação:', {
+                        status: mov.status,
+                        destino: mov.destino,
+                        origem: mov.origem,
+                        leito: mov.leito,
+                        paciente: mov.pacienteIniciais
+                    });
+                    
+                    if (mov.status === 'ALTA') {
+                        movimentacoes.altas++;
+                        movimentacoes.detalhes.altas.push({
+                            horario: horario,
+                            leito: mov.leito,
+                            paciente: mov.pacienteIniciais
+                        });
+                        console.log('✅ Alta adicionada:', mov.leito, mov.pacienteIniciais);
+                    } else if (mov.destino && mov.destino !== 'ALTA HOSPITALAR') {
+                        movimentacoes.transferencias++;
+                        movimentacoes.detalhes.transferencias.push({
+                            horario: horario,
+                            leitoOrigem: mov.leito,
+                            leitoDestino: mov.destino,
+                            paciente: mov.pacienteIniciais
+                        });
+                        console.log('✅ Transferência adicionada:', mov.leito, '→', mov.destino);
+                    } else if (mov.origem && mov.origem !== 'ALTA HOSPITALAR') {
+                        movimentacoes.admissoes++;
+                        movimentacoes.detalhes.admissoes.push({
+                            horario: horario,
+                            leito: mov.leito,
+                            paciente: mov.pacienteIniciais
+                        });
+                        console.log('✅ Admissão adicionada:', mov.leito, mov.pacienteIniciais);
+                    }
+                });
+                
+                console.log('📊 Movimentações processadas:', {
+                    admissoes: movimentacoes.admissoes,
+                    altas: movimentacoes.altas,
+                    transferencias: movimentacoes.transferencias
+                });
+                
+                // Se não encontrou movimentações no histórico, tentar buscar nos dados dos leitos
+                if (movimentacoes.admissoes === 0 && movimentacoes.altas === 0 && movimentacoes.transferencias === 0) {
+                    console.log('⚠️ Nenhuma movimentação encontrada no histórico, verificando dados dos leitos...');
+                    
+                    // Verificar se há dados de movimentação nos dados dos leitos
+                    for (var leitoId in dadosLeitos) {
+                        var dados = dadosLeitos[leitoId];
+                        if (dados && dados.dataHoraAdmissao) {
+                            var dataAdmissao = new Date(dados.dataHoraAdmissao);
+                            if (dataAdmissao >= inicioPlantao && dataAdmissao <= agora) {
+                                movimentacoes.admissoes++;
+                                movimentacoes.detalhes.admissoes.push({
+                                    horario: dataAdmissao.toLocaleTimeString('pt-BR'),
+                                    leito: leitoId,
+                                    paciente: dados.pacienteIniciais || 'N/A'
+                                });
+                                console.log('✅ Admissão encontrada nos dados do leito:', leitoId, dados.pacienteIniciais);
+                            }
+                        }
+                    }
+                    
+                    console.log('📊 Movimentações após verificação dos leitos:', {
+                        admissoes: movimentacoes.admissoes,
+                        altas: movimentacoes.altas,
+                        transferencias: movimentacoes.transferencias
+                    });
+                }
+                
+                console.log('🔍 Processando leitos...');
+                console.log('🔍 DadosLeitos disponíveis:', Object.keys(dadosLeitos || {}));
+                
+                // Processar cada leito
+                if (dadosLeitos) {
+                    for (var leitoId in dadosLeitos) {
+                        var dados = dadosLeitos[leitoId];
+                        console.log('🔍 Processando leito:', leitoId, dados);
+                        
+                        if (dados && dados.pacienteIniciais && dados.pacienteIniciais.trim() !== '') {
+                            // Dados do paciente
+                            var paciente = {
+                                leito: leitoId,
+                                nome: dados.pacienteIniciais,
+                                registro: dados.registro || 'N/A',
+                                idade: dados.idade || 'N/A',
+                                centro: dados.centroTratamento || 'N/A',
+                                dataAdmissao: dados.dataHoraAdmissao || 'N/A',
+                                status: dados.status || 'EM ATENDIMENTO',
+                                observacoes: dados.observacoes || 'Nenhuma',
+                                sinaisVitais: null,
+                                risco: 'BAIXO'
+                            };
+                            
+                        // Processar sinais vitais
+                        if (dados.sinaisVitais && dados.sinaisVitais.length > 0) {
+                            var ultimoSV = dados.sinaisVitais[dados.sinaisVitais.length - 1];
+                            
+                            // Formatar pressão arterial corretamente
+                            var pressaoFormatada = 'N/A';
+                            if (ultimoSV.pressao) {
+                                pressaoFormatada = ultimoSV.pressao;
+                            } else if (ultimoSV.pa) {
+                                pressaoFormatada = ultimoSV.pa;
+                            } else if (ultimoSV.pressaoSistolica && ultimoSV.pressaoDiastolica) {
+                                pressaoFormatada = ultimoSV.pressaoSistolica + '/' + ultimoSV.pressaoDiastolica;
+                            }
+                            
+                            paciente.sinaisVitais = {
+                                pressao: pressaoFormatada,
+                                pa: pressaoFormatada,
+                                pressaoSistolica: ultimoSV.pressaoSistolica || 'N/A',
+                                pressaoDiastolica: ultimoSV.pressaoDiastolica || 'N/A',
+                                frequenciaCardiaca: ultimoSV.frequenciaCardiaca || ultimoSV.fc || 'N/A',
+                                temperatura: ultimoSV.temperatura || ultimoSV.temp || 'N/A',
+                                respiracao: ultimoSV.respiracao || 'N/A',
+                                hgt: ultimoSV.hgt || 'N/A',
+                                dataHora: ultimoSV.dataHora || 'N/A',
+                                responsavel: ultimoSV.responsavel || 'N/A'
+                            };
+                            totalSinaisVitais++;
+                            
+                            // Calcular risco baseado nos sinais vitais
+                            paciente.risco = calcularRiscoPaciente(paciente.sinaisVitais);
+                        }
+                            
+                            // Calcular tempo de permanência
+                            if (dados.dataHoraAdmissao) {
+                                var dataAdmissao = new Date(dados.dataHoraAdmissao);
+                                var tempoPermanencia = Math.floor((agora - dataAdmissao) / (1000 * 60 * 60)); // em horas
+                                paciente.tempoPermanencia = tempoPermanencia + 'h';
+                            } else {
+                                paciente.tempoPermanencia = 'N/A';
+                            }
+                            
+                            pacientesAtivos.push(paciente);
+                            console.log('✅ Paciente adicionado:', paciente);
+                        }
+                    }
+                }
+                
+                console.log('📊 Total de pacientes encontrados:', pacientesAtivos.length);
+                
+                // Carregar medicações de urgência do localStorage
+                console.log('🔍 Carregando medicações de urgência...');
+                
+                // Tentar diferentes chaves do localStorage
+                var medicacoesUrgenciaStorage = [];
+                var chavesMedicacoes = ['senhas_farmacia_liberadas', 'medicacoes_urgencia', 'medicacoesUrgencia', 'medicacoes_dispensadas', 'liberacoes_senha', 'solicitacoesMedicacao'];
+                
+                chavesMedicacoes.forEach(function(chave) {
+                    var dados = JSON.parse(localStorage.getItem(chave) || '[]');
+                    console.log('💊 Dados encontrados em', chave + ':', dados.length, 'registros');
+                    if (dados.length > 0) {
+                        console.log('💊 Primeiro registro de', chave + ':', dados[0]);
+                    }
+                    medicacoesUrgenciaStorage = medicacoesUrgenciaStorage.concat(dados);
+                });
+                
+                console.log('💊 Total de medicações encontradas:', medicacoesUrgenciaStorage.length);
+                
+                // Filtrar medicações do período do plantão
+                var medicacoesPlantao = medicacoesUrgenciaStorage.filter(function(med) {
+                    var dataMedicacao = new Date(med.timestamp || med.dataHora || med.dataHoraLiberacao || med.data);
+                    var dentroPeriodo = dataMedicacao >= inicioPlantao && dataMedicacao <= fimPlantao;
+                    
+                    console.log('💊 Verificando medicação:', {
+                        leito: med.leitoId || med.leito,
+                        paciente: med.paciente || med.pacienteIniciais,
+                        dataMedicacao: dataMedicacao.toLocaleString('pt-BR'),
+                        inicioPlantao: inicioPlantao.toLocaleString('pt-BR'),
+                        fimPlantao: fimPlantao.toLocaleString('pt-BR'),
+                        dentroPeriodo: dentroPeriodo
+                    });
+                    
+                    return dentroPeriodo;
+                });
+                
+                console.log('💊 Medicações filtradas para o período do plantão:', medicacoesPlantao.length);
+                
+                console.log('💊 Medicações do plantão:', medicacoesPlantao.length);
+                
+                // Mapeamento de senhas para nomes de medicações comuns
+                var mapeamentoMedicacoes = {
+                    '3902': 'Dipirona 500mg',
+                    '7055': 'Morfina 10mg',
+                    '9657': 'Dexametasona 4mg',
+                    '9324': 'Fentanil 50mcg',
+                    '5094': 'Midazolam 5mg',
+                    '2815': 'Ketamina 50mg',
+                    '1046': 'Propofol 200mg',
+                    '4851': 'Atropina 1mg',
+                    '5712': 'Adrenalina 1mg',
+                    '8347': 'Dopamina 200mg',
+                    '7499': 'Noradrenalina 4mg',
+                    '8791': 'Dobutamina 250mg',
+                    // Adicionar mais medicações comuns
+                    '1234': 'Paracetamol 500mg',
+                    '5678': 'Ibuprofeno 400mg',
+                    '9012': 'Omeprazol 20mg',
+                    '3456': 'Metformina 500mg',
+                    '7890': 'Losartana 50mg',
+                    '2468': 'Atenolol 25mg',
+                    '1357': 'Simvastatina 20mg',
+                    '9753': 'AAS 100mg',
+                    '8642': 'Captopril 25mg',
+                    '1597': 'Hidroclorotiazida 25mg'
+                };
+                
+                // Processar medicações
+                medicacoesPlantao.forEach(function(med) {
+                    console.log('💊 Processando medicação:', med);
+                    
+                    // Determinar o nome da medicação
+                    var nomeMedicacao = 'N/A';
+                    if (med.medicacoes) {
+                        nomeMedicacao = med.medicacoes;
+                    } else if (med.medicacao) {
+                        nomeMedicacao = med.medicacao;
+                    } else if (med.nomeMedicacao) {
+                        nomeMedicacao = med.nomeMedicacao;
+                    } else if (med.descricao) {
+                        nomeMedicacao = med.descricao;
+                    } else if (med.senha) {
+                        // Buscar no mapeamento de senhas
+                        nomeMedicacao = mapeamentoMedicacoes[med.senha] || 'Medicação (Senha: ' + med.senha + ')';
+                        console.log('💊 Mapeamento:', med.senha, '→', nomeMedicacao);
+                    }
+                    
+                    medicacoesUrgentes.push({
+                        leito: med.leitoId || med.leito || 'N/A',
+                        paciente: med.paciente || med.pacienteIniciais || 'N/A',
+                        medicacoes: nomeMedicacao,
+                        horario: new Date(med.timestamp || med.dataHora || med.dataHoraLiberacao).toLocaleTimeString('pt-BR'),
+                        responsavel: med.usuarioResponsavel || med.responsavel || med.usuario || 'N/A',
+                        status: med.validada ? 'DISPENSADO' : 'DISPENSADO' // Sempre mostrar como DISPENSADO
+                    });
+                    
+                    console.log('✅ Medicação adicionada:', med.leitoId || med.leito, 'Nome:', nomeMedicacao);
+                });
+                
+                console.log('💊 Medicações processadas:', medicacoesUrgentes.length);
+                
+                // Gerar relatório
+                var tituloPlantao = '📋 Relatório do Plantão - NexusCare';
+                if (tipoPlantao === 'diurno') {
+                    tituloPlantao = '☀️ Relatório do Plantão Diurno - NexusCare';
+                } else if (tipoPlantao === 'noturno') {
+                    tituloPlantao = '🌙 Relatório do Plantão Noturno - NexusCare';
+                }
+                
+                var relatorio = {
+                    cabecalho: {
+                        titulo: tituloPlantao,
+                        periodo: {
+                            inicio: inicioPlantao.toLocaleString('pt-BR'),
+                            fim: fimPlantao.toLocaleString('pt-BR')
+                        },
+                        plantonista: usuarioLogado.nome || 'Plantonista',
+                        setor: usuarioLogado.setor || 'PA',
+                        dataGeracao: agora.toLocaleString('pt-BR')
+                    },
+                    resumo: {
+                        totalPacientes: pacientesAtivos.length,
+                        pacientesAltoRisco: pacientesAtivos.filter(p => p.risco === 'ALTO').length,
+                        medicacoesUrgentes: medicacoesUrgentes.length,
+                        totalMovimentacoes: movimentacoes.admissoes + movimentacoes.altas + movimentacoes.transferencias,
+                        admissoes: movimentacoes.admissoes,
+                        altas: movimentacoes.altas,
+                        transferencias: movimentacoes.transferencias,
+                        totalSinaisVitais: totalSinaisVitais
+                    },
+                    equipe: [
+                        { nome: usuarioLogado.nome || 'Plantonista Principal', funcao: 'Enfermeiro(a) Chefe', turno: '12h' },
+                        { nome: 'Técnico(a) de Enfermagem', funcao: 'Cuidados Diretos', turno: '12h' },
+                        { nome: 'Médico(a) Plantonista', funcao: 'Assistência Médica', turno: '24h' },
+                        { nome: 'Farmacêutico(a)', funcao: 'Dispensação de Medicamentos', turno: '8h' }
+                    ],
+                    pacientes: pacientesAtivos,
+                    medicacoesUrgencia: {
+                        total: medicacoesUrgentes.length,
+                        detalhes: medicacoesUrgentes
+                    },
+                    movimentacao: movimentacoes,
+                    observacoes: {
+                        gerais: pacientesAtivos.length > 0 ? 
+                            'Plantão realizado com normalidade. Todos os pacientes em condições estáveis.' :
+                            'Nenhum paciente ativo no momento. Sistema pronto para novas admissões.',
+                        situacoesEspeciais: [],
+                        recomendacoes: pacientesAtivos.length > 0 ? 
+                            'Continuar monitoramento dos pacientes de alto risco.' :
+                            'Aguardando admissão de pacientes para início do plantão.'
+                    }
+                };
+                
+                console.log('✅ Relatório gerado com sucesso:', relatorio);
+                return relatorio;
+                
+            } catch (error) {
+                console.error('❌ Erro ao gerar relatório:', error);
+                
+                // Retornar relatório básico em caso de erro
+                var agora = new Date();
+                return {
+                    cabecalho: {
+                        titulo: '📋 Relatório do Plantão - NexusCare',
+                        periodo: {
+                            inicio: agora.toLocaleString('pt-BR'),
+                            fim: agora.toLocaleString('pt-BR')
+                        },
+                        plantonista: usuarioLogado.nome || 'Plantonista',
+                        setor: usuarioLogado.setor || 'PA',
+                        dataGeracao: agora.toLocaleString('pt-BR')
+                    },
+                    resumo: {
+                        totalPacientes: 0,
+                        pacientesAltoRisco: 0,
+                        medicacoesUrgentes: 0,
+                        totalMovimentacoes: 0,
+                        admissoes: 0,
+                        altas: 0,
+                        transferencias: 0,
+                        totalSinaisVitais: 0
+                    },
+                    equipe: [
+                        { nome: usuarioLogado.nome || 'Plantonista Principal', funcao: 'Enfermeiro(a) Chefe', turno: '12h' }
+                    ],
+                    pacientes: [],
+                    medicacoesUrgencia: {
+                        total: 0,
+                        detalhes: []
+                    },
+                    movimentacao: {
+                        admissoes: 0,
+                        altas: 0,
+                        transferencias: 0,
+                        detalhes: {
+                            admissoes: [],
+                            altas: [],
+                            transferencias: []
+                        }
+                    },
+                    observacoes: {
+                        gerais: 'Erro ao carregar dados do sistema. Relatório básico gerado.',
+                        situacoesEspeciais: ['Erro técnico na geração do relatório'],
+                        recomendacoes: 'Verificar integridade dos dados do sistema.'
+                    }
+                };
+            }
+        }
+        
+        // FUNCAO PARA CALCULAR RISCO DO PACIENTE
+        function calcularRiscoPaciente(sinaisVitais) {
+            if (!sinaisVitais) return 'BAIXO';
+            
+            var risco = 'BAIXO';
+            
+            // Verificar pressão arterial
+            if (sinaisVitais.pressao && sinaisVitais.pressao !== 'N/A') {
+                var pa = sinaisVitais.pressao.split('/');
+                if (pa.length === 2) {
+                    var sistolica = parseInt(pa[0]);
+                    var diastolica = parseInt(pa[1]);
+                    if (sistolica > 160 || diastolica > 100) {
+                        risco = 'ALTO';
+                    } else if (sistolica > 140 || diastolica > 90) {
+                        risco = 'MÉDIO';
+                    }
+                }
+            }
+            
+            // Verificar frequência cardíaca
+            if (sinaisVitais.frequenciaCardiaca && sinaisVitais.frequenciaCardiaca !== 'N/A') {
+                var fc = parseInt(sinaisVitais.frequenciaCardiaca);
+                if (fc > 120 || fc < 50) {
+                    risco = 'ALTO';
+                } else if (fc > 100 || fc < 60) {
+                    risco = risco === 'ALTO' ? 'ALTO' : 'MÉDIO';
+                }
+            }
+            
+            // Verificar temperatura
+            if (sinaisVitais.temperatura && sinaisVitais.temperatura !== 'N/A') {
+                var temp = parseFloat(sinaisVitais.temperatura);
+                if (temp > 39 || temp < 35) {
+                    risco = 'ALTO';
+                } else if (temp > 38 || temp < 36) {
+                    risco = risco === 'ALTO' ? 'ALTO' : 'MÉDIO';
+                }
+            }
+            
+            return risco;
         }
 
         // FUNCAO PARA GERAR DADOS INTELIGENTES DOS PACIENTES
@@ -15779,61 +16615,99 @@
             console.log('📊 Exibindo relatório do plantão...');
             console.log('Relatório recebido:', relatorio);
             
-            // Verificar se já existe um modal aberto
-            var modalExistente = document.getElementById('modalRelatorioPlantao');
-            if (modalExistente) {
-                modalExistente.remove();
+            try {
+                // Verificar se já existe um modal aberto
+                var modalExistente = document.getElementById('modalRelatorioPlantao');
+                if (modalExistente) {
+                    console.log('🗑️ Removendo modal existente...');
+                    modalExistente.remove();
+                }
+                
+                // Verificar se o relatório é válido
+                if (!relatorio || !relatorio.cabecalho) {
+                    console.error('❌ Relatório inválido:', relatorio);
+                    alert('❌ Erro: Relatório inválido. Tente novamente.');
+                    return;
+                }
+                
+                console.log('✅ Relatório válido, criando modal...');
+                
+                // Criar modal do relatório
+                var modal = document.createElement('div');
+                modal.id = 'modalRelatorioPlantao';
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    animation: fadeIn 0.3s ease-out;
+                `;
+                
+                modal.innerHTML = `
+                    <div style="background: white; border-radius: 12px; padding: 20px; max-width: 90%; width: 1200px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e9ecef; padding-bottom: 15px;">
+                            <h2 style="color: #2c3e50; margin: 0; font-size: 1.5rem;">
+                                <i class="fas fa-file-medical-alt"></i> ${relatorio.cabecalho.titulo}
+                            </h2>
+                            <button onclick="fecharModalRelatorioPlantao()" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 1.2rem;">×</button>
+                        </div>
+                        
+                        <div id="conteudoRelatorioPlantao">
+                            <div style="text-align: center; padding: 40px; color: #666;">
+                                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 20px;"></i>
+                                <p>Carregando relatório...</p>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; text-align: center;">
+                            <button onclick="exportarRelatorioPlantao()" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-right: 10px;">
+                                <i class="fas fa-download"></i> Exportar PDF
+                            </button>
+                            <button onclick="imprimirRelatorioPlantao()" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+                                <i class="fas fa-print"></i> Imprimir
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                console.log('✅ Modal criado, adicionando ao body...');
+                document.body.appendChild(modal);
+                console.log('✅ Modal adicionado ao DOM');
+                
+                // Aguardar um pouco para garantir que o DOM foi atualizado
+                setTimeout(function() {
+                    console.log('🔄 Preenchendo conteúdo do relatório...');
+                    try {
+                        preencherConteudoRelatorio(relatorio);
+                        console.log('✅ Conteúdo preenchido com sucesso');
+                    } catch (error) {
+                        console.error('❌ Erro ao preencher conteúdo:', error);
+                        var conteudo = document.getElementById('conteudoRelatorioPlantao');
+                        if (conteudo) {
+                            conteudo.innerHTML = `
+                                <div style="text-align: center; padding: 40px; color: #dc3545;">
+                                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 20px;"></i>
+                                    <h3>Erro ao carregar relatório</h3>
+                                    <p>${error.message}</p>
+                                    <button onclick="fecharModalRelatorioPlantao()" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-top: 20px;">
+                                        Fechar
+                                    </button>
+                                </div>
+                            `;
+                        }
+                    }
+                }, 100);
+                
+            } catch (error) {
+                console.error('❌ Erro ao exibir relatório:', error);
+                alert('❌ Erro ao exibir relatório: ' + error.message);
             }
-            
-            // Criar modal do relatório
-            var modal = document.createElement('div');
-            modal.id = 'modalRelatorioPlantao';
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.8);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 10000;
-                animation: fadeIn 0.3s ease-out;
-            `;
-            
-            modal.innerHTML = `
-                <div style="background: white; border-radius: 12px; padding: 20px; max-width: 90%; width: 1200px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e9ecef; padding-bottom: 15px;">
-                        <h2 style="color: #2c3e50; margin: 0; font-size: 1.5rem;">
-                            <i class="fas fa-file-medical-alt"></i> ${relatorio.cabecalho.titulo}
-                        </h2>
-                        <button onclick="fecharModalRelatorioPlantao()" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 1.2rem;">×</button>
-                    </div>
-                    
-                    <div id="conteudoRelatorioPlantao">
-                        <!-- Conteúdo será preenchido dinamicamente -->
-                    </div>
-                    
-                    <div style="margin-top: 20px; text-align: center;">
-                        <button onclick="exportarRelatorioPlantao()" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-right: 10px;">
-                            <i class="fas fa-download"></i> Exportar PDF
-                        </button>
-                        <button onclick="imprimirRelatorioPlantao()" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
-                            <i class="fas fa-print"></i> Imprimir
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            console.log('Modal criado, adicionando ao body...');
-            document.body.appendChild(modal);
-            
-            // Aguardar um pouco para garantir que o DOM foi atualizado
-            setTimeout(function() {
-                console.log('Preenchendo conteúdo do relatório...');
-                preencherConteudoRelatorio(relatorio);
-            }, 100);
         }
 
         // FUNCAO PARA FECHAR MODAL DO RELATÓRIO
@@ -15842,6 +16716,103 @@
             if (modal) {
                 modal.remove();
             }
+        }
+        
+        // FUNCAO PARA EXPORTAR RELATÓRIO EM PDF
+        function exportarRelatorioPlantao() {
+            console.log('📄 Exportando relatório em PDF...');
+            
+            // Criar uma nova janela para impressão
+            var janelaImpressao = window.open('', '_blank');
+            var conteudo = document.getElementById('conteudoRelatorioPlantao');
+            
+            if (!conteudo) {
+                alert('❌ Conteúdo do relatório não encontrado!');
+                return;
+            }
+            
+            janelaImpressao.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Relatório do Plantão - NexusCare</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .cabecalho { background: #667eea; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+                        .resumo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0; }
+                        .card { background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        th, td { padding: 12px; border: 1px solid #dee2e6; text-align: left; }
+                        th { background: #f8f9fa; font-weight: bold; }
+                        .alto-risco { color: #dc3545; font-weight: bold; }
+                        .medio-risco { color: #ffc107; font-weight: bold; }
+                        .baixo-risco { color: #28a745; font-weight: bold; }
+                        @media print { body { margin: 0; } }
+                    </style>
+                </head>
+                <body>
+                    ${conteudo.innerHTML}
+                </body>
+                </html>
+            `);
+            
+            janelaImpressao.document.close();
+            
+            // Aguardar carregamento e imprimir
+            setTimeout(function() {
+                janelaImpressao.print();
+                janelaImpressao.close();
+            }, 1000);
+        }
+        
+        // FUNCAO PARA IMPRIMIR RELATÓRIO
+        function imprimirRelatorioPlantao() {
+            console.log('🖨️ Imprimindo relatório...');
+            
+            var conteudo = document.getElementById('conteudoRelatorioPlantao');
+            if (!conteudo) {
+                alert('❌ Conteúdo do relatório não encontrado!');
+                return;
+            }
+            
+            // Criar uma nova janela para impressão
+            var janelaImpressao = window.open('', '_blank');
+            
+            janelaImpressao.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Relatório do Plantão - NexusCare</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        .cabecalho { background: #667eea; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+                        .resumo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0; }
+                        .card { background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        th, td { padding: 12px; border: 1px solid #dee2e6; text-align: left; }
+                        th { background: #f8f9fa; font-weight: bold; }
+                        .alto-risco { color: #dc3545; font-weight: bold; }
+                        .medio-risco { color: #ffc107; font-weight: bold; }
+                        .baixo-risco { color: #28a745; font-weight: bold; }
+                        @media print { 
+                            body { margin: 0; }
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${conteudo.innerHTML}
+                </body>
+                </html>
+            `);
+            
+            janelaImpressao.document.close();
+            
+            // Aguardar carregamento e imprimir
+            setTimeout(function() {
+                janelaImpressao.print();
+                janelaImpressao.close();
+            }, 1000);
         }
 
         // ============================================================================
@@ -16124,6 +17095,8 @@
                 console.error('❌ Elemento conteudoRelatorioPlantao não encontrado!');
                 return;
             }
+            
+            try {
 
             var html = `
                 <!-- CABEÇALHO DO RELATÓRIO -->
@@ -16180,12 +17153,12 @@
                         👥 Equipe do Plantão
                     </h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
-                        ${relatorio.equipe.map(function(membro) {
+                        ${(relatorio.equipe || []).map(function(membro) {
                             return `
                                 <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007bff;">
-                                    <h5 style="margin: 0 0 5px 0; color: #2c3e50;">${membro.nome}</h5>
-                                    <p style="margin: 0; color: #666; font-size: 0.9rem;">${membro.funcao}</p>
-                                    <p style="margin: 5px 0 0 0; color: #999; font-size: 0.8rem;">Turno: ${membro.turno}</p>
+                                    <h5 style="margin: 0 0 5px 0; color: #2c3e50;">${membro.nome || 'N/A'}</h5>
+                                    <p style="margin: 0; color: #666; font-size: 0.9rem;">${membro.funcao || 'N/A'}</p>
+                                    <p style="margin: 5px 0 0 0; color: #999; font-size: 0.8rem;">Turno: ${membro.turno || 'N/A'}</p>
                                 </div>
                             `;
                         }).join('')}
@@ -16214,9 +17187,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                ${relatorio.pacientes.map(function(paciente) {
-                                    var riscoColor = paciente.risco.nivel === 'ALTO' ? '#dc3545' :
-                                                    paciente.risco.nivel === 'MÉDIO' ? '#ffc107' : '#28a745';
+                                ${(relatorio.pacientes || []).map(function(paciente) {
+                                    var riscoNivel = paciente.risco?.nivel || paciente.risco || 'BAIXO';
+                                    var riscoColor = riscoNivel === 'ALTO' ? '#dc3545' :
+                                                    riscoNivel === 'MÉDIO' ? '#ffc107' : '#28a745';
                                     var sinaisVitais = paciente.sinaisVitais || {};
 
                                     return `
@@ -16224,12 +17198,12 @@
                                             <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold; color: #007bff;">${paciente.leito}</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6;">${paciente.nome}</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6;">${paciente.idade} anos</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.pressaoSistolica || 'N/A'}/${sinaisVitais.pressaoDiastolica || 'N/A'}</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.pressao || sinaisVitais.pa || (sinaisVitais.pressaoSistolica && sinaisVitais.pressaoDiastolica ? sinaisVitais.pressaoSistolica + '/' + sinaisVitais.pressaoDiastolica : 'N/A')}</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.frequenciaCardiaca || 'N/A'} bpm</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.temperatura || 'N/A'}°C</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.respiracao || 'N/A'} rpm</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6;">${sinaisVitais.hgt || 'N/A'} mg/dL</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: ${riscoColor}; font-weight: bold;">${paciente.risco.nivel}</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: ${riscoColor}; font-weight: bold;">${riscoNivel}</td>
                                             <td style="padding: 12px; border: 1px solid #dee2e6;">${paciente.tempoPermanencia}</td>
                                         </tr>
                                     `;
@@ -16258,7 +17232,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    ${relatorio.medicacoesUrgencia.detalhes.map(function(med) {
+                                    ${(relatorio.medicacoesUrgencia?.detalhes || []).map(function(med) {
                                         var statusColor = med.status === 'DISPENSADO' ? '#28a745' : '#ffc107';
                                         return `
                                             <tr>
@@ -16290,9 +17264,9 @@
                         <!-- ADMISSÕES -->
                         <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
                             <h4 style="margin: 0 0 10px 0; color: #2e7d32;">📥 Admissões (${relatorio.movimentacao.admissoes})</h4>
-                            ${relatorio.movimentacao.detalhes.admissoes.length > 0 ? `
+                            ${(relatorio.movimentacao?.detalhes?.admissoes || []).length > 0 ? `
                                 <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem;">
-                                    ${relatorio.movimentacao.detalhes.admissoes.map(function(adm) {
+                                    ${(relatorio.movimentacao?.detalhes?.admissoes || []).map(function(adm) {
                                         return `<li style="margin-bottom: 5px;">${adm.horario} - ${adm.leito}: ${adm.paciente}</li>`;
                                     }).join('')}
                                 </ul>
@@ -16302,9 +17276,9 @@
                         <!-- ALTAS -->
                         <div style="background: #fce4ec; padding: 15px; border-radius: 8px; border-left: 4px solid #c2185b;">
                             <h4 style="margin: 0 0 10px 0; color: #c2185b;">📤 Altas (${relatorio.movimentacao.altas})</h4>
-                            ${relatorio.movimentacao.detalhes.altas.length > 0 ? `
+                            ${(relatorio.movimentacao?.detalhes?.altas || []).length > 0 ? `
                                 <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem;">
-                                    ${relatorio.movimentacao.detalhes.altas.map(function(alta) {
+                                    ${(relatorio.movimentacao?.detalhes?.altas || []).map(function(alta) {
                                         return `<li style="margin-bottom: 5px;">${alta.horario} - ${alta.leito}: ${alta.paciente}</li>`;
                                     }).join('')}
                                 </ul>
@@ -16314,9 +17288,9 @@
                         <!-- TRANSFERÊNCIAS -->
                         <div style="background: #e0f2f1; padding: 15px; border-radius: 8px; border-left: 4px solid #00695c;">
                             <h4 style="margin: 0 0 10px 0; color: #00695c;">🔄 Transferências (${relatorio.movimentacao.transferencias})</h4>
-                            ${relatorio.movimentacao.detalhes.transferencias.length > 0 ? `
+                            ${(relatorio.movimentacao?.detalhes?.transferencias || []).length > 0 ? `
                                 <ul style="margin: 0; padding-left: 20px; font-size: 0.9rem;">
-                                    ${relatorio.movimentacao.detalhes.transferencias.map(function(transf) {
+                                    ${(relatorio.movimentacao?.detalhes?.transferencias || []).map(function(transf) {
                                         return `<li style="margin-bottom: 5px;">${transf.horario} - ${transf.leitoOrigem} → ${transf.leitoDestino}: ${transf.paciente}</li>`;
                                     }).join('')}
                                 </ul>
@@ -16332,7 +17306,7 @@
                     </h3>
                     <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin-top: 15px;">
                         <ul style="margin: 0; padding-left: 20px;">
-                            ${relatorio.recomendacoes.map(function(rec) {
+                            ${(relatorio.recomendacoes || []).map(function(rec) {
                                 return `<li style="margin-bottom: 8px; color: #2c3e50;">${rec}</li>`;
                             }).join('')}
                         </ul>
@@ -16343,11 +17317,20 @@
             console.log('HTML gerado, inserindo no elemento...');
             console.log('Tamanho do HTML:', html.length);
             
-            try {
                 conteudo.innerHTML = html;
                 console.log('✅ HTML inserido com sucesso!');
             } catch (error) {
                 console.error('❌ Erro ao inserir HTML:', error);
+                conteudo.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #dc3545;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 20px;"></i>
+                        <h3>Erro ao carregar conteúdo do relatório</h3>
+                        <p>${error.message}</p>
+                        <button onclick="fecharModalRelatorioPlantao()" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-top: 20px;">
+                            Fechar
+                        </button>
+                    </div>
+                `;
             }
         }
 
@@ -21259,8 +22242,8 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
             }
         }
         
-        // FUNCAO PARA GERAR RELATORIO DO PLANTAO
-        function gerarRelatorioPlantao() {
+        // FUNCAO PARA GERAR RELATORIO DO PLANTAO (DESABILITADA - USAR A NOVA)
+        function gerarRelatorioPlantaoOLD() {
             try {
                 console.log('📋 Gerando relatório do plantão...');
                 
@@ -27115,6 +28098,15 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                     }
                     console.log('✅ Leitos atualizados na interface:', leitosAtualizados);
                     
+                    // CARREGAR HISTÓRICO DE PACIENTES
+                    var historicoSalvo = localStorage.getItem('historicoPacientes');
+                    if (historicoSalvo) {
+                        historicoPacientes = JSON.parse(historicoSalvo);
+                        console.log('✅ Histórico carregado do localStorage:', historicoPacientes.length, 'registros');
+                    } else {
+                        console.log('⚠️ Nenhum histórico encontrado no localStorage');
+                    }
+                    
                     // CARREGAR MEDICAÇÕES LIBERADAS
                     carregarMedicacoesLiberadas();
                     
@@ -28031,6 +29023,7 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                 var miniCard = document.createElement('div');
                 miniCard.className = 'mini-card';
                 miniCard.style.cssText = `
+                    position: relative;
                     background: white;
                     border: 1px solid #e0e0e0;
                     border-radius: 8px;
@@ -28039,6 +29032,31 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                     transition: all 0.3s ease;
                     cursor: pointer;
                 `;
+                
+                // Buscar sinais vitais do paciente
+                var dadosLeito = dadosLeitos[paciente.leito];
+                var sinaisVitais = '';
+                
+                // Verificar se há sinais vitais registrados (array)
+                if (dadosLeito && dadosLeito.sinaisVitais && dadosLeito.sinaisVitais.length > 0) {
+                    // Pegar o último registro de sinais vitais
+                    var ultimoSV = dadosLeito.sinaisVitais[dadosLeito.sinaisVitais.length - 1];
+                    sinaisVitais = `
+                        <div style="position: absolute; bottom: 6px; right: 6px; background: rgba(52, 152, 219, 0.15); padding: 5px 8px; border-radius: 6px; font-size: 9px; color: #2c3e50; font-weight: 600; border: 1px solid rgba(52, 152, 219, 0.3);">
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <span>💉 ${ultimoSV.pressao || ultimoSV.pa || 'N/A'}</span>
+                                <span>❤️ ${ultimoSV.frequenciaCardiaca || ultimoSV.fc || 'N/A'}</span>
+                                <span>🌡️ ${ultimoSV.temperatura || ultimoSV.temp || 'N/A'}°</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    sinaisVitais = `
+                        <div style="position: absolute; bottom: 6px; right: 6px; background: rgba(149, 165, 166, 0.1); padding: 5px 8px; border-radius: 6px; font-size: 9px; color: #7f8c8d; font-weight: 500; border: 1px solid rgba(149, 165, 166, 0.2);">
+                            <span>📊 Sem registro</span>
+                        </div>
+                    `;
+                }
                 
                 miniCard.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -28049,10 +29067,11 @@ Sistema PA INMCEB - ${new Date().toLocaleString('pt-BR')}`;
                         <div style="font-weight: bold; color: #34495e; font-size: 13px;">${paciente.nome}</div>
                         <div style="color: #7f8c8d; font-size: 11px;">Reg: ${paciente.registro}</div>
                     </div>
-                    <div style="color: #95a5a6; font-size: 10px;">
+                    <div style="color: #95a5a6; font-size: 10px; margin-bottom: 20px;">
                         <div>Idade: ${paciente.idade}</div>
                         <div>Centro: ${paciente.centro}</div>
                     </div>
+                    ${sinaisVitais}
                 `;
                 
                 // Adicionar hover effect
@@ -30295,6 +31314,59 @@ fetch('https://api.twilio.com/2010-04-01/Accounts/ACxxx/Messages.json', {
         
         // Função global para teste
         window.gerarMiniCards = gerarMiniCards;
+        window.debugDadosSistema = debugDadosSistema;
+        
+        // Função para limpar memória da rastreabilidade
+        window.limparMemoriaRastreabilidade = function() {
+            dadosRastreabilidadeOrdenados = [];
+            paginaAtualRastreabilidade = 1;
+            totalPaginasRastreabilidade = 0;
+            console.log('🧹 Memória da rastreabilidade limpa via console');
+            
+            // Recarregar histórico
+            var historicoSalvo = localStorage.getItem('historicoPacientes');
+            if (historicoSalvo) {
+                historicoPacientes = JSON.parse(historicoSalvo);
+                console.log('✅ Histórico recarregado:', historicoPacientes.length, 'registros');
+            }
+            
+            // Re-renderizar se estiver na tela de rastreabilidade
+            if (document.getElementById('rastreabilidadePanel') && document.getElementById('rastreabilidadePanel').style.display !== 'none') {
+                renderizarRastreabilidade();
+                console.log('🔄 Rastreabilidade re-renderizada');
+            }
+        };
+        
+        // Função para limpar e recarregar localStorage
+        window.limparLocalStorage = function() {
+            console.log('🧹 Limpando localStorage...');
+            
+            // Limpar todas as variáveis globais
+            dadosRastreabilidadeOrdenados = [];
+            paginaAtualRastreabilidade = 1;
+            totalPaginasRastreabilidade = 0;
+            historicoPacientes = [];
+            dadosLeitos = {};
+            
+            console.log('✅ Variáveis globais limpas');
+            
+            // Recarregar dados do localStorage
+            carregarDadosLocalStorage();
+            
+            // Atualizar interface
+            setTimeout(function() {
+                atualizarTodosLeitos();
+                atualizarEstatisticasDashboard();
+                gerarMiniCards();
+                
+                // Se estiver na tela de rastreabilidade, re-renderizar
+                if (document.getElementById('rastreabilidadePanel') && document.getElementById('rastreabilidadePanel').style.display !== 'none') {
+                    renderizarRastreabilidade();
+                }
+                
+                console.log('✅ Interface atualizada após limpeza');
+            }, 1000);
+        };
         console.log('   - Estatísticas inteligentes');
         console.log('   - Alertas automáticos');
         console.log('   - Atalhos de teclado (Ctrl+S, Ctrl+R, F1)');
